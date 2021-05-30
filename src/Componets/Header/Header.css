@@ -1,0 +1,24 @@
+.header-bar {
+    width: 100%;
+    height: 40px;
+    background: #9fd890;
+    display: flex;
+}
+
+.sub-header{
+    flex: 0.5;
+}
+
+.menu-bar,.search-bar {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-left: 10px;
+    font-size: 22px;
+    color: #fff;
+}
+
+.search-bar {
+    justify-content: flex-end;
+    margin-right: 10px;
+}

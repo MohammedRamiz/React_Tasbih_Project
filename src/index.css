@@ -16,3 +16,11 @@ code {
 {
   width: 100%;  
 }
+
+.tasbih {
+  margin: 10px 0;
+}
+
+.tasbih > select {
+  width: 100%;
+}

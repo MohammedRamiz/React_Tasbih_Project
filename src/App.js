@@ -1,7 +1,8 @@
 import './App.css';
 import React, { Component } from 'react'
 import "./Componets/CountingPage/TasbihPage.js"
-import Home from './Componets/Home/HomePage.js' 
+import Home from './Componets/Home/HomePage.js'
+import Header from './Componets/Header/Header.js'
 import { auth,provider } from "./Componets/Firebase/firebase";
 
 export default class App extends Component {
@@ -25,6 +26,7 @@ export default class App extends Component {
     console.log(this.state);
     return (
       <div className="outer-container">
+        <Header/>
         {/* <h>Tasbih/Zikr</h>
         <TasbihCounter click={this.IncreaseCount} prop={this.state.count}/> */}
         <div className="inner-container">
