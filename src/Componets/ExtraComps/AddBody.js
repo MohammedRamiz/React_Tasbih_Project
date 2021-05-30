@@ -54,7 +54,7 @@ export default class AddBody extends Component {
                     <option>Select</option>
                     <option>Select 1</option>
                     <option>Select 2</option>
-                    <option>Select 3</>
+                    <option>Select 3</option>
                   </select>*/
                 </div>
               </div>
