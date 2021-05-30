@@ -50,12 +50,12 @@ export default class AddBody extends Component {
                   <input type="text" placeholder="Enter Tasbih Name" onChange={this.handleOnChange} className="tasbih-name"/>
                 </div>
                 <div className="tasbih">
-                  <select >
+                 /* <select >
                     <option>Select</option>
                     <option>Select 1</option>
                     <option>Select 2</option>
-                    <option>Select 3</option>
-                  </select>
+                    <option>Select 3</>
+                  </select>*/
                 </div>
               </div>
             }
