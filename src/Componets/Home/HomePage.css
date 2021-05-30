@@ -35,7 +35,7 @@
 }
 
 .tasbih-card-shell,.tasbih-card-shell-doted{
-    width: 45%;
+    width: 50%;
     height: 150px;
     float: left;
     padding: 10px;
@@ -54,15 +54,15 @@
 
 .tasbih-card-inner-dotted{
     background: rgb(255 255 255 / 0%);
-    height: 96%;
+    height: 100%;
     width: 100%;
     border-radius: 8px;
-    border: 3px dashed #dddddd;
+    border: 2px dashed #dddddd;
     text-align: center;
     cursor: pointer;
 }
 .tasbih-icon-plus{
-    line-height: 1;
+    line-height: 0.85;
     font-size: 115px;
     color: #ddd;
 }
@@ -83,8 +83,11 @@
     /* padding: 5px 0; */
     background: #9fd890;
     flex: 1;
+    border-top-left-radius: 8px;
+    border-top-right-radius: 8px;
 }
 
 .footer-card{
     flex:1;
+    text-align: center;
 }
