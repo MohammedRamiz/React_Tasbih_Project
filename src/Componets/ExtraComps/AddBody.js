@@ -46,7 +46,7 @@ export default class AddBody extends Component {
         <Modal.Body>
           {
               <div className="add-tasbih-name" key="0">
-                <input type="text" onChange={this.handleOnChange} className="tasbih-name"/>
+                <input type="text" placeholder="Enter Tasbih Name" onChange={this.handleOnChange} className="tasbih-name"/>
               </div>
             }
         </Modal.Body>
