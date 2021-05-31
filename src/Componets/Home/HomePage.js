@@ -16,7 +16,7 @@ export default class HomePage extends Component {
         return (
 
             <div className="outer-container">
-                 <Header click={this.props.click} userProfilePic={this.props.userProfilePic} userName={this.props.userName}/>
+                 <Header click={this.props.click} signIn={this.props.signIn} skip={this.props.skip} userProfilePic={this.props.userProfilePic} userName={this.props.userName}/>
                 <div className="inner-container">
                  <Body/> 
                 </div> 

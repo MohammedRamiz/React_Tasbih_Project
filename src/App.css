@@ -30,6 +30,16 @@
 
 .user-sign-in {
     height: 100vh;
+    flex-direction: column;
+}
+
+.user-sign-in button{
+  margin: 10px 0;
+}
+
+button.skip-btn {
+    width: 50% !important;
+    background: #fff !important;
 }
 
 .user-sign-in button {
