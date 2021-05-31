@@ -21,16 +21,6 @@ export default class HomePage extends Component {
                  <Body/> 
                 </div> 
             </div>
-            // <div className="outer-shell">
-            //     <div className="home-body">{
-            //             this.state.NoOfTasbih.map(x => {
-            //                 return <TasbihCard name={x.Name} count={x.Count} status={x.Status}/>
-            //             })
-            //         }
-            //         <TasbihDotedCard click={this.setModalView} />
-            //         <ModalShow showModal={this.state.show} click={this.appendNewBlock} hideModal={this.setModalView}/>
-            //     </div>
-            // </div>
         )
     }
 }
