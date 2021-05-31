@@ -20,13 +20,14 @@ export default class AddBody extends Component {
         this.setState({show:true})
     }
 
-    handleAddData = () =>{
-
+    handleAddData = () => {
+      console.log(this.state.name);
       if(this.state.name !== ''){
-        this.props.click(this.state.name)
+        this.props.click(this.state.name);
+        this.setState({name:''});
       }
       else{
-        alert('Enter Value')
+        alert('Enter Tasbih Name');
       }
     }
 
