@@ -13,9 +13,8 @@ export default class SideNav extends Component {
                     <img src={this.props.userProfilePic}/>
                     <span className="user-name">{this.props.userName}</span>
                 </div>
-                {/* <div className="user-name">
-                    
-                </div> */}
+                 <div className="content">
+                </div> 
             </div>
         )
     }
