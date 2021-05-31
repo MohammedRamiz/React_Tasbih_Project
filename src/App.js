@@ -6,7 +6,7 @@ import { auth,provider } from "./Componets/Firebase/firebase";
 
 export default class App extends Component {
 
-  constructor(prop){
+/*  constructor(prop){
     super(prop)
   
     this.state = {
@@ -19,10 +19,9 @@ export default class App extends Component {
     this.setState({
       count: this.state.count + 1
     })
-  }
+  }*/
   
   render() {
-    console.log(this.state);
     return (
         <LoadPage/>
     )
