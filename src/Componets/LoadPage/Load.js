@@ -37,7 +37,7 @@ export default class Load extends Component {
     
 
     render() {
-        let Authentic = this.state.user ? <HomePage click={this.LogOutUser}/> : <SignInPage click={this.LoginUser}/>
+        let Authentic = this.state.user ? <HomePage click={this.LogOutUser} userProfilePic={this.state.user.photoURL} userName={this.state.user.displayName}/> : <SignInPage click={this.LoginUser}/>
         console.log(this.state.user)
         return ( <div>{Authentic}</div> )
     }
