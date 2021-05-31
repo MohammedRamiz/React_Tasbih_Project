@@ -35,7 +35,6 @@ export default class AddBody extends Component {
 
     handleOnChange = (e) =>{
       e.preventDefault();
-      debugger;
       this.setState({
         name:  e.target.value
       })
@@ -69,7 +68,7 @@ export default class AddBody extends Component {
                 </div> */}
                 <div className="tasbih">
                   <select onChange={this.handleOnChange}>
-                    <option selected>Choose Tasbih</option>
+                    <option>Choose Tasbih</option>
                     {this.state.noOfTasbihs.map(tasbih => {
                       return <option key={tasbih.ID}>{tasbih.Name}</option>
                     })}
