@@ -19,6 +19,18 @@
 }
 
 .search-bar {
+    height: auto !important;
     justify-content: flex-end;
     margin-right: 10px;
+}
+
+
+span.log-out-btn button {
+    font-size: 12px;
+    border: none;
+    padding: 5px 8px;
+}
+
+span.log-out-btn {
+    height: auto;
 }
