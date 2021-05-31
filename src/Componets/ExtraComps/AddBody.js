@@ -2,13 +2,15 @@ import React, { Component } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import db from '../Firebase/firebase.js';
 
 export default class AddBody extends Component {
 
     constructor(){
         super()
         this.state = {
-            name:''
+            name:'',
+            noOfTasbihs: []
         }
     }
 
@@ -33,10 +35,25 @@ export default class AddBody extends Component {
 
     handleOnChange = (e) =>{
       e.preventDefault();
+      debugger;
       this.setState({
         name:  e.target.value
       })
     }
+
+    componentDidMount() {
+      db.collection('Tasbihs').onSnapshot(snap =>{
+            var noOfTasbihs = [];
+            snap.docs.map(doc =>{
+              noOfTasbihs.push({ID: doc.id,Name: doc.data().Name});
+            });
+
+            this.setState({
+                noOfTasbihs: noOfTasbihs
+            });
+      });
+    }
+    
 
     render() {
         return (
@@ -47,10 +64,17 @@ export default class AddBody extends Component {
         <Modal.Body>
           {
               <div className="add-tasbih-name" key="0">
-                <div className="tasbih">
+                {/* <div className="tasbih">
                   <input type="text" placeholder="Enter Tasbih Name" onChange={this.handleOnChange} className="tasbih-name"/>
+                </div> */}
+                <div className="tasbih">
+                  <select onChange={this.handleOnChange}>
+                    <option selected>Choose Tasbih</option>
+                    {this.state.noOfTasbihs.map(tasbih => {
+                      return <option key={tasbih.ID}>{tasbih.Name}</option>
+                    })}
+                  </select>
                 </div>
-                
               </div>
             }
         </Modal.Body>
