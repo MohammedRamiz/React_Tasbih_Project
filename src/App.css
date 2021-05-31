@@ -29,11 +29,7 @@
 }
 
 .user-sign-in {
-    display: flex;
     height: 100vh;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
 }
 
 .user-sign-in button {
@@ -41,6 +37,13 @@
     height: 35px;
     border: 1px solid #0f4a0c;
     background-color: #36e865;
+}
+
+.flex{
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
 @keyframes App-logo-spin {
