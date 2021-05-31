@@ -80,14 +80,19 @@
 
 .header-card{
     text-align: center;
-    /* padding: 5px 0; */
+    padding: 4px;
     background: #36e865;
-    flex: 1;
+    flex: 1 1;
     border-top-left-radius: 8px;
     border-top-right-radius: 8px;
+    font-size: 13px;
+    color: #064a0e;
 }
 
 .footer-card{
     flex:1;
     text-align: center;
+    font-size: 12px;
+    padding: 0 0 5px;
+    border-top: 1px solid #dadada;
 }
