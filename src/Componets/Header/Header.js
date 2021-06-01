@@ -14,11 +14,9 @@ export default class Header extends Component {
          this.state = {
              sidebar: false
          }
-
-         this.OpenSideNavigation = this.OpenSideNavigation.bind(this);
      }
 
-     OpenSideNavigation() {
+     OpenSideNavigation = () => {
          console.log(this.state.sidebar);
          this.setState({sidebar: !this.state.sidebar});
      }

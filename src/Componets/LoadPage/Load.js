@@ -11,11 +11,6 @@ export default class Load extends Component {
             IsSkiped: false,
             loading:true
         }
-
-        this.LoginUser = this.LoginUser.bind(this);
-        this.LogOutUser = this.LogOutUser.bind(this);
-        this.SkipSignIn = this.SkipSignIn.bind(this);
-        this.ReqForSignIn = this.ReqForSignIn.bind(this);
     }
 
     SkipSignIn = () => {
@@ -52,8 +47,7 @@ export default class Load extends Component {
     }
     
 
-    render() {
-        
+    render() {        
         let Authentic = this.state.user || this.state.IsSkiped ? 
         <HomePage   click={this.LogOutUser}
                     signIn={this.ReqForSignIn}
