@@ -57,7 +57,7 @@ export default class Body extends Component {
             <div className="outer-shell">
                 <div className="home-body">{
                         this.state.NoOfTasbih.map(x => {
-                            return <TasbihCard name={x.Name} count={x.Count} status={x.Status}/>
+                            return <TasbihCard key={x.ID} name={x.Name} count={x.Count} status={x.Status}/>
                         })
                     }
                     <TasbihDotedCard click={this.setModalView} />

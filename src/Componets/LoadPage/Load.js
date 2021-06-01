@@ -8,7 +8,8 @@ export default class Load extends Component {
         super()
         this.state = {
             user: null,
-            IsSkiped: false
+            IsSkiped: false,
+            loading:true
         }
 
         this.LoginUser = this.LoginUser.bind(this);
@@ -17,29 +18,33 @@ export default class Load extends Component {
         this.ReqForSignIn = this.ReqForSignIn.bind(this);
     }
 
-    SkipSignIn(){
+    SkipSignIn = () => {
         this.setState({IsSkiped:true});
     }
 
-    ReqForSignIn(){
+    ReqForSignIn = () => {
         this.setState({IsSkiped:false,user:null});
     }
 
-    LoginUser() {
+    LoginUser = () =>  {
         auth.signInWithPopup(provider).then(res => {
             this.setState({user :res.user});
         });
     }
 
-    LogOutUser(){
+    LogOutUser = () => {
         auth.signOut().then(res => {
             this.setState({
-                user: null
+                user: null,
+                loading: false
             })
         })
     }
+
     componentWillMount() {
-        auth.onAuthStateChanged((user) => {
+        auth.onAuthStateChanged(user => {
+            console.log(user);
+             this.setState({loading:false})
             if (user) {
                 this.setState({user})
             }
@@ -48,14 +53,15 @@ export default class Load extends Component {
     
 
     render() {
+        
         let Authentic = this.state.user || this.state.IsSkiped ? 
         <HomePage   click={this.LogOutUser}
                     signIn={this.ReqForSignIn}
                     skip={this.state.IsSkiped} 
                     userProfilePic={this.state.user ? this.state.user.photoURL:''} 
                     userName={this.state.user ? this.state.user.displayName:'UnKnown'}/> : <SignInPage click={this.LoginUser} skip={this.SkipSignIn}/>
-        console.log(this.state.user)
-        return ( <div>{Authentic}</div> )
+
+        return ( this.state.loading ? <div className="initialize flex">Loading...</div> : Authentic)
     }
 }
 
