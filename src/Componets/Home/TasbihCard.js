@@ -7,7 +7,8 @@ export default class TasbihCard extends Component {
 
         this.state = {
             Count:props.count,
-            Name:props.name
+            Name:props.name,
+            Status:props.status
         }
     }
 
@@ -24,7 +25,7 @@ export default class TasbihCard extends Component {
                 <div className="tasbih-card-inner">
                     <div className="header-card">{this.state.Name}</div>
                     <div className="middle-card" onClick={this.increseCounter}>{this.state.Count}</div>
-                    <div className="footer-card">{this.props.status}</div>
+                    <div className="footer-card">{this.state.Status}</div>
                 </div>
             </div>
         )

@@ -3,7 +3,6 @@ import "./HomePage.css"
 import Body from './Body.js'
 import Header from '../Header/Header.js'
 import db from '../Firebase/firebase.js';
-//import { super } from '@babel/types';
 
 export default class HomePage extends Component {
 
@@ -18,7 +17,7 @@ export default class HomePage extends Component {
             <div className="outer-container">
                  <Header click={this.props.click} signIn={this.props.signIn} skip={this.props.skip} userProfilePic={this.props.userProfilePic} userName={this.props.userName}/>
                 <div className="inner-container">
-                 <Body/> 
+                 <Body uid={this.props.uid}/> 
                 </div> 
             </div>
         )

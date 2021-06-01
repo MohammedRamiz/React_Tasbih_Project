@@ -37,10 +37,9 @@ export default class Header extends Component {
                 </div>
                 <div className="right-h sub-header">
                 <div className="search-bar">
-                        <span className="log-out-btn">
-                            {
+                        <span className="log-out-btn"> {
                                 this.props.skip ?  <button onClick={this.props.signIn}>Sign In</button> :
-                            <button onClick={this.props.click}>Log Off</button>
+                                <button onClick={this.props.click}>Log Off</button>
                             }
                         </span>
                     </div>

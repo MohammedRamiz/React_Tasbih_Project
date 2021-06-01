@@ -10,7 +10,8 @@ export default class AddBody extends Component {
         super()
         this.state = {
             name:'',
-            noOfTasbihs: []
+            noOfTasbihs: [],
+            tid:"None"
         }
     }
 
@@ -23,20 +24,24 @@ export default class AddBody extends Component {
     }
 
     handleAddData = () => {
-      console.log(this.state.name);
       if(this.state.name !== ''){
-        this.props.click(this.state.name);
+        this.props.click(this.state.name,this.state.tid);
         this.setState({name:''});
       }
       else{
-        alert('Enter Tasbih Name');
+        alert('Select Tasbih First');
       }
     }
 
     handleOnChange = (e) =>{
       e.preventDefault();
+      var val = this.state.noOfTasbihs.filter(function(item) {
+        return item.Name == e.target.value
+      })
+
       this.setState({
-        name:  e.target.value
+        name: e.target.value,
+        tid: val[0].ID
       })
     }
 
@@ -58,7 +63,7 @@ export default class AddBody extends Component {
         return (
       <Modal show={this.props.showModal} onHide={this.handleClose}>
         <Modal.Header closeButton>
-          <Modal.Title>Enter Tasbih Name</Modal.Title>
+          <Modal.Title>Select Tasbih</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           {

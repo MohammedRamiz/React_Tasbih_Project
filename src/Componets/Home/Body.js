@@ -8,11 +8,12 @@ import db from '../Firebase/firebase.js';
 
 export default class Body extends Component {
 
-    constructor(){
-        super();
+    constructor(props){
+        super(props);
         this.state = {
             NoOfTasbih:[],
-            show:false
+            show:false,
+            uid: props.uid
         }
     }
     
@@ -23,32 +24,44 @@ export default class Body extends Component {
     }
 
 
-    appendNewBlock = (prop) => {
-        if(typeof prop !== 'undefined'){
-            var noOfTasbih = this.state.NoOfTasbih;
-            noOfTasbih.push({
-                Name: prop,
-                Count:0,
-                Status:'Running'
+    appendNewBlock = (tasbihName,tid) => {
+        if(typeof tasbihName !== 'undefined'){
+            //var noOfTasbih = this.state.NoOfTasbih;
+
+            db.collection("Users").doc(this.state.uid).get().then(user=>{
+                user.ref.collection('Tasbihs')
+                                    .add({
+                                        Status:"Running",
+                                        Name: tasbihName,
+                                        TasbihID:tid,
+                                        count:0
+                                    }).then(user => {
+                                        console.log("Tasbih Added To Collection")
+                                    })
             });
-            
+                                
             this.setState({
-                NoOfTasbih:noOfTasbih,
                 show:false
             });
         }
     }
 
-    componentDidMount(){
-        db.collection('Tasbihs').onSnapshot(snap =>{
+    componentWillMount(){
+        this.setState({
+                NoOfTasbih: [],
+                uid: this.props.uid
+        });
+
+        db.collection("Users").doc(this.state.uid).collection('Tasbihs').onSnapshot(tasbih =>{
             var noOfTasbihs = [];
-            snap.docs.map(doc =>{
-              noOfTasbihs.push({ID: doc.id,Name: doc.data().Name,Count:0,Status:"Running"});
-            });
+            tasbih.docs.map(data => {
+                let _data = data.data();
+                noOfTasbihs.push({ID: _data.TasbihID,Name:_data.Name,Count:_data.count,Status:_data.Status});
+            })
             this.setState({
                 NoOfTasbih: noOfTasbihs
             });
-          });
+        });
     }
 
     render() {
