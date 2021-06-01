@@ -26,23 +26,38 @@ export default class Body extends Component {
 
     appendNewBlock = (tasbihName,tid) => {
         if(typeof tasbihName !== 'undefined'){
-            //var noOfTasbih = this.state.NoOfTasbih;
+            if(!this.state.uid === 'null'){
+                db.collection("Users").doc(this.state.uid).get().then(user=>{
+                    user.ref.collection('Tasbihs')
+                                        .add({
+                                            Status:"Running",
+                                            Name: tasbihName,
+                                            TasbihID:tid,
+                                            count:0
+                                        }).then(user => {
+                                            console.log("Tasbih Added To Collection")
+                                        })
+                });
+                                    
+                this.setState({
+                    show:false
+                });
+            }
+            else{
+                var noOfTasbih = this.state.NoOfTasbih;
 
-            db.collection("Users").doc(this.state.uid).get().then(user=>{
-                user.ref.collection('Tasbihs')
-                                    .add({
-                                        Status:"Running",
-                                        Name: tasbihName,
-                                        TasbihID:tid,
-                                        count:0
-                                    }).then(user => {
-                                        console.log("Tasbih Added To Collection")
-                                    })
-            });
-                                
-            this.setState({
-                show:false
-            });
+                noOfTasbih.push({
+                    Name: tasbihName,
+                    Count:0,
+                    Status:'Running',
+                    ID: tid
+                });
+
+                this.setState({
+                    NoOfTasbih: noOfTasbih,
+                    show:false
+                });
+            }
         }
     }
 
