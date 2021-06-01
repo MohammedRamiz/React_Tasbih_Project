@@ -14,6 +14,7 @@
 .side-navigation.nav-menu{
     transform: translateX(-280px);
     transition: .3s ease-in;
+    z-index: 999999;
 } 
 
  .side-navigation.nav-menu.open{

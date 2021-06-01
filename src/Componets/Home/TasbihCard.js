@@ -20,11 +20,16 @@ export default class TasbihCard extends Component {
     RemoveTasbih = () => {
         console.log(this.state.uid);
         console.log(this.state.tid);
-        db.collection("Users").doc(this.state.uid).get().then(user => {
-            user.ref.collection("Tasbihs").doc(this.state.tid).delete().then(user =>{
-                console.log("tasbih Has been Removed");
-            })
-        });
+        if(this.state.uid !== "null"){
+            db.collection("Users").doc(this.state.uid).get().then(user => {
+                user.ref.collection("Tasbihs").doc(this.state.tid).delete().then(user =>{
+                    console.log("tasbih Has been Removed");
+                })
+            });
+        }
+        else{
+            this.props.click(this.state.tid);
+        }
     }
 
 

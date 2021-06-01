@@ -50,7 +50,7 @@ export default class Body extends Component {
                     Name: tasbihName,
                     Count:0,
                     Status:'Running',
-                    ID: tid
+                    ID: Date.now().toString()
                 });
 
                 this.setState({
@@ -80,13 +80,24 @@ export default class Body extends Component {
         });
     }
 
+    RemoveGuestTasbih = (tid) =>{
+        var noOfTasbih = this.state.NoOfTasbih;
+        var tasbihIndex = noOfTasbih.map(t => {return t.ID}).indexOf(tid);
+        noOfTasbih.splice(tasbihIndex,1);
+
+        this.setState({
+            NoOfTasbih:noOfTasbih
+        })
+
+    }
+
     render() {
         
         return (
             <div className="outer-shell">
                 <div className="home-body">{
                         this.state.NoOfTasbih.map(x => {
-                            return <TasbihCard key={x.ID} tid={x.ID} name={x.Name} count={x.Count} status={x.Status} uid={this.state.uid}/>
+                            return <TasbihCard key={x.ID} tid={x.ID} name={x.Name} count={x.Count} status={x.Status} uid={this.state.uid} click={this.state.uid ? this.RemoveGuestTasbih : null} />
                         })
                     }
                     <TasbihDotedCard click={this.setModalView} />
