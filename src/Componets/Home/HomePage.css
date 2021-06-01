@@ -67,7 +67,7 @@
 }
 
 .middle-card{
-    flex: 9;
+    flex: 1;
     text-align: center;
     align-items: center;
     /* align-content: center; */
@@ -86,6 +86,9 @@
     border-top-right-radius: 8px;
     font-size: 13px;
     color: #064a0e;
+    flex-direction: row;
+    position: relative;
+    overflow: hidden;
 }
 
 .footer-card{
@@ -94,4 +97,31 @@
     font-size: 12px;
     padding: 0 0 5px;
     border-top: 1px solid #dadada;
+}
+
+.right {
+    position: absolute;
+    right: -4px;
+    top: 0;
+    font-size: 14px;
+    line-height: 28px;
+    /* transform: rotate(-14deg); */
+}
+
+.right {
+  width: 26px;
+  height: 100%;
+  -webkit-transform: skew(20deg);
+  -moz-transform: skew(20deg);
+  -o-transform: skew(20deg);
+    background: #d66565;
+    overflow: hidden;
+    padding-right: 4px;
+    box-shadow: -3px 2px 6px 0px #116b2a9e;
+    border-left: 3px solid #37c35d;
+    color: #980d0dbf;
+}
+
+.left {
+    flex: 1;
 }

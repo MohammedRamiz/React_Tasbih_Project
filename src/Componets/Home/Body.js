@@ -71,7 +71,8 @@ export default class Body extends Component {
             var noOfTasbihs = [];
             tasbih.docs.map(data => {
                 let _data = data.data();
-                noOfTasbihs.push({ID: _data.TasbihID,Name:_data.Name,Count:_data.count,Status:_data.Status});
+                console.log(data);
+                noOfTasbihs.push({ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status});
             })
             this.setState({
                 NoOfTasbih: noOfTasbihs
@@ -85,7 +86,7 @@ export default class Body extends Component {
             <div className="outer-shell">
                 <div className="home-body">{
                         this.state.NoOfTasbih.map(x => {
-                            return <TasbihCard key={x.ID} name={x.Name} count={x.Count} status={x.Status}/>
+                            return <TasbihCard key={x.ID} tid={x.ID} name={x.Name} count={x.Count} status={x.Status} uid={this.state.uid}/>
                         })
                     }
                     <TasbihDotedCard click={this.setModalView} />
