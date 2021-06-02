@@ -25,6 +25,7 @@ export default class Load extends Component {
             db.collection("NoOfGuests").get().then(nog => {
                 var newCount = nog.docs[0].data().count + 1;
                 var name = "Guest" + newCount;
+                user.user.updateProfile({displayName: name});
                 db.collection("GuestUsers").doc(user.user.uid).set({Name: name ,uid: user.user.uid});
                 console.log(this.state.uid);
                 nog.docs[0].ref.update({count: newCount});
@@ -83,7 +84,7 @@ export default class Load extends Component {
         auth.onAuthStateChanged(user => {
             console.log(user);
             if (user) {
-                this.setState({user:user,uid:user.uid,isAnonymous:user.isAnonymous})
+                this.setState({user:user,uid:user.uid,isAnonymous:user.isAnonymous,userName:user.displayName})
             }
             this.setState({loading:false});
         })
