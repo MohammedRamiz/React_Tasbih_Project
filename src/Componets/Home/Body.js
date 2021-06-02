@@ -50,7 +50,8 @@ export default class Body extends Component {
                     Name: tasbihName,
                     Count:0,
                     Status:'Running',
-                    ID: Date.now().toString()
+                    ID: Date.now().toString(),
+                    path: ''
                 });
 
                 this.setState({

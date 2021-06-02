@@ -34,10 +34,11 @@ export default class TasbihCard extends Component {
 
     increseCounter = () =>{
         var newCount = this.state.Count + 1;
-
-        db.doc(this.state.path).get().then(tasbihData => {
-            tasbihData.ref.update({count:newCount});
-        });
+        if(this.state.path != ''){
+            db.doc(this.state.path).get().then(tasbihData => {
+                tasbihData.ref.update({count:newCount});
+            });
+        }
 
         this.setState({
             Count: newCount
