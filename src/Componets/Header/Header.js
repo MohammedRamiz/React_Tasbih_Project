@@ -22,6 +22,7 @@ export default class Header extends Component {
      }
 
     render() {
+        console.log(this.props.userProfilePic);
         let photoUrl = this.props.userProfilePic === '' ? 'favicon.jpg' : this.props.userProfilePic;
         return (
             <div className="header-bar">

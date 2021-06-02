@@ -12,12 +12,33 @@ export default class Load extends Component {
             user: null,
             IsSkiped: false,
             loading:true,
-            uid: 'null'
+            uid: 'null',
+            userName: "UnKnown"
         }
     }
 
     SkipSignIn = () => {
-        this.setState({IsSkiped:true});
+        this.setState({loading:true,IsSkiped:true});
+        auth.signInAnonymously().then(user => {
+            this.setState({user:user.user,uid:user.user.uid});
+            //console.log(user);
+            db.collection("NoOfGuests").get().then(nog => {
+                var newCount = nog.docs[0].data().count + 1;
+                var name = "Guest" + newCount;
+                db.collection("GuestUsers").doc(user.user.uid).set({Name: name ,uid: user.user.uid});
+
+                nog.docs[0].ref.update({count: newCount});
+                this.setState({userName: name});
+
+                db.collection("GuestUsers").doc(this.state.uid).get().then(user=>{
+                    db.collection("Tasbihs").get().then(tasbihs => {
+                        var randPick = Math.floor(Math.random() * tasbihs.docs.length);
+                        user.ref.collection("Tasbihs").add({count:0,TasbihID:tasbihs.docs[randPick].id,Name:tasbihs.docs[randPick].data().Name,Status:'Running'});
+                        this.setState({loading:false});
+                    });
+                });
+            });
+        });
     }
 
     ReqForSignIn = () => {
@@ -26,7 +47,7 @@ export default class Load extends Component {
 
     LoginUser = () =>  {
         auth.signInWithPopup(provider).then(res => {
-            this.setState({user :res.user,uid:res.user.uid});
+            this.setState({user :res.user,uid:res.user.uid,userName:res.user.displayName});
             db.collection("Users").doc(res.user.uid).get().then(user => {
               if(!user.exists){
                   db.collection("Users").doc(user.id).set({Name: res.user.displayName,uid: user.id}).then(user => {
@@ -35,11 +56,13 @@ export default class Load extends Component {
                           db.collection("Tasbihs").get().then(tasbihs => {
                             var randPick = Math.floor(Math.random() * tasbihs.docs.length);
                             user.ref.collection("Tasbihs").add({count:0,TasbihID:tasbihs.docs[randPick].id,Name:tasbihs.docs[randPick].data().Name,Status:'Running'});
+                            this.setState({loading:false});
                           });
                       });
                   });
               }else{
                   console.log("User found");
+                  this.setState({loading:false});
               }
             })
         });
@@ -58,10 +81,11 @@ export default class Load extends Component {
 
     componentWillMount() {
         auth.onAuthStateChanged(user => {
-            this.setState({loading:false});
+            console.log(user);
             if (user) {
                 this.setState({user:user,uid:user.uid})
             }
+            this.setState({loading:false});
         })
     }
     
@@ -72,8 +96,8 @@ export default class Load extends Component {
                     signIn={this.ReqForSignIn}
                     skip={this.state.IsSkiped}
                     uid = {this.state.uid}
-                    userProfilePic={this.state.user ? this.state.user.photoURL:''} 
-                    userName={this.state.user ? this.state.user.displayName:'UnKnown'}/> : <SignInPage click={this.LoginUser} skip={this.SkipSignIn}/>
+                    userProfilePic={!this.state.IsSkiped ? this.state.user.photoURL :''} 
+                    userName={this.state.userName}/> : <SignInPage click={this.LoginUser} skip={this.SkipSignIn}/>
 
         return ( this.state.loading ? <div className="initialize flex">Loading...</div> : Authentic)
     }

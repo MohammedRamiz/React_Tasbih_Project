@@ -26,9 +26,6 @@ export default class TasbihCard extends Component {
                     console.log("tasbih Has been Removed");
             });
         }
-        else{
-            this.props.click(this.state.tid);
-        }
     }
 
 

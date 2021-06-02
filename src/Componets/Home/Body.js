@@ -13,7 +13,8 @@ export default class Body extends Component {
         this.state = {
             NoOfTasbih:[],
             show:false,
-            uid: props.uid
+            uid: props.uid,
+            isSkipped: props.skip
         }
     }
     
@@ -26,7 +27,7 @@ export default class Body extends Component {
 
     appendNewBlock = (tasbihName,tid) => {
         if(tasbihName){
-            if(this.state.uid !== "null"){
+            if(!this.state.isSkipped){
                 db.collection("Users").doc(this.state.uid).get().then(user=>{
                     user.ref.collection('Tasbihs')
                                         .add({
@@ -44,20 +45,35 @@ export default class Body extends Component {
                 });
             }
             else{
-                var noOfTasbih = this.state.NoOfTasbih;
-
-                noOfTasbih.push({
-                    Name: tasbihName,
-                    Count:0,
-                    Status:'Running',
-                    ID: Date.now().toString(),
-                    path: ''
+                db.collection("GuestUsers").doc(this.state.uid).get().then(user=>{
+                    user.ref.collection('Tasbihs')
+                                .add({
+                                    Status:"Running",
+                                    Name: tasbihName,
+                                    TasbihID:tid,
+                                    count:0
+                                }).then(user => {
+                                    console.log("Tasbih Added To Collection")
+                                })
                 });
-
+                                    
                 this.setState({
-                    NoOfTasbih: noOfTasbih,
                     show:false
                 });
+                // var noOfTasbih = this.state.NoOfTasbih;
+
+                // noOfTasbih.push({
+                //     Name: tasbihName,
+                //     Count:0,
+                //     Status:'Running',
+                //     ID: Date.now().toString(),
+                //     path: ''
+                // });
+
+                // this.setState({
+                //     NoOfTasbih: noOfTasbih,
+                //     show:false
+                // });
             }
         }
     }
@@ -68,28 +84,41 @@ export default class Body extends Component {
                 uid: this.props.uid
         });
 
-        db.collection("Users").doc(this.state.uid).collection('Tasbihs').onSnapshot(tasbih =>{
-            var noOfTasbihs = [];
-            tasbih.docs.map(data => {
-                let _data = data.data();
-                noOfTasbihs.push({ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path});
-            })
-            this.setState({
-                NoOfTasbih: noOfTasbihs
+        if(this.state.isSkipped){
+                        db.collection("GuestUsers").doc(this.state.uid).collection('Tasbihs').onSnapshot(tasbih =>{
+                var noOfTasbihs = [];
+                tasbih.docs.map(data => {
+                    let _data = data.data();
+                    noOfTasbihs.push({ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path});
+                })
+                this.setState({
+                    NoOfTasbih: noOfTasbihs
+                });
             });
-        });
+        }
+        else{
+            db.collection("Users").doc(this.state.uid).collection('Tasbihs').onSnapshot(tasbih =>{
+                var noOfTasbihs = [];
+                tasbih.docs.map(data => {
+                    let _data = data.data();
+                    noOfTasbihs.push({ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path});
+                })
+                this.setState({
+                    NoOfTasbih: noOfTasbihs
+                });
+            });
+        }
     }
 
-    RemoveGuestTasbih = (tid) =>{
-        var noOfTasbih = this.state.NoOfTasbih;
-        var tasbihIndex = noOfTasbih.map(t => {return t.ID}).indexOf(tid);
-        noOfTasbih.splice(tasbihIndex,1);
+    // RemoveGuestTasbih = (tid) =>{
+    //     var noOfTasbih = this.state.NoOfTasbih;
+    //     var tasbihIndex = noOfTasbih.map(t => {return t.ID}).indexOf(tid);
+    //     noOfTasbih.splice(tasbihIndex,1);
 
-        this.setState({
-            NoOfTasbih:noOfTasbih
-        })
-
-    }
+    //     this.setState({
+    //         NoOfTasbih:noOfTasbih
+    //     })
+    // }
 
     render() {
         
@@ -97,7 +126,8 @@ export default class Body extends Component {
             <div className="outer-shell">
                 <div className="home-body">{
                         this.state.NoOfTasbih.map(x => {
-                            return <TasbihCard key={x.ID} tid={x.ID} name={x.Name} count={x.Count} status={x.Status} path={x.path} uid={this.state.uid} click={this.state.uid ? this.RemoveGuestTasbih : null} />
+                            return <TasbihCard key={x.ID} tid={x.ID} name={x.Name} count={x.Count} status={x.Status} path={x.path} uid={this.state.uid} />
+                            {/* click={this.state.uid ? this.RemoveGuestTasbih : null} */}
                         })
                     }
                     <TasbihDotedCard click={this.setModalView} />
