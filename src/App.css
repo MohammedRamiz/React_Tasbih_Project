@@ -56,6 +56,10 @@ button.skip-btn {
   align-items: center;
 }
 
+.flex-align-bottom{
+  align-items: flex-end;
+}
+
 .initialize{
  font-size: 20px;
  height: 100vh;

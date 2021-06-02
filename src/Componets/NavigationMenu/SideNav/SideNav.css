@@ -20,7 +20,58 @@
  .side-navigation.nav-menu.open{
     transform: translateX(280px);
     transition: .5s ease-out;
+    box-shadow: 7px 1px 13px 0px #0000005e;
+    z-index: 2;
  }
+
+.backbone {
+    z-index: 1;
+    position: absolute;
+    height: 95vh;
+    width: 100%;
+    right: 0px;
+    top: 40px;
+    bottom: 0;
+    background: #000;
+    opacity: 0%;
+    display: none;
+}
+
+.backbone.open {
+    animation: fadeInAnimation ease .3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+}
+
+.backbone{
+    animation: fadeOutAnimation ease .3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: backwards;
+}
+
+@keyframes fadeInAnimation {
+    0% {
+        opacity: 0%;
+    }
+    100% {
+        opacity: 25%;
+    }
+}
+
+@keyframes fadeOutAnimation {
+    0% {
+        opacity: 25%;
+    }
+    100% {
+        opacity: 0%;
+    }
+}
+
+.backbone.open{
+    display: block !important;
+    transition: .5s;
+    
+}
 
  .profile-picture-box {
     height: 200px;
@@ -37,6 +88,12 @@
     justify-content: flex-end;
     align-items: center;
     flex-direction: column;
+    flex: 2
+}
+
+.footer{
+    flex: 2;
+    padding: 10px 0;
 }
 
 .profile-picture-box > img {
@@ -54,4 +111,6 @@ span.user-name {
 .content{
     border-top: 1px solid #8df1a7;
     margin-top: 20px;
+    flex: 6;
 }
+

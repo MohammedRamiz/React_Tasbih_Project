@@ -31,18 +31,14 @@ export default class Header extends Component {
                         <span className="Bar-class" onClick={this.OpenSideNavigation}>
                             <FontAwesomeIcon icon={faBars}/>
                         </span>
-                        {
-                            <SideNav navClass={this.state.sidebar ? 'side-navigation nav-menu open' : 'side-navigation nav-menu' } userProfilePic={photoUrl} userName={this.props.userName}/>
-                        }
+                        <SideNav navClass={this.state.sidebar ? 'side-navigation nav-menu open' : 'side-navigation nav-menu' }  click={this.props.click} userProfilePic={photoUrl} userName={this.props.userName}/>
+                        <div className={this.state.sidebar ? 'backbone open' : 'backbone'} onClick={this.OpenSideNavigation}></div>
                     </div>
                 </div>
                 <div className="right-h sub-header">
-                <div className="search-bar">
-                        <span className="log-out-btn"> {
-                                <button onClick={this.props.click}>Log Off</button>
-                            }
-                        </span>
-                    </div>
+                {/* <div className="search-bar">
+
+                </div> */}
                 </div>
             </div>
         )
