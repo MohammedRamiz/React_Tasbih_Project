@@ -10,7 +10,7 @@ export default class Load extends Component {
         super()
         this.state = {
             user: null,
-            IsSkiped: false,
+            isAnonymous: false,
             loading:true,
             uid: 'null',
             userName: "UnKnown"
@@ -18,7 +18,7 @@ export default class Load extends Component {
     }
 
     SkipSignIn = () => {
-        this.setState({loading:true,IsSkiped:true});
+        this.setState({loading:true,isAnonymous:true});
         auth.signInAnonymously().then(user => {
             this.setState({user:user.user,uid:user.user.uid});
             //console.log(user);
@@ -26,7 +26,7 @@ export default class Load extends Component {
                 var newCount = nog.docs[0].data().count + 1;
                 var name = "Guest" + newCount;
                 db.collection("GuestUsers").doc(user.user.uid).set({Name: name ,uid: user.user.uid});
-
+                console.log(this.state.uid);
                 nog.docs[0].ref.update({count: newCount});
                 this.setState({userName: name});
 
@@ -42,7 +42,7 @@ export default class Load extends Component {
     }
 
     ReqForSignIn = () => {
-        this.setState({IsSkiped:false,user:null,uid:"null"});
+        this.setState({isAnonymous:false,user:null,uid:"null"});
     }
 
     LoginUser = () =>  {
@@ -74,7 +74,7 @@ export default class Load extends Component {
                 user: null,
                 uid:'null',
                 loading: false,
-                IsSkiped: false
+                isAnonymous: false
             })
         })
     }
@@ -83,7 +83,7 @@ export default class Load extends Component {
         auth.onAuthStateChanged(user => {
             console.log(user);
             if (user) {
-                this.setState({user:user,uid:user.uid})
+                this.setState({user:user,uid:user.uid,isAnonymous:user.isAnonymous})
             }
             this.setState({loading:false});
         })
@@ -91,12 +91,12 @@ export default class Load extends Component {
     
 
     render() {        
-        let Authentic = this.state.user || this.state.IsSkiped ? 
+        let Authentic = this.state.user || this.state.isAnonymous ? 
         <HomePage   click={this.LogOutUser}
                     signIn={this.ReqForSignIn}
-                    skip={this.state.IsSkiped}
+                    skip={this.state.isAnonymous}
                     uid = {this.state.uid}
-                    userProfilePic={!this.state.IsSkiped ? this.state.user.photoURL :''} 
+                    userProfilePic={!this.state.isAnonymous ? this.state.user.photoURL :''} 
                     userName={this.state.userName}/> : <SignInPage click={this.LoginUser} skip={this.SkipSignIn}/>
 
         return ( this.state.loading ? <div className="initialize flex">Loading...</div> : Authentic)
