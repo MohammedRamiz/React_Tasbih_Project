@@ -13,7 +13,8 @@ export default class TasbihCard extends Component {
             Name:props.name,
             Status:props.status,
             tid:props.tid,
-            uid:props.uid
+            uid:props.uid,
+            path:props.path
         }
     }
 
@@ -21,10 +22,8 @@ export default class TasbihCard extends Component {
         console.log(this.state.uid);
         console.log(this.state.tid);
         if(this.state.uid !== "null"){
-            db.collection("Users").doc(this.state.uid).get().then(user => {
-                user.ref.collection("Tasbihs").doc(this.state.tid).delete().then(user =>{
+            db.doc(this.state.path).delete().then(user =>{
                     console.log("tasbih Has been Removed");
-                })
             });
         }
         else{
@@ -34,9 +33,15 @@ export default class TasbihCard extends Component {
 
 
     increseCounter = () =>{
+        var newCount = this.state.Count + 1;
+
+        db.doc(this.state.path).get().then(tasbihData => {
+            tasbihData.ref.update({count:newCount});
+        });
+
         this.setState({
-            Count: this.state.Count + 1
-        })
+            Count: newCount
+        });
     }
 
     render() {

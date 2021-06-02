@@ -33,7 +33,8 @@ export default class Load extends Component {
                       console.log(this.state.uid);
                       db.collection("Users").doc(this.state.uid).get().then(user=>{
                           db.collection("Tasbihs").get().then(tasbihs => {
-                            user.ref.collection("Tasbihs").add({count:0,TasbihID:tasbihs.docs[0].id,Name:tasbihs.docs[0].data().Name,Status:'Running'});
+                            var randPick = Math.floor(Math.random() * tasbihs.docs.length);
+                            user.ref.collection("Tasbihs").add({count:0,TasbihID:tasbihs.docs[randPick].id,Name:tasbihs.docs[randPick].data().Name,Status:'Running'});
                           });
                       });
                   });

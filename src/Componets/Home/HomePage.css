@@ -122,6 +122,13 @@
     color: #980d0dbf;
 }
 
+.tasbih-remove{
+    user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    -webkit-user-select: none;
+}
+
 .left {
     flex: 1;
 }

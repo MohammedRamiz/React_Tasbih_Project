@@ -25,8 +25,8 @@ export default class Body extends Component {
 
 
     appendNewBlock = (tasbihName,tid) => {
-        if(typeof tasbihName !== 'undefined'){
-            if(!this.state.uid === 'null'){
+        if(tasbihName){
+            if(this.state.uid !== "null"){
                 db.collection("Users").doc(this.state.uid).get().then(user=>{
                     user.ref.collection('Tasbihs')
                                         .add({
@@ -71,8 +71,7 @@ export default class Body extends Component {
             var noOfTasbihs = [];
             tasbih.docs.map(data => {
                 let _data = data.data();
-                console.log(data);
-                noOfTasbihs.push({ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status});
+                noOfTasbihs.push({ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path});
             })
             this.setState({
                 NoOfTasbih: noOfTasbihs
@@ -97,7 +96,7 @@ export default class Body extends Component {
             <div className="outer-shell">
                 <div className="home-body">{
                         this.state.NoOfTasbih.map(x => {
-                            return <TasbihCard key={x.ID} tid={x.ID} name={x.Name} count={x.Count} status={x.Status} uid={this.state.uid} click={this.state.uid ? this.RemoveGuestTasbih : null} />
+                            return <TasbihCard key={x.ID} tid={x.ID} name={x.Name} count={x.Count} status={x.Status} path={x.path} uid={this.state.uid} click={this.state.uid ? this.RemoveGuestTasbih : null} />
                         })
                     }
                     <TasbihDotedCard click={this.setModalView} />
