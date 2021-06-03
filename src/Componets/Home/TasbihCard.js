@@ -3,37 +3,42 @@ import db from '../Firebase/firebase'
 
 export default class TasbihCard extends Component {
 
-    constructor(props){
+    constructor(props) {
         super(props);
 
         console.log(props);
 
         this.state = {
-            Count:props.count,
-            Name:props.name,
-            Status:props.status,
-            tid:props.tid,
-            uid:props.uid,
-            path:props.path
+            Count: props.count,
+            Name: props.name,
+            Status: props.status,
+            tid: props.tid,
+            uid: props.uid,
+            path: props.path
         }
     }
 
     RemoveTasbih = () => {
         console.log(this.state.uid);
         console.log(this.state.tid);
-        if(this.state.uid !== "null"){
-            db.doc(this.state.path).delete().then(user =>{
-                    console.log("tasbih Has been Removed");
+        if (this.state.uid !== "null") {
+            db.doc(this.state.path).delete().then(user => {
+                console.log("tasbih Has been Removed");
             });
         }
     }
 
+    ClearTasbih = () => {
+        this.setState({
+            Count: 0
+        });
+    }
 
-    increseCounter = () =>{
+    increseCounter = () => {
         var newCount = this.state.Count + 1;
-        if(this.state.path != ''){
+        if (this.state.path != '') {
             db.doc(this.state.path).get().then(tasbihData => {
-                tasbihData.ref.update({count:newCount});
+                tasbihData.ref.update({ count: newCount });
             });
         }
 
@@ -49,6 +54,7 @@ export default class TasbihCard extends Component {
                     <div className="header-card">
                         <div className="left">{this.state.Name}</div>
                         <div className="right">
+                            <span className="tasbih-remove" onClick={this.ClearTasbih}>C</span>
                             <span className="tasbih-remove" onClick={this.RemoveTasbih}>X</span>
                         </div>
                     </div>
