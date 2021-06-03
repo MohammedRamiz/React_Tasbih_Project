@@ -82,7 +82,7 @@ export default class Load extends Component {
 
     componentWillMount() {
         auth.onAuthStateChanged(user => {
-            console.log(user);
+            alert(user);
             if (user) {
                 if(user.isAnonymous){
                    db.collection("GuestUsers").doc(user.uid).onSnapshot(data => {
@@ -97,6 +97,8 @@ export default class Load extends Component {
                         this.setState({loading:false});
                    });
                 }
+            }else{
+              this.setState({loading:false});
             }
         })
     }
