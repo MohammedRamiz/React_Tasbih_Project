@@ -2,14 +2,9 @@ import React, { Component } from 'react'
 import "./HomePage.css"
 import Body from './Body.js'
 import Header from '../Header/Header.js'
-import db from '../Firebase/firebase.js';
+//import db from '../Firebase/firebase.js';
 
 export default class HomePage extends Component {
-
-    constructor(props){
-        super(props);
-    }
-
     render() {
         
         return (

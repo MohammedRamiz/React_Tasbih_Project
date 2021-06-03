@@ -36,7 +36,7 @@ export default class AddBody extends Component {
     handleOnChange = (e) =>{
       e.preventDefault();
       var val = this.state.noOfTasbihs.filter(function(item) {
-        return item.Name == e.target.value
+        return item.Name === e.target.value
       })
 
       this.setState({
@@ -47,9 +47,8 @@ export default class AddBody extends Component {
 
     componentDidMount() {
       db.collection('Tasbihs').onSnapshot(snap =>{
-            var noOfTasbihs = [];
-            snap.docs.map(doc =>{
-              noOfTasbihs.push({ID: doc.id,Name: doc.data().Name});
+            var noOfTasbihs = snap.docs.map(doc =>{
+              return {ID: doc.id,Name: doc.data().Name};
             });
 
             this.setState({

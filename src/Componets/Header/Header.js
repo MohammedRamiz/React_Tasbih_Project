@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import './Header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faBars,faSearch } from '@fortawesome/free-solid-svg-icons'
-import {auth} from '../Firebase/firebase'
+import { faBars } from '@fortawesome/free-solid-svg-icons'
+//import {auth} from '../Firebase/firebase'
 import SideNav from '../NavigationMenu/SideNav/SideNav.js'
 
 
@@ -17,12 +17,12 @@ export default class Header extends Component {
      }
 
      OpenSideNavigation = () => {
-         console.log(this.state.sidebar);
+         //console.log(this.state.sidebar);
          this.setState({sidebar: !this.state.sidebar});
      }
 
     render() {
-        console.log(this.props.userProfilePic);
+        //console.log(this.props.userProfilePic);
         let photoUrl = this.props.userProfilePic === '' ? 'favicon.jpg' : this.props.userProfilePic;
         return (
             <div className="header-bar">
@@ -35,11 +35,8 @@ export default class Header extends Component {
                         <div className={this.state.sidebar ? 'backbone open' : 'backbone'} onClick={this.OpenSideNavigation}></div>
                     </div>
                 </div>
-                <div className="right-h sub-header">
-                {/* <div className="search-bar">
-
+                {/* <div className="right-h sub-header">
                 </div> */}
-                </div>
             </div>
         )
     }

@@ -85,12 +85,14 @@ export default class Body extends Component {
         });
 
         if(this.state.isSkipped){
-                        db.collection("GuestUsers").doc(this.state.uid).collection('Tasbihs').onSnapshot(tasbih =>{
-                var noOfTasbihs = [];
-                tasbih.docs.map(data => {
+            db.collection("GuestUsers").doc(this.state.uid).collection('Tasbihs').onSnapshot(tasbih =>{
+                
+                var noOfTasbihs = tasbih.docs.map(data => {
                     let _data = data.data();
-                    noOfTasbihs.push({ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path});
-                })
+                    return {ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path};
+                });
+
+                //console.log(noOfTasbihs);
                 this.setState({
                     NoOfTasbih: noOfTasbihs
                 });
@@ -98,11 +100,12 @@ export default class Body extends Component {
         }
         else{
             db.collection("Users").doc(this.state.uid).collection('Tasbihs').onSnapshot(tasbih =>{
-                var noOfTasbihs = [];
-                tasbih.docs.map(data => {
+
+                var noOfTasbihs = tasbih.docs.map(data => {
                     let _data = data.data();
-                    noOfTasbihs.push({ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path});
-                })
+                    return {ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path};
+                });
+
                 this.setState({
                     NoOfTasbih: noOfTasbihs
                 });
@@ -127,7 +130,6 @@ export default class Body extends Component {
                 <div className="home-body">{
                         this.state.NoOfTasbih.map(x => {
                             return <TasbihCard key={x.ID} tid={x.ID} name={x.Name} count={x.Count} status={x.Status} path={x.path} uid={this.state.uid} />
-                            {/* click={this.state.uid ? this.RemoveGuestTasbih : null} */}
                         })
                     }
                     <TasbihDotedCard click={this.setModalView} />
