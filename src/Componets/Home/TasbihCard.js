@@ -28,9 +28,14 @@ export default class TasbihCard extends Component {
         }
     }
 
-    ClearTasbih = () => {
+    ResetTasbih = () => {
+        var zeroCount = 0;
+        db.doc(this.state.path).get().then(tasbihData => {
+                tasbihData.ref.update({ count: zeroCount });
+        });
+
         this.setState({
-            Count: 0
+            Count: zeroCount
         });
     }
 
@@ -54,12 +59,14 @@ export default class TasbihCard extends Component {
                     <div className="header-card">
                         <div className="left">{this.state.Name}</div>
                         <div className="right">
-                            <span className="tasbih-remove" onClick={this.ClearTasbih}>C</span>
                             <span className="tasbih-remove" onClick={this.RemoveTasbih}>X</span>
                         </div>
                     </div>
                     <div className="middle-card" onClick={this.increseCounter}>{this.state.Count}</div>
-                    <div className="footer-card">{this.state.Status}</div>
+                    <div className="footer-card">
+                        {this.state.Status}
+                        <span className="tasbih-reset" onClick={this.ResetTasbih}>R</span>
+                    </div>
                 </div>
             </div>
         )

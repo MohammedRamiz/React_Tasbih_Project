@@ -97,6 +97,7 @@
     font-size: 12px;
     padding: 0 0 5px;
     border-top: 1px solid #dadada;
+    position: relative;
 }
 
 .right {
@@ -127,6 +128,19 @@
     -moz-user-select: none;
     -ms-user-select: none;
     -webkit-user-select: none;
+}
+
+.tasbih-reset{
+    bottom: 0;
+    top: 0;
+    position: absolute;
+    border-top-left-radius: 4px;
+    right: 0px;
+    width: 20px;
+    border-bottom-left-radius: 4px;
+    background: #2ac253;
+    line-height: 22px;
+    color: white;
 }
 
 .left {
