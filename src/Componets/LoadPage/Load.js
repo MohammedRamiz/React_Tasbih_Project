@@ -82,7 +82,7 @@ export default class Load extends Component {
 
     componentWillMount() {
         auth.onAuthStateChanged(user => {
-            alert(user);
+            //alert(user);
             if (user) {
                 if(user.isAnonymous){
                    db.collection("GuestUsers").doc(user.uid).onSnapshot(data => {
