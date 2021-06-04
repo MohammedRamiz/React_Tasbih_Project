@@ -34,8 +34,12 @@ export default class Load extends Component {
 
                 db.collection("GuestUsers").doc(this.state.uid).get().then(user=>{
                     db.collection("Tasbihs").get().then(tasbihs => {
-                        var randPick = Math.floor(Math.random() * tasbihs.docs.length);
-                        user.ref.collection("Tasbihs").add({count:0,TasbihID:tasbihs.docs[randPick].id,Name:tasbihs.docs[randPick].data().Name,Status:'Running'});
+                         var allTasbihs = tasbihs.docs.map(doc => doc.data().Visible ? doc : null).filter(tasbih => tasbih ? tasbih : null );
+
+                        console.log(allTasbihs);
+                        var randPick = Math.floor(Math.random() * allTasbihs.length);
+
+                        user.ref.collection("Tasbihs").add({count:0,TasbihID:allTasbihs[randPick].id,Name:allTasbihs[randPick].data().Name,Status:'Running'});
                         this.setState({loading:false});
                     });
                 });
@@ -55,8 +59,13 @@ export default class Load extends Component {
                   db.collection("Users").doc(user.id).set({Name: res.user.displayName,uid: user.id}).then(user => {
                       db.collection("Users").doc(this.state.uid).get().then(user=>{
                           db.collection("Tasbihs").get().then(tasbihs => {
-                            var randPick = Math.floor(Math.random() * tasbihs.docs.length);
-                            user.ref.collection("Tasbihs").add({count:0,TasbihID:tasbihs.docs[randPick].id,Name:tasbihs.docs[randPick].data().Name,Status:'Running'});
+
+                            var allTasbihs = tasbihs.docs.map(doc => doc.data().Visible ? doc : null).filter(tasbih => tasbih ? tasbih : null );
+                            var randPick = Math.floor(Math.random() * allTasbihs.length);
+
+                            console.log(allTasbihs);
+
+                            user.ref.collection("Tasbihs").add({count:0,TasbihID:allTasbihs[randPick].id,Name:allTasbihs[randPick].data().Name,Status:'Running'});
                             this.setState({loading:false});
                           });
                       });
@@ -80,7 +89,7 @@ export default class Load extends Component {
         })
     }
 
-    componentDidMount() {
+    componentWillMount() {
         auth.onAuthStateChanged(user => {
             if (user) {
                 if(user.isAnonymous){
