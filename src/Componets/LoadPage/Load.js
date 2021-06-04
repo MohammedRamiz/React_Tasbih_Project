@@ -26,8 +26,9 @@ export default class Load extends Component {
                 var newCount = nog.docs[0].data().count + 1;
                 var name = "Guest" + newCount;
                 user.user.updateProfile({displayName: name});
+
                 db.collection("GuestUsers").doc(user.user.uid).set({Name: name ,uid: user.user.uid});
-                //console.log(this.state.uid);
+
                 nog.docs[0].ref.update({count: newCount});
                 this.setState({userName: name});
 
@@ -52,7 +53,6 @@ export default class Load extends Component {
             db.collection("Users").doc(res.user.uid).get().then(user => {
               if(!user.exists){
                   db.collection("Users").doc(user.id).set({Name: res.user.displayName,uid: user.id}).then(user => {
-                      //console.log(this.state.uid);
                       db.collection("Users").doc(this.state.uid).get().then(user=>{
                           db.collection("Tasbihs").get().then(tasbihs => {
                             var randPick = Math.floor(Math.random() * tasbihs.docs.length);
@@ -80,9 +80,8 @@ export default class Load extends Component {
         })
     }
 
-    componentWillMount() {
+    componentDidMount() {
         auth.onAuthStateChanged(user => {
-            //alert(user);
             if (user) {
                 if(user.isAnonymous){
                    db.collection("GuestUsers").doc(user.uid).onSnapshot(data => {
