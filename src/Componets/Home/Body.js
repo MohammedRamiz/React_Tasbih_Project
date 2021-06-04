@@ -60,20 +60,6 @@ export default class Body extends Component {
                 this.setState({
                     show:false
                 });
-                // var noOfTasbih = this.state.NoOfTasbih;
-
-                // noOfTasbih.push({
-                //     Name: tasbihName,
-                //     Count:0,
-                //     Status:'Running',
-                //     ID: Date.now().toString(),
-                //     path: ''
-                // });
-
-                // this.setState({
-                //     NoOfTasbih: noOfTasbih,
-                //     show:false
-                // });
             }
         }
     }
@@ -89,10 +75,8 @@ export default class Body extends Component {
                 
                 var noOfTasbihs = tasbih.docs.map(data => {
                     let _data = data.data();
-                    return {ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path};
+                    return {ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path,tID:data.data().TasbihID};
                 });
-
-                //console.log(noOfTasbihs);
                 this.setState({
                     NoOfTasbih: noOfTasbihs
                 });
@@ -103,25 +87,14 @@ export default class Body extends Component {
 
                 var noOfTasbihs = tasbih.docs.map(data => {
                     let _data = data.data();
-                    return {ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path};
+                    return {ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path,tID:data.data().TasbihID};
                 });
-
                 this.setState({
                     NoOfTasbih: noOfTasbihs
                 });
             });
         }
     }
-
-    // RemoveGuestTasbih = (tid) =>{
-    //     var noOfTasbih = this.state.NoOfTasbih;
-    //     var tasbihIndex = noOfTasbih.map(t => {return t.ID}).indexOf(tid);
-    //     noOfTasbih.splice(tasbihIndex,1);
-
-    //     this.setState({
-    //         NoOfTasbih:noOfTasbih
-    //     })
-    // }
 
     render() {
         
@@ -133,7 +106,7 @@ export default class Body extends Component {
                         })
                     }
                     <TasbihDotedCard click={this.setModalView} />
-                    <ModalShow showModal={this.state.show} click={this.appendNewBlock} hideModal={this.setModalView}/>
+                    <ModalShow displayedIds={this.state.NoOfTasbih.map(t => t.tID)} showModal={this.state.show} click={this.appendNewBlock} hideModal={this.setModalView}/>
                 </div>
             </div>
         )

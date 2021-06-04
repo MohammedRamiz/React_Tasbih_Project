@@ -19,8 +19,6 @@ export default class TasbihCard extends Component {
     }
 
     RemoveTasbih = () => {
-        //console.log(this.state.uid);
-        //console.log(this.state.tid);
         if (this.state.uid !== "null") {
             db.doc(this.state.path).delete().then(user => {
                 console.log("tasbih Has been Removed");
@@ -55,7 +53,8 @@ export default class TasbihCard extends Component {
     componentWillMount() {
         if (this.state.path !== '') {
             db.doc(this.state.path).onSnapshot(tasbihData => {
-                this.setState({Count: tasbihData.data().count});
+                if(tasbihData.data()) 
+                    this.setState({Count: tasbihData.data().count})
             });
         }
     }

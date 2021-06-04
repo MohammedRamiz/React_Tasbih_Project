@@ -8,7 +8,6 @@ export default class HomePage extends Component {
     render() {
         
         return (
-
             <div className="outer-container">
                  <Header click={this.props.click} signIn={this.props.signIn} skip={this.props.skip} userProfilePic={this.props.userProfilePic} userName={this.props.userName}/>
                 <div className="inner-container">

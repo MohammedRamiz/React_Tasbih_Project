@@ -6,13 +6,14 @@ import db from '../Firebase/firebase.js';
 
 export default class AddBody extends Component {
 
-    constructor(){
-        super()
+    constructor(props){
+        super(props)
         this.state = {
             name:'',
             noOfTasbihs: [],
-            tid:"None"
-        }
+            tid:"None",
+            tasbihsIds:[]
+      }
     }
 
     handleClose = () =>{
@@ -43,13 +44,12 @@ export default class AddBody extends Component {
         name: e.target.value,
         tid: val[0].ID
       })
-    }
+    }    
 
     componentDidMount() {
       db.collection('Tasbihs').onSnapshot(snap =>{
-            var noOfTasbihs = snap.docs.map(doc =>{
-              return {ID: doc.id,Name: doc.data().Name};
-            });
+            var noOfTasbihs = snap.docs.map(doc => doc.data().Visible ? {ID: doc.id,Name: doc.data().Name} : null
+                    ).filter(tasbih => tasbih ? tasbih : null );
 
             this.setState({
                 noOfTasbihs: noOfTasbihs
@@ -67,14 +67,16 @@ export default class AddBody extends Component {
         <Modal.Body>
           {
               <div className="add-tasbih-name" key="0">
-                {/* <div className="tasbih">
-                  <input type="text" placeholder="Enter Tasbih Name" onChange={this.handleOnChange} className="tasbih-name"/>
-                </div> */}
                 <div className="tasbih">
                   <select onChange={this.handleOnChange}>
                     <option>Choose Tasbih</option>
                     {this.state.noOfTasbihs.map(tasbih => {
-                      return <option key={tasbih.ID}>{tasbih.Name}</option>
+
+                      var disable = this.props.displayedIds.filter(f => {
+                          return f === tasbih.ID ? true : false
+                        });
+
+                      return <option disabled={disable[0]} key={tasbih.ID}>{tasbih.Name}</option>
                     })}
                   </select>
                 </div>

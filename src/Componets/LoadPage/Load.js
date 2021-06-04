@@ -111,7 +111,7 @@ export default class Load extends Component {
                     skip={this.state.isAnonymous}
                     uid = {this.state.uid}
                     userProfilePic={!this.state.isAnonymous ? this.state.user.photoURL :''} 
-                    userName={this.state.userName}/> : <SignInPage click={this.LoginUser} skip={this.SkipSignIn}/>
+                    userName={this.state.userName}/> : <SignInPage click={this.LoginUser} skip={this.SkipSignIn} isLoading={this.state.loading}/>
 
         return ( this.state.loading ? <div className="initialize flex">Loading...</div> : Authentic)
     }
