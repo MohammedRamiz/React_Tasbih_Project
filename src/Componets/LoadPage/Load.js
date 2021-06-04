@@ -13,7 +13,8 @@ export default class Load extends Component {
             isAnonymous: false,
             loading:true,
             uid: 'null',
-            userName: "UnKnown"
+            userName: "UnKnown",
+            totalTasbihCounts: 0
         }
     }
 
@@ -40,7 +41,7 @@ export default class Load extends Component {
                         var randPick = Math.floor(Math.random() * allTasbihs.length);
 
                         user.ref.collection("Tasbihs").add({count:0,TasbihID:allTasbihs[randPick].id,Name:allTasbihs[randPick].data().Name,Status:'Running'});
-                        this.setState({loading:false});
+                        this.setState({loading:false,totalTasbihCounts:allTasbihs.length});
                     });
                 });
             });
@@ -119,7 +120,8 @@ export default class Load extends Component {
                     skip={this.state.isAnonymous}
                     uid = {this.state.uid}
                     userProfilePic={!this.state.isAnonymous ? this.state.user.photoURL :''} 
-                    userName={this.state.userName}/> : <SignInPage click={this.LoginUser} skip={this.SkipSignIn} isLoading={this.state.loading}/>
+                    userName={this.state.userName}
+                    totalTasbihCounts={this.state.totalTasbihCounts}/> : <SignInPage click={this.LoginUser} skip={this.SkipSignIn} isLoading={this.state.loading}/>
 
         return ( this.state.loading ? <div className="initialize flex">Loading...</div> : Authentic)
     }

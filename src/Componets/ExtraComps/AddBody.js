@@ -26,7 +26,7 @@ export default class AddBody extends Component {
 
     handleAddData = () => {
       if(this.state.name !== ''){
-        this.props.click(this.state.name,this.state.tid);
+        this.props.click(this.state.name,this.state.tid,this.state.noOfTasbihs.length);
         this.setState({name:''});
       }
       else{
@@ -51,6 +51,8 @@ export default class AddBody extends Component {
             var noOfTasbihs = snap.docs.map(doc => doc.data().Visible ? {ID: doc.id,Name: doc.data().Name} : null
                     ).filter(tasbih => tasbih ? tasbih : null );
 
+            this.props.onTasbihChange(noOfTasbihs.length);
+
             this.setState({
                 noOfTasbihs: noOfTasbihs
             });
@@ -70,7 +72,8 @@ export default class AddBody extends Component {
                 <div className="tasbih">
                   <select onChange={this.handleOnChange}>
                     <option>Choose Tasbih</option>
-                    {this.state.noOfTasbihs.map(tasbih => {
+                    { 
+                      this.state.noOfTasbihs.map(tasbih => {
 
                       var disable = this.props.displayedIds.filter(f => {
                           return f === tasbih.ID ? true : false

@@ -146,3 +146,8 @@
 .left {
     flex: 1;
 }
+
+.no-more-tasbihs {
+    width: 100%;
+    color: #969696;
+}
