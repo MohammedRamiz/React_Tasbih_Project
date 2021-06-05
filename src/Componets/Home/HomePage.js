@@ -11,7 +11,7 @@ export default class HomePage extends Component {
             <div className="outer-container">
                  <Header click={this.props.click} signIn={this.props.signIn} skip={this.props.skip} userProfilePic={this.props.userProfilePic} userName={this.props.userName}/>
                 <div className="inner-container">
-                 <Body uid={this.props.uid} skip={this.props.skip} totalTasbihCounts={this.props.totalTasbihCounts}/>
+                 <Body uid={this.props.uid} isLoading={this.props.isLoading} skip={this.props.skip} totalTasbihCounts={this.props.totalTasbihCounts}/>
                 </div> 
             </div>
         )

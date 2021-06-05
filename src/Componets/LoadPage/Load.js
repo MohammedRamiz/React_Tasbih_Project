@@ -126,7 +126,10 @@ export default class Load extends Component {
                     uid = {this.state.uid}
                     userProfilePic={!this.state.isAnonymous ? this.state.user.photoURL :''} 
                     userName={this.state.userName}
-                    totalTasbihCounts={this.state.totalTasbihCounts}/> : <SignInPage click={this.LoginUser} skip={this.SkipSignIn} isLoading={this.state.loading}/>
+                    totalTasbihCounts={this.state.totalTasbihCounts}
+                    isLoading={this.state.loading}/> :
+        <SignInPage click={this.LoginUser} 
+                    skip={this.SkipSignIn} />
 
         return ( this.state.loading ? <div className="initialize flex">Loading...</div> : Authentic)
     }

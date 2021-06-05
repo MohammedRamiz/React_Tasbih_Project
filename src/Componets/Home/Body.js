@@ -10,13 +10,13 @@ export default class Body extends Component {
 
     constructor(props){
         super(props);
-        console.log(props);
         this.state = {
             NoOfTasbih:[],
             show:false,
             uid: props.uid,
             isSkipped: props.skip,
-            totalTasbihsCount:props.totalTasbihCounts
+            totalTasbihsCount:props.totalTasbihCounts,
+            isLoading: true
         }
     }
     
@@ -87,7 +87,8 @@ export default class Body extends Component {
                     return {ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path,tID:data.data().TasbihID};
                 });
                 this.setState({
-                    NoOfTasbih: noOfTasbihs
+                    NoOfTasbih: noOfTasbihs,
+                    isLoading:false
                 });
             });
         }
@@ -99,7 +100,8 @@ export default class Body extends Component {
                     return {ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path,tID:data.data().TasbihID};
                 });
                 this.setState({
-                    NoOfTasbih: noOfTasbihs
+                    NoOfTasbih: noOfTasbihs,
+                    isLoading: false
                 });
             });
         }
@@ -109,12 +111,23 @@ export default class Body extends Component {
         
         return (
             <div className="outer-shell">
-                <div className="home-body">{
+                <div className="home-body">
+                    {
                         this.state.NoOfTasbih.map(x => {
                             return <TasbihCard key={x.ID} tid={x.ID} name={x.Name} count={x.Count} status={x.Status} path={x.path} uid={this.state.uid} />
                         })
                     }
-                    {this.state.NoOfTasbih.length >= this.state.totalTasbihsCount ? <span className="flex no-more-tasbihs">No More Tasbihs Available</span> : <TasbihDotedCard click={this.setModalView} />}
+                    
+                    {   
+                        (
+                        this.state.isLoading ? <div className="no-more-tasbihs flex">Loading Your Tasbihs...</div> : 
+                            (
+                                this.state.NoOfTasbih.length >= this.state.totalTasbihsCount ? 
+                                    <span className="flex no-more-tasbihs">No More Tasbihs Available</span> : 
+                                        <TasbihDotedCard click={this.setModalView} /> 
+                            )
+                        )
+                    }
                     <ModalShow displayedIds={this.state.NoOfTasbih.map(t => t.tID)} onTasbihChange={this.onTasbihsChange} showModal={this.state.show} click={this.appendNewBlock} hideModal={this.setModalView}/>
                 </div>
             </div>
