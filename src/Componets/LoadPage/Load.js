@@ -1,5 +1,6 @@
 import React,{Component} from 'react'
 import {provider,auth} from '../Firebase/firebase'
+import {Route} from 'react-router-dom'
 import HomePage from '../Home/HomePage.js'
 import SignInPage from '../SignIn/SignIn'
 
@@ -95,15 +96,19 @@ export default class Load extends Component {
             if (user) {
                 if(user.isAnonymous){
                    db.collection("GuestUsers").doc(user.uid).onSnapshot(data => {
-                        user.updateProfile({displayName: data.data().Name});
-                        this.setState({user:user,uid:user.uid,isAnonymous:user.isAnonymous,userName:data.data().Name});
-                        this.setState({loading:false});
+                       if(data.data()){
+                            user.updateProfile({displayName: data.data().Name});
+                            this.setState({user:user,uid:user.uid,isAnonymous:user.isAnonymous,userName:data.data().Name});
+                            this.setState({loading:false});
+                       }
                    });
                 }
                 else{
                     db.collection("Users").doc(user.uid).onSnapshot(data => {
-                        this.setState({user:user,uid:user.uid,isAnonymous:user.isAnonymous,userName:data.data().Name});
-                        this.setState({loading:false});
+                        if(data.data()){
+                            this.setState({user:user,uid:user.uid,isAnonymous:user.isAnonymous,userName:data.data().Name});
+                            this.setState({loading:false});
+                        }
                    });
                 }
             }else{
