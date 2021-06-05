@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import "./HomePage.css"
 import TasbihDotedCard from "./TasbihDotedCard.js";
 import TasbihCard from "./TasbihCard.js";
@@ -6,31 +6,39 @@ import ModalShow from "../ExtraComps/AddBody.js"
 import db from '../Firebase/firebase.js';
 //import { super } from '@babel/types';
 
-export default class Body extends Component {
+const Body = props => {
 
-    constructor(props){
-        super(props);
-        this.state = {
-            NoOfTasbih:[],
-            show:false,
-            uid: props.uid,
-            isSkipped: props.skip,
-            totalTasbihsCount:props.totalTasbihCounts,
-            isLoading: true
-        }
+    // constructor(props){
+    //     super(props);
+    //     this.state = {
+    //         NoOfTasbih:[],
+    //         show:false,
+    //         uid: props.uid,
+    //         isSkipped: props.skip,
+    //         totalTasbihsCount:props.totalTasbihCounts,
+    //         isLoading: true
+    //     }
+    // }
+
+    const [noOfTasbih,setNoOfTasbih] = useState([]);
+    const [show,setShow] = useState(false);
+    const [uid,setUID] = useState(props.uid);
+    const [isSkipped] = useState(props.skip);
+    const [totalTasbihsCount,setTotalTasbihCounts] = useState(props.totalTasbihCounts);
+    const [isLoading,setLoading] = useState(true);
+
+    const setModalView = () =>{
+        // this.setState({
+        //   show: !this.state.show
+        // })
+        setShow(!show);
     }
-    
-    setModalView = () =>{
-        this.setState({
-          show: !this.state.show
-        })
-    }
 
 
-    appendNewBlock = (tasbihName,tid,totalTasbihsCount) => {
+    const appendNewBlock = (tasbihName,tid,totalTasbihsCount) => {
         if(tasbihName){
-            if(!this.state.isSkipped){
-                db.collection("Users").doc(this.state.uid).get().then(user=>{
+            if(!isSkipped){
+                db.collection("Users").doc(uid).get().then(user=>{
                     user.ref.collection('Tasbihs')
                                         .add({
                                             Status:"Running",
@@ -42,13 +50,16 @@ export default class Body extends Component {
                                         })
                 });
                                     
-                this.setState({
-                    show:false,
-                    totalTasbihsCount: totalTasbihsCount
-                });
+                // this.setState({
+                //     show:false,
+                //     totalTasbihsCount: totalTasbihsCount
+                // });
+                setShow(false);
+                setTotalTasbihCounts(totalTasbihsCount);
+
             }
             else{
-                db.collection("GuestUsers").doc(this.state.uid).get().then(user=>{
+                db.collection("GuestUsers").doc(uid).get().then(user=>{
                     user.ref.collection('Tasbihs')
                                 .add({
                                     Status:"Running",
@@ -60,77 +71,82 @@ export default class Body extends Component {
                                 })
                 });
                                     
-                this.setState({
-                    show:false,
-                    totalTasbihsCount:totalTasbihsCount
-                });
+                // this.setState({
+                //     show:false,
+                //     totalTasbihsCount:totalTasbihsCount
+                // });
+                setShow(false);
+                setTotalTasbihCounts(totalTasbihsCount);
             }
         }
     }
 
-    onTasbihsChange = (totalTasbihs) => {
+    const onTasbihsChange = (totalTasbihs) => {
         console.log(totalTasbihs);
-        this.setState({totalTasbihsCount:totalTasbihs})
+        //this.setState({totalTasbihsCount:totalTasbihs})
+        setTotalTasbihCounts(totalTasbihs);
     }
 
-    componentWillMount(){
-        this.setState({
-                NoOfTasbih: [],
-                uid: this.props.uid
-        });
+    useEffect(() => {
+        console.log("useEffects Called From Body.js");
+        setNoOfTasbih([]);
+        setUID(props.uid);
 
-        if(this.state.isSkipped){
-            db.collection("GuestUsers").doc(this.state.uid).collection('Tasbihs').onSnapshot(tasbih =>{
+        if(isSkipped){
+            db.collection("GuestUsers").doc(uid).collection('Tasbihs').onSnapshot(tasbih =>{
                 
                 var noOfTasbihs = tasbih.docs.map(data => {
                     let _data = data.data();
                     return {ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path,tID:data.data().TasbihID};
                 });
-                this.setState({
-                    NoOfTasbih: noOfTasbihs,
-                    isLoading:false
-                });
+
+                setNoOfTasbih(noOfTasbihs);
+                setLoading(false);
             });
         }
         else{
-            db.collection("Users").doc(this.state.uid).collection('Tasbihs').onSnapshot(tasbih =>{
+            db.collection("Users").doc(uid).collection('Tasbihs').onSnapshot(tasbih =>{
 
                 var noOfTasbihs = tasbih.docs.map(data => {
                     let _data = data.data();
                     return {ID: data.id,Name:_data.Name,Count:_data.count,Status:_data.Status,path:data.ref.path,tID:data.data().TasbihID};
                 });
-                this.setState({
-                    NoOfTasbih: noOfTasbihs,
-                    isLoading: false
-                });
+
+                setNoOfTasbih(noOfTasbihs);
+                setLoading(false);
+                
             });
         }
-    }
-
-    render() {
+    },[isSkipped,uid,props.uid]);
         
         return (
             <div className="outer-shell">
                 <div className="home-body">
                     {
-                        this.state.NoOfTasbih.map(x => {
-                            return <TasbihCard key={x.ID} tid={x.ID} name={x.Name} count={x.Count} status={x.Status} path={x.path} uid={this.state.uid} />
+                       noOfTasbih.map(x => {
+                            return <TasbihCard key={x.ID} name={x.Name} count={x.Count} status={x.Status} path={x.path} uid={uid} />
                         })
                     }
                     
                     {   
                         (
-                        this.state.isLoading ? <div className="no-more-tasbihs flex">Loading Your Tasbihs...</div> : 
+                        isLoading ? <div className="no-more-tasbihs flex">Loading Your Tasbihs...</div> : 
                             (
-                                this.state.NoOfTasbih.length >= this.state.totalTasbihsCount ? 
+                                noOfTasbih.length >= totalTasbihsCount ? 
                                     <span className="flex no-more-tasbihs">No More Tasbihs Available</span> : 
-                                        <TasbihDotedCard click={this.setModalView} /> 
+                                        <TasbihDotedCard click={setModalView} /> 
                             )
                         )
                     }
-                    <ModalShow displayedIds={this.state.NoOfTasbih.map(t => t.tID.replace(" ",""))} onTasbihChange={this.onTasbihsChange} showModal={this.state.show} click={this.appendNewBlock} hideModal={this.setModalView}/>
+                    <ModalShow
+                        displayedIds={noOfTasbih.map(t => t.tID.replace(" ",""))} 
+                        onTasbihChange={onTasbihsChange} 
+                        showModal={show} 
+                        click={appendNewBlock} 
+                        hideModal={setModalView}/>
                 </div>
             </div>
         )
-    }
 }
+
+export default Body;

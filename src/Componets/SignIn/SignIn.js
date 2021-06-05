@@ -1,12 +1,12 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export default class SignIn extends Component {
-    render() {
-        return (
-            <div className="user-sign-in flex">
-                <button onClick={this.props.click}>Sign In With Google</button>
-                <button className='skip-btn' onClick={this.props.skip}>Enter As Guest</button>
-            </div>
-        )
-    }
+const SignIn = props =>{
+    return (
+        <div className="user-sign-in flex">
+            <button onClick={props.click}>Sign In With Google</button>
+            <button className='skip-btn' onClick={props.skip}>Enter As Guest</button>
+        </div>
+    )
 }
+
+export default  SignIn
