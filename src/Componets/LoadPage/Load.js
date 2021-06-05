@@ -109,15 +109,10 @@ export default class Load extends Component {
                             this.setState({loading:false});
                         }
                         else{
-                            this.setState({deleted: true});
+                            this.setState({deleted: true});unsubscibe();
                         }
                        }
                    });
-
-                   if(this.state.deleted){
-                       console.log("Unasubscribed");
-                       unsubscibe();
-                   }
                 }
                 else{
                     db.collection("Users").doc(user.uid).onSnapshot(data => {

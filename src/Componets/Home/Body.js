@@ -128,7 +128,7 @@ export default class Body extends Component {
                             )
                         )
                     }
-                    <ModalShow displayedIds={this.state.NoOfTasbih.map(t => t.tID)} onTasbihChange={this.onTasbihsChange} showModal={this.state.show} click={this.appendNewBlock} hideModal={this.setModalView}/>
+                    <ModalShow displayedIds={this.state.NoOfTasbih.map(t => t.tID.replace(" ",""))} onTasbihChange={this.onTasbihsChange} showModal={this.state.show} click={this.appendNewBlock} hideModal={this.setModalView}/>
                 </div>
             </div>
         )

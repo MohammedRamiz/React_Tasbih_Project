@@ -75,8 +75,8 @@ export default class AddBody extends Component {
                     { 
                       this.state.noOfTasbihs.map(tasbih => {
 
-                      var disable = this.props.displayedIds.filter(f => {
-                          return f === tasbih.ID ? true : false
+                      var disable = this.props.displayedIds.filter(t => {
+                          return t === tasbih.ID ? true : false
                         });
 
                       return <option disabled={disable[0]} key={tasbih.ID}>{tasbih.Name}</option>
