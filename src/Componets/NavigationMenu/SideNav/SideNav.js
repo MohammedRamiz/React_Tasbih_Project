@@ -1,22 +1,22 @@
-import React, { Component } from 'react'
+import React from 'react'
 import './SideNav.css'
 
-export default class SideNav extends Component {    
-    render() {
+const SideNav = props => {
         return (
-            <div className={this.props.navClass}>
+            <div className={props.navClass}>
                 <div className="profile-picture-box">
-                    <img alt="img" src={this.props.userProfilePic}/>
-                    <span className="user-name">{this.props.userName}</span>
+                    <img alt="img" src={props.userProfilePic}/>
+                    <span className="user-name">{props.userName}</span>
                 </div>
                  <div className="content flex">
                 </div>
                 <div className="footer flex flex-align-bottom">
                     <span className="log-out-btn"> 
-                    { <button onClick={this.props.click}>Log Out</button> }
+                    { <button onClick={props.click}>Log Out</button> }
                     </span>
                 </div>
             </div>
         )
-    }
 }
+
+export default SideNav;

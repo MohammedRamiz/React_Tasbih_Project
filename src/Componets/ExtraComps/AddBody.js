@@ -1,68 +1,51 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import Modal from 'react-bootstrap/Modal'
 import Button from 'react-bootstrap/Button'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import db from '../Firebase/firebase.js';
 
-export default class AddBody extends Component {
+const AddBody = props => {
+    const [name,setName] = useState('');
+    const [noOfTasbihs,setNoOfTasbih] = useState([]);
+    const [tid,setTID] = useState("None");
 
-    constructor(props){
-        super(props)
-        this.state = {
-            name:'',
-            noOfTasbihs: [],
-            tid:"None",
-            tasbihsIds:[]
-      }
+    const handleClose = () =>{
+      props.hideModal();
     }
 
-    handleClose = () =>{
-      this.props.hideModal();
-    }
-
-    handleShow = () => {
-        this.setState({show:true})
-    }
-
-    handleAddData = () => {
-      if(this.state.name !== ''){
-        this.props.click(this.state.name,this.state.tid,this.state.noOfTasbihs.length);
-        this.setState({name:''});
+    const handleAddData = () => {
+      if(name !== ''){
+        props.click(name,tid,noOfTasbihs.length);
+        setName('');
       }
       else{
         alert('Select Tasbih First');
       }
     }
 
-    handleOnChange = (e) =>{
+    const handleOnChange = (e) =>{
       e.preventDefault();
-      var val = this.state.noOfTasbihs.filter(function(item) {
+
+      var val = noOfTasbihs.filter(function(item) {
         return item.Name === e.target.value
       })
-
-      this.setState({
-        name: e.target.value,
-        tid: val[0].ID
-      })
+      setName(e.target.value);
+      setTID(val[0].ID);
     }    
 
-    componentDidMount() {
+    useEffect(() => {
       db.collection('Tasbihs').onSnapshot(snap =>{
             var noOfTasbihs = snap.docs.map(doc => doc.data().Visible ? {ID: doc.id,Name: doc.data().Name} : null
                     ).filter(tasbih => tasbih ? tasbih : null );
 
-            this.props.onTasbihChange(noOfTasbihs.length);
+            props.onTasbihChange(noOfTasbihs.length);
 
-            this.setState({
-                noOfTasbihs: noOfTasbihs
-            });
+            setNoOfTasbih(noOfTasbihs);
       });
-    }
+    },[props]);
     
-
-    render() {
         return (
-      <Modal show={this.props.showModal} onHide={this.handleClose}>
+      <Modal show={props.showModal} onHide={handleClose}>
         <Modal.Header closeButton>
           <Modal.Title>Select Tasbih</Modal.Title>
         </Modal.Header>
@@ -70,12 +53,12 @@ export default class AddBody extends Component {
           {
               <div className="add-tasbih-name" key="0">
                 <div className="tasbih">
-                  <select onChange={this.handleOnChange}>
+                  <select onChange={handleOnChange}>
                     <option>Choose Tasbih</option>
                     { 
-                      this.state.noOfTasbihs.map(tasbih => {
+                      noOfTasbihs.map(tasbih => {
 
-                      var disable = this.props.displayedIds.filter(t => {
+                      var disable = props.displayedIds.filter(t => {
                           return t === tasbih.ID ? true : false
                         });
 
@@ -87,11 +70,12 @@ export default class AddBody extends Component {
             }
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="primary" className="save-btn" onClick={this.handleAddData}>
+          <Button variant="primary" className="save-btn" onClick={handleAddData}>
             Add
           </Button>
         </Modal.Footer>
       </Modal>
         )
     }
-}
+
+export default AddBody;

@@ -1,12 +1,10 @@
-import React, { Component } from 'react'
+import React from 'react'
 
-export default class TasbihPage extends Component {
-    render() {
-        //console.log(this.props)
-        return (
-            <div>
-                <button className="tasbih-counter" onClick={this.props.click}>{this.props.prop}</button>
-            </div>
-        )
-    }
+const TasbihPage = props => {
+    return (
+        <div>
+            <button className="tasbih-counter" onClick={props.click}>{props.prop}</button>
+        </div>
+    )
 }
+export default TasbihPage;

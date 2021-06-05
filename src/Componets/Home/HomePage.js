@@ -1,19 +1,18 @@
-import React, { Component } from 'react'
+import React from 'react'
 import "./HomePage.css"
 import Body from './Body.js'
 import Header from '../Header/Header.js'
 //import db from '../Firebase/firebase.js';
 
-export default class HomePage extends Component {
-    render() {
-        
+const HomePage = props => {
         return (
             <div className="outer-container">
-                 <Header click={this.props.click} signIn={this.props.signIn} skip={this.props.skip} userProfilePic={this.props.userProfilePic} userName={this.props.userName}/>
+                 <Header click={props.click} signIn={props.signIn} skip={props.skip} userProfilePic={props.userProfilePic} userName={props.userName}/>
                 <div className="inner-container">
-                 <Body uid={this.props.uid} isLoading={this.props.isLoading} skip={this.props.skip} totalTasbihCounts={this.props.totalTasbihCounts}/>
+                 <Body uid={props.uid} isLoading={props.isLoading} skip={props.skip} totalTasbihCounts={props.totalTasbihCounts}/>
                 </div> 
             </div>
         )
-    }
 }
+
+export default HomePage;
