@@ -15,7 +15,8 @@ export default class Load extends Component {
             loading:true,
             uid: 'null',
             userName: "UnKnown",
-            totalTasbihCounts: 0
+            totalTasbihCounts: 0,
+            deleted:false
         }
     }
 
@@ -29,7 +30,7 @@ export default class Load extends Component {
                 var name = "Guest" + newCount;
                 user.user.updateProfile({displayName: name});
 
-                db.collection("GuestUsers").doc(user.user.uid).set({Name: name ,uid: user.user.uid});
+                db.collection("GuestUsers").doc(user.user.uid).set({Name: name ,uid: user.user.uid,Deleted:false});
 
                 nog.docs[0].ref.update({count: newCount});
                 this.setState({userName: name});
@@ -81,27 +82,42 @@ export default class Load extends Component {
     }
 
     LogOutUser = () => {
-        auth.signOut().then(res => {
-            this.setState({
-                user: null,
-                uid:'null',
-                loading: false,
-                isAnonymous: false
-            })
-        })
+        auth.signOut().then(() => {
+            this.state.user.delete().then(() =>  {
+                db.collection("GuestUsers").doc(this.state.uid).update({Deleted:true}).then(() =>{
+                    this.setState({
+                        user: null,
+                        uid:'null',
+                        loading: false,
+                        isAnonymous: false
+                    })
+                    console.log('user Removed');
+                });
+              });
+        },error => {console.log(error)});
     }
 
     componentWillMount() {
         auth.onAuthStateChanged(user => {
             if (user) {
                 if(user.isAnonymous){
-                   db.collection("GuestUsers").doc(user.uid).onSnapshot(data => {
+                    let unsubscibe = db.collection("GuestUsers").doc(user.uid).onSnapshot(data => {
                        if(data.data()){
-                            user.updateProfile({displayName: data.data().Name});
+                        if(!data.data().Deleted){
+                            user.updateProfile({displayName: data.data().Name});   
                             this.setState({user:user,uid:user.uid,isAnonymous:user.isAnonymous,userName:data.data().Name});
                             this.setState({loading:false});
+                        }
+                        else{
+                            this.setState({deleted: true});
+                        }
                        }
                    });
+
+                   if(this.state.deleted){
+                       console.log("Unasubscribed");
+                       unsubscibe();
+                   }
                 }
                 else{
                     db.collection("Users").doc(user.uid).onSnapshot(data => {
