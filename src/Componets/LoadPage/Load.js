@@ -1,24 +1,12 @@
 import React,{useState,useEffect} from 'react'
 import {provider,auth} from '../Firebase/firebase'
-import {Route} from 'react-router-dom'
+//import {Route} from 'react-router-dom'
 import HomePage from '../Home/HomePage.js'
 import SignInPage from '../SignIn/SignIn'
 
 import db from '../Firebase/firebase.js';
 
 export default function Load() {
-    // constructor(){
-    //     super()
-    //     this.state = {
-    //         user: null,
-    //         isAnonymous: false,
-    //         loading:true,
-    //         uid: 'null',
-    //         userName: "UnKnown",
-    //         totalTasbihCounts: 0,
-    //         deleted:false
-    //     }
-    // }
 
     const [user,setUser] = useState(null);
     const [isAnonymous,setAnonymous] = useState(false);
@@ -26,11 +14,8 @@ export default function Load() {
     const [uid,setUID] = useState('null');
     const [userName,setUsername] = useState("UnKnown");
     const [totalTasbihCounts,setTotalTasbihsCount] = useState(0);
-    const [deleted,setDeleted] = useState(false);
 
     const SkipSignIn = () => {
-        //this.setState({loading:true,isAnonymous:true});
-
         setLoading(true);
         setAnonymous(true);
 
@@ -56,7 +41,6 @@ export default function Load() {
                         var randPick = Math.floor(Math.random() * allTasbihs.length);
 
                         user.ref.collection("Tasbihs").add({count:0,TasbihID:allTasbihs[randPick].id,Name:allTasbihs[randPick].data().Name,Status:'Running'});
-                        //this.setState({loading:false,totalTasbihCounts:allTasbihs.length});
                         setLoading(false);
                         setTotalTasbihsCount(allTasbihs.length);
                     });
@@ -83,6 +67,7 @@ export default function Load() {
 
                             user.ref.collection("Tasbihs").add({count:0,TasbihID:allTasbihs[randPick].id,Name:allTasbihs[randPick].data().Name,Status:'Running'});
                             setLoading(false);
+                            setTotalTasbihsCount(allTasbihs.length);
                           });
                       });
                   });
@@ -117,43 +102,46 @@ export default function Load() {
         },error => {console.log(error)});
     }
 
+    const setCurrentUser = user => {
+        if (user) {
+            if(user.isAnonymous){
+                let unsubscibe = db.collection("GuestUsers").doc(user.uid).onSnapshot(data => {
+                   if(data.data()){
+                    if(!data.data().Deleted){
+                        user.updateProfile({displayName: data.data().Name});
+
+                        setUser(user);
+                        setUID(user.uid);
+                        setAnonymous(user.isAnonymous);
+                        setUsername(data.data().Name);
+                        setLoading(false);
+                    }
+                    else{
+                        unsubscibe();
+                    }
+                   }
+               });
+            }
+            else{
+                db.collection("Users").doc(user.uid).onSnapshot(data => {
+                    if(data.data()){
+                        setUser(user);
+                        setUID(user.uid);
+                        setAnonymous(user.isAnonymous);
+                        setUsername(data.data().Name);
+                        setLoading(false);
+                    }
+               });
+            }
+        }else{
+         setLoading(false);
+        }
+    };
+
     useEffect(() => {
         auth.onAuthStateChanged(user => {
-            if (user) {
-                if(user.isAnonymous){
-                    let unsubscibe = db.collection("GuestUsers").doc(user.uid).onSnapshot(data => {
-                       if(data.data()){
-                        if(!data.data().Deleted){
-                            user.updateProfile({displayName: data.data().Name});
-
-                            setUser(user);
-                            setUID(user.uid);
-                            setAnonymous(user.isAnonymous);
-                            setUsername(data.data().Name);
-                            setLoading(false);
-                        }
-                        else{
-                            setDeleted(true);
-                            unsubscibe();
-                        }
-                       }
-                   });
-                }
-                else{
-                    db.collection("Users").doc(user.uid).onSnapshot(data => {
-                        if(data.data()){
-                            setUser(user);
-                            setUID(user.uid);
-                            setAnonymous(user.isAnonymous);
-                            setUsername(data.data().Name);
-                            setLoading(false);
-                        }
-                   });
-                }
-            }else{
-             setLoading(false);
-            }
-        })
+            setCurrentUser(user);
+        });
     },[]);
         
         let Authentic = user || isAnonymous ? 
