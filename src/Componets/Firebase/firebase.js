@@ -1,13 +1,13 @@
 import firebase from 'firebase'
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBgkmn9ocvAIctd4hcfsqpKVh7mzL8veEA",
-    authDomain: "onlinetasbih-a888e.firebaseapp.com",
-    projectId: "onlinetasbih-a888e",
-    storageBucket: "onlinetasbih-a888e.appspot.com",
-    messagingSenderId: "501532825415",
-    appId: "1:501532825415:web:80f2124a9b13ef33db9e62",
-    measurementId: "G-F9ZE8WN6FL"
+    apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
+    authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
+    projectId: process.env.REACT_APP_FIREBASE_PROJECT_ID,
+    storageBucket: process.env.REACT_APP_FIREBASE_STORAGE_BUCKET,
+    messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
+    appId: process.env.REACT_APP_FIREBASE_APP_ID,
+    measurementId: process.env.REACT_APP_FIREBASE_MEASURMENT_ID
   };
 
   const firebaseApp = firebase.initializeApp(firebaseConfig);
