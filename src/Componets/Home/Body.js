@@ -82,13 +82,11 @@ const Body = props => {
     }
 
     const onTasbihsChange = (totalTasbihs) => {
-        console.log(totalTasbihs);
         //this.setState({totalTasbihsCount:totalTasbihs})
         setTotalTasbihCounts(totalTasbihs);
     }
 
     useEffect(() => {
-        console.log("useEffects Called From Body.js");
         setNoOfTasbih([]);
         setUID(props.uid);
 

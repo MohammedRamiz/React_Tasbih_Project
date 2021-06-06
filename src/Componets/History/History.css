@@ -1,11 +1,8 @@
 .history-container {
     display: flex;
     padding: 8px;
-}
-
-.inner-container {
     margin: 10px;
-    background: #ff5044;
+    background: #fa7361;
     border-radius: 5px;
 }
 
@@ -14,7 +11,7 @@
 }
 
 span.history-counts {
-    font-size: 32px;
+    font-size: 20px;
     color: #000;
 }
 
@@ -27,9 +24,10 @@ span.history-counts {
 
 .history-block.history-left {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: flex-start;
     align-content: center;
+    flex-direction: column;
 }
 
 .history-block.history-right span {
@@ -42,16 +40,22 @@ span.history-counts {
 }
 
 .history-delete{
-    background: #ff8a8a;
-    margin-right:10px;
+    background: #ff0000;
+    margin-right: 10px;
+    color: #fff;
 }
 
 .history-restore{
     background: #41d516;
     margin-right:2px;
+    color: #fff;
 }
 
 svg{
     height: 100%;;
     font-size: 32px;
+}
+
+.history-tasbih-name{
+    font-size: 15px;
 }

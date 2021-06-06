@@ -34,10 +34,8 @@ export default function Load() {
                 setUsername(name);
 
                 db.collection("GuestUsers").doc(uid).get().then(user=>{
-                    db.collection("Tasbihs").get().then(tasbihs => {
-                         var allTasbihs = tasbihs.docs.map(doc => doc.data().Visible ? doc : null).filter(tasbih => tasbih ? tasbih : null );
-
-                        console.log(allTasbihs);
+                    db.collection("Tasbihs").where('Visible','==',true).get().then(tasbihs => {
+                        var allTasbihs = tasbihs.docs.map(doc => doc);
                         var randPick = Math.floor(Math.random() * allTasbihs.length);
 
                         user.ref.collection("Tasbihs").add({count:0,TasbihID:allTasbihs[randPick].id,Name:allTasbihs[randPick].data().Name,Status:'Running'});
@@ -58,9 +56,9 @@ export default function Load() {
               if(!user.exists){
                   db.collection("Users").doc(user.id).set({Name: res.user.displayName,uid: user.id}).then(() => {
                       db.collection("Users").doc(uid).get().then(user=>{
-                          db.collection("Tasbihs").get().then(tasbihs => {
+                          db.collection("Tasbihs").where('Visible','==',true).get().then(tasbihs => {
 
-                            var allTasbihs = tasbihs.docs.map(doc => doc.data().Visible ? doc : null).filter(tasbih => tasbih ? tasbih : null );
+                            var allTasbihs = tasbihs.docs.map(doc => doc);
                             var randPick = Math.floor(Math.random() * allTasbihs.length);
 
                             console.log(allTasbihs);

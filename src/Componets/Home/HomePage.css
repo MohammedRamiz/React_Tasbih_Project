@@ -110,17 +110,18 @@
 }
 
 .right {
-  width: 26px;
-  height: 100%;
-  -webkit-transform: skew(20deg);
-  -moz-transform: skew(20deg);
-  -o-transform: skew(20deg);
-    background: #d66565;
+    width: 26px;
+    height: 100%;
+    background: #c80000;
     overflow: hidden;
     padding-right: 4px;
-    box-shadow: -3px 2px 6px 0px #116b2a9e;
-    border-left: 3px solid #37c35d;
-    color: #980d0dbf;
+    box-shadow: inset 0 0 20px 0px #116b2a9e;
+    color: #e6240b;
+}
+
+svg {
+    height: 100%;
+    font-size: 16px !important;
 }
 
 .tasbih-remove{

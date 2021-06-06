@@ -34,9 +34,8 @@ const AddBody = props => {
     }    
 
     useEffect(() => {
-      db.collection('Tasbihs').onSnapshot(snap =>{
-            var noOfTasbihs = snap.docs.map(doc => doc.data().Visible ? {ID: doc.id,Name: doc.data().Name} : null
-                    ).filter(tasbih => tasbih ? tasbih : null );
+      db.collection('Tasbihs').where('Visible','==',true).onSnapshot(snap =>{
+            var noOfTasbihs = snap.docs.map(doc => {return{ID: doc.id,Name: doc.data().Name}});
 
             props.onTasbihChange(noOfTasbihs.length);
 

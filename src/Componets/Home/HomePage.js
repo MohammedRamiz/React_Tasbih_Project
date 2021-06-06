@@ -15,7 +15,7 @@ const HomePage = props => {
                         <Body uid={props.uid} isLoading={props.isLoading} skip={props.skip} totalTasbihCounts={props.totalTasbihCounts}/>
                     </Route>
                     <Route path="/history">
-                        <History/>
+                        <History uid={props.uid}/>
                     </Route>
                 </div> 
             </div>

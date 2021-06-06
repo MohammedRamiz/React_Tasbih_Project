@@ -1,27 +1,58 @@
 import React, { useEffect, useState } from 'react'
 import db from '../Firebase/firebase'
+import {RiDeleteBin5Line} from 'react-icons/ri'
 
 const TasbihCard = props => {
     const [counts,setCounts] = useState(props.count);
-    const [name] = useState(props.name);
-    const [status] = useState(props.status);
-    const [uid] = useState(props.uid);
-    const [path] = useState(props.path);
+    const name = props.name;
+    const status = props.status;
+    const uid = props.uid;
+    const path = props.path;
 
     const RemoveTasbih = () => {
         if (uid !== "null") {
-            db.doc(path).delete().then(() => {
+            db.doc(path).get().then(tasbihData => {
+                if(counts > 0){
+                    db.collection('Users').doc(uid).get().then(user => {
+                        user.ref.collection('HistoryTasbihs').add({
+                            counts: tasbihData.data().count,
+                            deletedTime: new Date(),
+                            deleterPermanently: false,
+                            operationType: 'delete',
+                            tasbihId: tasbihData.data().TasbihID,
+                            tasbihName: tasbihData.data().Name
+                        }).then( data => {
+                            tasbihData.ref.delete();
+                        });
+                    });
+                }
+                else{
+                    tasbihData.ref.delete();
+                    console.log('Tasbih Has Been Removed');
+                }
                 console.log("tasbih Has been Removed");
             });
         }
     }
 
     const ResetTasbih = () => {
-        db.doc(path).get().then(tasbihData => {
-                tasbihData.ref.update({ count: 0 });
-        });
-
-        setCounts(0);
+        if(counts > 0){
+            db.doc(path).get().then(tasbihData => {
+                db.collection('Users').doc(uid).get().then(user => {
+                    user.ref.collection('HistoryTasbihs').add({
+                        counts: tasbihData.data().count,
+                        deletedTime: new Date(),
+                        deleterPermanently: false,
+                        operationType: 'reset',
+                        tasbihId: tasbihData.data().TasbihID,
+                        tasbihName: tasbihData.data().Name
+                    }).then( data => {
+                        tasbihData.ref.update({ count: 0 });
+                        setCounts(0);
+                    });
+                });
+            });
+        }
     }
 
     const increseCounter = () => {
@@ -31,7 +62,6 @@ const TasbihCard = props => {
                 tasbihData.ref.update({ count: newCount });
             });
         }
-
         setCounts(newCount);
     }
 
@@ -50,7 +80,7 @@ const TasbihCard = props => {
                     <div className="header-card">
                         <div className="left">{name}</div>
                         <div className="right">
-                            <span className="tasbih-remove" onClick={RemoveTasbih}>X</span>
+                            <span className="tasbih-remove" onClick={RemoveTasbih}><RiDeleteBin5Line/></span>
                         </div>
                     </div>
                     <div className="middle-card" onClick={increseCounter}>{counts}</div>
