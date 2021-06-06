@@ -115,7 +115,11 @@ export default function Load() {
                     }
                     else{
                         unsubscibe();
+                        setLoading(false);
                     }
+                   }
+                   else{
+                       setLoading(false);
                    }
                });
             }
@@ -126,6 +130,9 @@ export default function Load() {
                         setUID(user.uid);
                         setAnonymous(user.isAnonymous);
                         setUsername(data.data().Name);
+                        setLoading(false);
+                    }
+                    else{
                         setLoading(false);
                     }
                });

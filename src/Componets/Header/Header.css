@@ -23,6 +23,9 @@
     justify-content: flex-end;
     margin-right: 10px;
 }
+.Bar-class svg{
+    font-size: 26px !important;
+}
 
 
 span.log-out-btn button {

@@ -6,6 +6,10 @@
     border-radius: 5px;
 }
 
+.history-container svg{
+    font-size: 28px !important;
+}
+
 .history-block{
     flex: .5;
 }
@@ -49,11 +53,6 @@ span.history-counts {
     background: #41d516;
     margin-right:2px;
     color: #fff;
-}
-
-svg{
-    height: 100%;;
-    font-size: 32px;
 }
 
 .history-tasbih-name{

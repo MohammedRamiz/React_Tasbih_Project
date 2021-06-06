@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import db from '../Firebase/firebase'
 import {RiDeleteBin5Line} from 'react-icons/ri'
+import {BiReset} from 'react-icons/bi'
 
 const TasbihCard = props => {
     const [counts,setCounts] = useState(props.count);
@@ -86,7 +87,7 @@ const TasbihCard = props => {
                     <div className="middle-card" onClick={increseCounter}>{counts}</div>
                     <div className="footer-card">
                         {status}
-                        <span className="tasbih-reset" onClick={ResetTasbih}>R</span>
+                        <span className="tasbih-reset" onClick={ResetTasbih}><BiReset/></span>
                     </div>
                 </div>
             </div>
