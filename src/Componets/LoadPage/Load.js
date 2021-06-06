@@ -11,7 +11,7 @@ export default function Load() {
     const [user,setUser] = useState(null);
     const [isAnonymous,setAnonymous] = useState(false);
     const [loading,setLoading] = useState(true);
-    const [uid,setUID] = useState('null');
+    const [uid,setUID] = useState("null");
     const [userName,setUsername] = useState("UnKnown");
     const [totalTasbihCounts,setTotalTasbihsCount] = useState(0);
 
@@ -19,26 +19,25 @@ export default function Load() {
         setLoading(true);
         setAnonymous(true);
 
-        auth.signInAnonymously().then(user => {
-            setUser(user.user);
-            setUID(user.user.uid);
+        auth.signInAnonymously().then(loginUser => {
+            setUser(loginUser.user);
+            setUID(loginUser.user.uid);
             db.collection("NoOfGuests").get().then(nog => {
                 var newCount = nog.docs[0].data().count + 1;
                 var name = "Guest" + newCount;
-                user.user.updateProfile({displayName: name});
+                loginUser.user.updateProfile({displayName: name});
 
-                db.collection("GuestUsers").doc(user.user.uid).set({Name: name ,uid: user.user.uid,Deleted:false});
+                db.collection("GuestUsers").doc(loginUser.user.uid).set({Name: name ,uid: loginUser.user.uid,Deleted:false});
 
                 nog.docs[0].ref.update({count: newCount});
-
                 setUsername(name);
-
-                db.collection("GuestUsers").doc(uid).get().then(user=>{
+            
+                db.collection("GuestUsers").doc(loginUser.user.uid).get().then(currUser=>{
                     db.collection("Tasbihs").where('Visible','==',true).get().then(tasbihs => {
                         var allTasbihs = tasbihs.docs.map(doc => doc);
                         var randPick = Math.floor(Math.random() * allTasbihs.length);
 
-                        user.ref.collection("Tasbihs").add({count:0,TasbihID:allTasbihs[randPick].id,Name:allTasbihs[randPick].data().Name,Status:'Running'});
+                        currUser.ref.collection("Tasbihs").add({count:0,TasbihID:allTasbihs[randPick].id,Name:allTasbihs[randPick].data().Name,Status:'Running'});
                         setLoading(false);
                         setTotalTasbihsCount(allTasbihs.length);
                     });
