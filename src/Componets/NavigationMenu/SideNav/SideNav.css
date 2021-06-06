@@ -112,5 +112,23 @@ span.user-name {
     border-top: 1px solid #8df1a7;
     margin-top: 20px;
     flex: 6;
+    flex-direction: column;
+    justify-content: flex-start !important;
+}
+
+.content > div {
+    width: 75%;
+    background: #17a10b;
+    border-radius: 4px;
+    font-size: 14px;
+    text-align: center;
+    margin: 5px;
+}
+
+span.content-btn > a {
+    color: #fff;
+    text-decoration: none;
+    display: block;
+    padding: 5px 0;
 }
 
