@@ -54,7 +54,8 @@ const Header = props => {
                                 </span>
                             ) : ''
                         }
-                        <SideNav 
+                    </div>
+                    <SideNav 
                             navClass={sidebar ? 'side-navigation nav-menu open' : 'side-navigation nav-menu' }  
                             click={props.click} 
                             userProfilePic={photoUrl} 
@@ -62,8 +63,7 @@ const Header = props => {
                             navMan={OpenSideNavigation}
                             setPageName={props.setPageName}/>
 
-                        <div className={sidebar ? 'backbone open' : 'backbone'} onClick={OpenSideNavigation}></div>
-                    </div>
+                    <div className={sidebar ? 'backbone open' : 'backbone'} onClick={OpenSideNavigation}></div>
                 </div>
             </div>
         )
