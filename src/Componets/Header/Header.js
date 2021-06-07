@@ -3,14 +3,37 @@ import './Header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faBars } from '@fortawesome/free-solid-svg-icons'
 import SideNav from '../NavigationMenu/SideNav/SideNav.js'
-
+import db from '../Firebase/firebase'
+import {RiLayoutRowLine,RiLayoutColumnLine} from 'react-icons/ri'
 
 const Header = props => {
     const [sidebar,setsidebar] = useState(false);
+    const settings = props.settings;
+
 
      const OpenSideNavigation = () => {
          setsidebar(!sidebar);
      }
+
+     const ChangeLayout = () => {
+        var layout = settings.Layout === 'colomn-layout' ? 'row-layout' : 'colomn-layout';
+        props.setLayoutStyle(layout);
+     }
+
+    //   useEffect(()=>{
+    // //      if(props.currUser.isAnonymous){
+    // //          //Guest User
+    // //          db.collection("GuestUsers").doc(props.currUser.uid).get().then(user=>{
+    // //              user.ref.collection("Settings").onSnapshot(settings =>{
+    // //                  setSettingsPath(settings.docs[0].ref.path);
+    // //                  setSettings(settings.docs[0].data());
+    // //              });
+    // //          });
+    // //      }
+    // //     else{
+    // //         //Authentic User
+    // //     }
+    //   },[]);
         let photoUrl = props.userProfilePic === '' ? 'favicon.jpg' : props.userProfilePic;
         return (
             <div className="header-bar">
@@ -19,12 +42,25 @@ const Header = props => {
                         <span className="Bar-class" onClick={OpenSideNavigation}>
                             <FontAwesomeIcon icon={faBars}/>
                         </span>
+                        <div className="page-name">
+                            <span>
+                                {props.pageName}
+                            </span>
+                        </div>
+                        {
+                            props.pageName !== 'History' ? (
+                                <span className="layout" onClick={ChangeLayout}>
+                                    {settings.Layout  === 'colomn-layout' ? <RiLayoutColumnLine /> : <RiLayoutRowLine />}
+                                </span>
+                            ) : ''
+                        }
                         <SideNav 
                             navClass={sidebar ? 'side-navigation nav-menu open' : 'side-navigation nav-menu' }  
                             click={props.click} 
                             userProfilePic={photoUrl} 
                             userName={props.userName}
-                            navMan={OpenSideNavigation}/>
+                            navMan={OpenSideNavigation}
+                            setPageName={props.setPageName}/>
 
                         <div className={sidebar ? 'backbone open' : 'backbone'} onClick={OpenSideNavigation}></div>
                     </div>

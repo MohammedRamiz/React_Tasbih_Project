@@ -58,3 +58,8 @@ span.history-counts {
 .history-tasbih-name{
     font-size: 15px;
 }
+
+.inner-container {
+    height: 95vh;
+    overflow: scroll;
+}

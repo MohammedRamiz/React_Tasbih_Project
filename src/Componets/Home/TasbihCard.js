@@ -5,6 +5,7 @@ import {BiReset} from 'react-icons/bi'
 
 const TasbihCard = props => {
     const [counts,setCounts] = useState(props.count);
+    const isSkipped = props.isSkipped;
     const name = props.name;
     const status = props.status;
     const uid = props.uid;
@@ -14,18 +15,34 @@ const TasbihCard = props => {
         if (uid !== "null") {
             db.doc(path).get().then(tasbihData => {
                 if(counts > 0){
-                    db.collection('Users').doc(uid).get().then(user => {
-                        user.ref.collection('HistoryTasbihs').add({
-                            counts: tasbihData.data().count,
-                            deletedTime: new Date(),
-                            deleterPermanently: false,
-                            operationType: 'delete',
-                            tasbihId: tasbihData.data().TasbihID,
-                            tasbihName: tasbihData.data().Name
-                        }).then( data => {
-                            tasbihData.ref.delete();
+                    if(!isSkipped){
+                        db.collection('Users').doc(uid).get().then(user => {
+                            user.ref.collection('HistoryTasbihs').add({
+                                counts: tasbihData.data().count,
+                                deletedTime: new Date(),
+                                deleterPermanently: false,
+                                operationType: 'delete',
+                                tasbihId: tasbihData.data().TasbihID,
+                                tasbihName: tasbihData.data().Name
+                            }).then( data => {
+                                tasbihData.ref.delete();
+                            });
                         });
-                    });
+                    }
+                    else{
+                        db.collection('GuestUsers').doc(uid).get().then(user => {
+                            user.ref.collection('HistoryTasbihs').add({
+                                counts: tasbihData.data().count,
+                                deletedTime: new Date(),
+                                deleterPermanently: false,
+                                operationType: 'delete',
+                                tasbihId: tasbihData.data().TasbihID,
+                                tasbihName: tasbihData.data().Name
+                            }).then( data => {
+                                tasbihData.ref.delete();
+                            });
+                        });
+                    }
                 }
                 else{
                     tasbihData.ref.delete();
@@ -39,19 +56,37 @@ const TasbihCard = props => {
     const ResetTasbih = () => {
         if(counts > 0){
             db.doc(path).get().then(tasbihData => {
-                db.collection('Users').doc(uid).get().then(user => {
-                    user.ref.collection('HistoryTasbihs').add({
-                        counts: tasbihData.data().count,
-                        deletedTime: new Date(),
-                        deleterPermanently: false,
-                        operationType: 'reset',
-                        tasbihId: tasbihData.data().TasbihID,
-                        tasbihName: tasbihData.data().Name
-                    }).then( data => {
-                        tasbihData.ref.update({ count: 0 });
-                        setCounts(0);
+                if(!isSkipped){
+                    db.collection('Users').doc(uid).get().then(user => {
+                        user.ref.collection('HistoryTasbihs').add({
+                            counts: tasbihData.data().count,
+                            deletedTime: new Date(),
+                            deleterPermanently: false,
+                            operationType: 'reset',
+                            tasbihId: tasbihData.data().TasbihID,
+                            tasbihName: tasbihData.data().Name
+                        }).then( data => {
+                            tasbihData.ref.update({ count: 0 });
+                            setCounts(0);
+                        });
                     });
-                });
+                }
+                else
+                {
+                    db.collection('GuestUsers').doc(uid).get().then(user => {
+                        user.ref.collection('HistoryTasbihs').add({
+                            counts: tasbihData.data().count,
+                            deletedTime: new Date(),
+                            deleterPermanently: false,
+                            operationType: 'reset',
+                            tasbihId: tasbihData.data().TasbihID,
+                            tasbihName: tasbihData.data().Name
+                        }).then( data => {
+                            tasbihData.ref.update({ count: 0 });
+                            setCounts(0);
+                        });
+                    });
+                }
             });
         }
     }
@@ -76,7 +111,7 @@ const TasbihCard = props => {
     },[path]);
     
         return (
-            <div className="tasbih-card-shell">
+            <div className={props.layout + " tasbih-card-shell"}>
                 <div className="tasbih-card-inner">
                     <div className="header-card">
                         <div className="left">{name}</div>

@@ -3,6 +3,12 @@ import { Link } from 'react-router-dom'
 import './SideNav.css'
 
 const SideNav = props => {
+
+    const setPageConfigs = (pageConfig) => {
+        props.navMan();
+        props.setPageName(pageConfig);
+    }
+
     return (
         <div className={props.navClass}>
             <div className="profile-picture-box">
@@ -11,12 +17,12 @@ const SideNav = props => {
             </div>
                 <div className="content flex">
                     <div className="home-page">
-                        <span className="home-page-btn content-btn" onClick={props.navMan}>
+                        <span className="home-page-btn content-btn" onClick={() => setPageConfigs('My Tasbihs')}>
                             <Link to="/">My Tasbihs</Link>
                         </span>
                     </div>
                     <div className="tasbih-history">
-                        <span className="tasbih-history-btn content-btn"onClick={props.navMan}> 
+                        <span className="tasbih-history-btn content-btn"onClick={() => setPageConfigs('History')}>
                             <Link to="/history">Tasbih History</Link>
                         </span>
                     </div>

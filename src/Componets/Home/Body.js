@@ -23,7 +23,7 @@ const Body = props => {
     const [noOfTasbih,setNoOfTasbih] = useState([]);
     const [show,setShow] = useState(false);
     const [uid,setUID] = useState(props.uid);
-    const [isSkipped] = useState(props.skip);
+    const isSkipped = props.skip;
     const [totalTasbihsCount,setTotalTasbihCounts] = useState(props.totalTasbihCounts);
     const [isLoading,setLoading] = useState(true);
 
@@ -122,7 +122,7 @@ const Body = props => {
                 <div className="home-body">
                     {
                        noOfTasbih.map(x => {
-                            return <TasbihCard key={x.ID} name={x.Name} count={x.Count} status={x.Status} path={x.path} uid={uid} />
+                            return <TasbihCard key={x.ID} layout={props.layout} isSkipped={isSkipped} name={x.Name} count={x.Count} status={x.Status} path={x.path} uid={uid} />
                         })
                     }
                     
@@ -132,7 +132,7 @@ const Body = props => {
                             (
                                 noOfTasbih.length >= totalTasbihsCount ? 
                                     <span className="flex no-more-tasbihs">No More Tasbihs Available</span> : 
-                                        <TasbihDotedCard click={setModalView} /> 
+                                        <TasbihDotedCard layout={props.layout} click={setModalView} /> 
                             )
                         )
                     }

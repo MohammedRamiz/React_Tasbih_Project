@@ -6,16 +6,28 @@
 }
 
 .sub-header{
-    flex: 0.5;
+    flex: 1;
 }
 
 .menu-bar,.search-bar {
     height: 100%;
     display: flex;
     align-items: center;
-    margin-left: 10px;
+    margin: 0 10px;
     font-size: 22px;
     color: #fff;
+    position: relative
+}
+
+span.Bar-class {
+    position: absolute;
+}
+
+.page-name {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
 }
 
 .search-bar {
@@ -23,8 +35,17 @@
     justify-content: flex-end;
     margin-right: 10px;
 }
+
+span.layout {
+    display: flex;
+}
+
 .Bar-class svg{
     font-size: 26px !important;
+}
+
+.layout svg{
+    font-size: 28px !important;
 }
 
 

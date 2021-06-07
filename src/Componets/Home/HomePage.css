@@ -1,8 +1,9 @@
 .outer-shell{
     display: flex;
-    height: 90vh;
+    height: 95vh;
     width: 100%;
     flex-direction: column;
+    overflow: scroll;
 }
 
 .home-header{
@@ -39,7 +40,15 @@
     height: 150px;
     float: left;
     padding: 10px;
-}   
+}
+
+.colomn-layout{
+    width: 100%;
+}
+
+.row-layout{
+    width: 50%;
+}
 
 .tasbih-card-inner{
     background: #fff;

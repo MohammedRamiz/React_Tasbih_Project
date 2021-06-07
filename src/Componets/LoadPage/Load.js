@@ -6,14 +6,15 @@ import SignInPage from '../SignIn/SignIn'
 
 import db from '../Firebase/firebase.js';
 
-export default function Load() {
-
+const Load = () => {
     const [user,setUser] = useState(null);
     const [isAnonymous,setAnonymous] = useState(false);
     const [loading,setLoading] = useState(true);
     const [uid,setUID] = useState("null");
     const [userName,setUsername] = useState("UnKnown");
     const [totalTasbihCounts,setTotalTasbihsCount] = useState(0);
+    const [settings,setSettings] = useState({Layout:'colomn-layout'});
+    const [sPath,setSPath] = useState('');
 
     const SkipSignIn = () => {
         setLoading(true);
@@ -38,6 +39,7 @@ export default function Load() {
                         var randPick = Math.floor(Math.random() * allTasbihs.length);
 
                         currUser.ref.collection("Tasbihs").add({count:0,TasbihID:allTasbihs[randPick].id,Name:allTasbihs[randPick].data().Name,Status:'Running'});
+                        currUser.ref.collection("Settings").add(settings);
                         setLoading(false);
                         setTotalTasbihsCount(allTasbihs.length);
                     });
@@ -63,6 +65,7 @@ export default function Load() {
                             console.log(allTasbihs);
 
                             user.ref.collection("Tasbihs").add({count:0,TasbihID:allTasbihs[randPick].id,Name:allTasbihs[randPick].data().Name,Status:'Running'});
+                            user.ref.collection("Settings").add(settings);
                             setLoading(false);
                             setTotalTasbihsCount(allTasbihs.length);
                           });
@@ -105,8 +108,15 @@ export default function Load() {
                 let unsubscibe = db.collection("GuestUsers").doc(user.uid).onSnapshot(data => {
                    if(data.data()){
                     if(!data.data().Deleted){
+                        data.ref.collection('Settings').onSnapshot(snap => {
+                            if(!snap.empty){
+                                setSettings(snap.docs[0].data()); setSPath(snap.docs[0].ref.path)
+                            }
+                            else{
+                                data.ref.collection('Settings').add(settings);
+                            }
+                        });
                         user.updateProfile({displayName: data.data().Name});
-
                         setUser(user);
                         setUID(user.uid);
                         setAnonymous(user.isAnonymous);
@@ -126,6 +136,15 @@ export default function Load() {
             else{
                 db.collection("Users").doc(user.uid).onSnapshot(data => {
                     if(data.data()){
+                        data.ref.collection('Settings').onSnapshot(snap => {
+                            if(!snap.empty){
+                                setSettings(snap.docs[0].data()); setSPath(snap.docs[0].ref.path)
+                            }
+                            else{
+                                data.ref.collection('Settings').add(settings);
+                            }
+                        });
+                        
                         setUser(user);
                         setUID(user.uid);
                         setAnonymous(user.isAnonymous);
@@ -149,17 +168,19 @@ export default function Load() {
     },[]);
         
         let Authentic = user || isAnonymous ? 
-        <HomePage   click={LogOutUser}
+        <HomePage   currentUser = {user}
+                    click={LogOutUser}
                     skip={isAnonymous}
                     uid = {uid}
                     userProfilePic={!isAnonymous ? user.photoURL :''} 
                     userName={userName}
                     totalTasbihCounts={totalTasbihCounts}
-                    isLoading={loading}/> :
-        <SignInPage click={LoginUser} 
-                    skip={SkipSignIn} />
+                    isLoading={loading}
+                    settings={settings}
+                    sPath={sPath}/> :
+        <SignInPage click={LoginUser} skip={SkipSignIn} />
 
         return ( loading ? <div className="initialize flex">Loading...</div> : Authentic)
 }
 
-
+export default Load;
