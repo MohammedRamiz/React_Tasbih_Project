@@ -1,16 +1,17 @@
-import React, {  useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import './History.css'
 import db from '../Firebase/firebase';
 import HistoryTemplate from './HistoryBlockTemplate/Template'
 
 const History = props => {
 
-    const [tasbihsHistory,setTasbihHistory] = useState([]);
+    const [tasbihsHistory, setTasbihHistory] = useState([]);
     const uid = props.uid;
     const isSkipped = props.isSkipped;
+    const userDeleted = props.userDeleted;
 
     const DeletePermenantData = (path) => {
-        db.doc(path).update({deleterPermanently: true}).then((data)=>{
+        db.doc(path).update({ deleterPermanently: true }).then((data) => {
             console.log(data);
             console.log("Tasbih deleted Permenantly")
         });
@@ -22,39 +23,45 @@ const History = props => {
 
     useEffect(() => {
         props.pageName('History');
-        if(!isSkipped){
-            db.collection('Users').doc(uid).get().then(userData =>{
-                userData.ref.collection("HistoryTasbihs").where('deleterPermanently',"==",false).orderBy('deletedTime','desc').onSnapshot(tasbihData => {
+        if (!isSkipped) {
+            db.collection('Users').doc(uid).get().then(userData => {
+                let unSubs = userData.ref.collection("HistoryTasbihs").where('deleterPermanently', "==", false).orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
 
-                    const historyTasbihs = tasbihData.docs.map(doc =>{
-                        return {id:doc.id,path:doc.ref.path,...doc.data()};
+                    const historyTasbihs = tasbihData.docs.map(doc => {
+                        return { id: doc.id, path: doc.ref.path, ...doc.data() };
                     });
 
                     setTasbihHistory(historyTasbihs);
-                })
+
+                    if (userDeleted)
+                        unSubs();
+                }, er => console.log(er));
             });
         }
-        else{
-            db.collection('GuestUsers').doc(uid).get().then(userData =>{
-                userData.ref.collection("HistoryTasbihs").where('deleterPermanently',"==",false).orderBy('deletedTime','desc').onSnapshot(tasbihData => {
+        else {
+            db.collection('GuestUsers').doc(uid).get().then(userData => {
+                let unSubs = userData.ref.collection("HistoryTasbihs").where('deleterPermanently', "==", false).orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
 
-                    const historyTasbihs = tasbihData.docs.map(doc =>{
-                        return {id:doc.id,path:doc.ref.path,...doc.data()};
+                    const historyTasbihs = tasbihData.docs.map(doc => {
+                        return { id: doc.id, path: doc.ref.path, ...doc.data() };
                     });
 
                     setTasbihHistory(historyTasbihs);
-                })
+
+                    if (userDeleted)
+                        unSubs();
+                }, er => console.log(er));
             });
         }
-    },[]);
+    }, []);
 
     return (
         <>
-            {
-                tasbihsHistory.map(th =>{
-                    return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} delete={DeletePermenantData} restore={RestoreTasbih}/>
-                })
-            }
+        {
+            tasbihsHistory.map(th => {
+                return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} delete={DeletePermenantData} restore={RestoreTasbih} />
+            })
+        }
         </>
     )
 }

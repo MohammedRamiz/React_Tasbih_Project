@@ -28,10 +28,10 @@ const HomePage = props => {
                  <Header currUser={props.currentUser} settings={settings} click={props.click} signIn={props.signIn} setLayoutStyle={setLayoutStyle} pageName={pageName} setPageName={changePageName} skip={props.skip} userProfilePic={props.userProfilePic} userName={props.userName}/>
                 <div className="inner-container">
                     <Route path="/" exact>
-                        <Body uid={props.uid} currentUser={props.currentUser} layout={settings.Layout} isLoading={props.isLoading} skip={props.skip} totalTasbihCounts={props.totalTasbihCounts}/>
+                        <Body userDeleted={props.userDeleted} uid={props.uid} currentUser={props.currentUser} layout={settings.Layout} isLoading={props.isLoading} skip={props.skip} totalTasbihCounts={props.totalTasbihCounts}/>
                     </Route>
                     <Route path="/history">
-                        <History uid={props.uid} isSkipped={props.skip} pageName={assignPageName}/>
+                        <History userDeleted={props.userDeleted} uid={props.uid} isSkipped={props.skip} pageName={assignPageName}/>
                     </Route>
                 </div> 
             </div>

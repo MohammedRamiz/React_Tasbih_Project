@@ -19,21 +19,6 @@ const Header = props => {
         var layout = settings.Layout === 'colomn-layout' ? 'row-layout' : 'colomn-layout';
         props.setLayoutStyle(layout);
      }
-
-    //   useEffect(()=>{
-    // //      if(props.currUser.isAnonymous){
-    // //          //Guest User
-    // //          db.collection("GuestUsers").doc(props.currUser.uid).get().then(user=>{
-    // //              user.ref.collection("Settings").onSnapshot(settings =>{
-    // //                  setSettingsPath(settings.docs[0].ref.path);
-    // //                  setSettings(settings.docs[0].data());
-    // //              });
-    // //          });
-    // //      }
-    // //     else{
-    // //         //Authentic User
-    // //     }
-    //   },[]);
         let photoUrl = props.userProfilePic === '' ? 'favicon.jpg' : props.userProfilePic;
         return (
             <div className="header-bar">
