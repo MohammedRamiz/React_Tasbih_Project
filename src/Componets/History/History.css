@@ -1,65 +1,69 @@
 .history-container {
-    display: flex;
-    padding: 8px;
-    margin: 10px;
-    background: #fa7361;
-    border-radius: 5px;
+  display: flex;
+  padding: 8px;
+  margin: 10px;
+  background: #36e865;
+  border-radius: 5px;
+  border: 1px solid;
 }
 
-.history-container svg{
-    font-size: 28px !important;
+.history-container svg {
+  font-size: 28px !important;
 }
 
-.history-block{
-    flex: .5;
+.history-block {
+  flex: 0.5;
 }
 
 span.history-counts {
-    font-size: 20px;
-    color: #000;
+  font-size: 20px;
+  color: #000;
 }
 
 .history-block.history-right {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
 }
 
 .history-block.history-left {
-    display: flex;
-    align-items: flex-start;
-    justify-content: flex-start;
-    align-content: center;
-    flex-direction: column;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  align-content: center;
+  flex-direction: column;
 }
 
 .history-block.history-right span {
-    padding: 10px 4px;
+  padding: 10px 4px;
 }
 
-.history-delete,.history-restore {
-    border-radius: 5px;
-    height: 40px;
+.history-delete,
+.history-restore {
+  border-radius: 5px;
+  height: 40px;
 }
 
-.history-delete{
-    background: #ff0000;
-    margin-right: 10px;
-    color: #fff;
+.history-delete {
+  background: #fffbfb;
+  margin-right: 10px;
+  color: #d40000;
+  border: 1px solid;
 }
 
-.history-restore{
-    background: #41d516;
-    margin-right:2px;
-    color: #fff;
+.history-restore {
+  background: #f7fff7;
+  margin-right: 2px;
+  color: #1f4a20;
+  border: 1px solid;
 }
 
-.history-tasbih-name{
-    font-size: 15px;
+.history-tasbih-name {
+  font-size: 15px;
 }
 
 .inner-container {
-    height: 95vh;
-    overflow: scroll;
+  height: 95vh;
+  overflow: scroll;
 }

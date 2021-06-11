@@ -6,21 +6,26 @@ import SideNav from "../NavigationMenu/SideNav/SideNav.js";
 import db from "../Firebase/firebase";
 import { RiLayoutRowLine, RiLayoutColumnLine } from "react-icons/ri";
 
+import { useSelector } from "react-redux";
+
 const Header = props => {
   const [sidebar, setsidebar] = useState(false);
-  const settings = props.settings;
+  const settings = useSelector(state => state.Settings);
 
   const OpenSideNavigation = () => {
     setsidebar(!sidebar);
   };
 
+  console.log(settings.path);
   const ChangeLayout = () => {
-    var layout =
-      settings.Layout === "colomn-layout" ? "row-layout" : "colomn-layout";
-    props.setLayoutStyle(layout);
+    const layout =
+      settings.settings.Layout === "colomn-layout"
+        ? "row-layout"
+        : "colomn-layout";
+
+    db.doc(settings.path).update({ Layout: layout });
   };
-  let photoUrl =
-    props.userProfilePic === "" ? "favicon.jpg" : props.userProfilePic;
+
   return (
     <div className="header-bar">
       <div className="left-h sub-header">
@@ -33,7 +38,7 @@ const Header = props => {
           </div>
           {props.pageName !== "History" ? (
             <span className="layout" onClick={ChangeLayout}>
-              {settings.Layout === "colomn-layout" ? (
+              {settings.settings.Layout === "colomn-layout" ? (
                 <RiLayoutColumnLine />
               ) : (
                 <RiLayoutRowLine />
@@ -52,8 +57,6 @@ const Header = props => {
             )
           }
           click={props.click}
-          userProfilePic={photoUrl}
-          userName={props.userName}
           navMan={OpenSideNavigation}
           setPageName={props.setPageName}
         />

@@ -1,29 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { provider, auth } from "../Firebase/firebase";
-//import {Route} from 'react-router-dom'
 import HomePage from "../Home/HomePage.js";
 import SignInPage from "../SignIn/SignIn";
 
 import db from "../Firebase/firebase.js";
+import { useSelector, useDispatch } from "react-redux";
+import { setUpUserData, updateSettings } from "../../action/action";
 
 const Load = () => {
-  const [user, setUser] = useState(null);
-  const [isAnonymous, setAnonymous] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const [uid, setUID] = useState("null");
-  const [userName, setUsername] = useState("UnKnown");
-  const [totalTasbihCounts, setTotalTasbihsCount] = useState(0);
-  const [settings, setSettings] = useState({ Layout: "colomn-layout" });
-  const [sPath, setSPath] = useState("");
   const [userDeleted, setUserDeleted] = useState(false);
 
+  const dispatch = useDispatch();
+  const currUser = useSelector(state => state.User);
+  const settings = useSelector(state => state.Settings);
+
+  //Moved To SignIn Component
   const SkipSignIn = () => {
-    setLoading(true);
-    setAnonymous(true);
+    //setLoading(true);
+    //setAnonymous(true);
+    dispatch(updateSettings({ loading: true }));
 
     auth.signInAnonymously().then(loginUser => {
-      setUser(loginUser.user);
-      setUID(loginUser.user.uid);
+      dispatch(setUpUserData(loginUser.user));
       db
         .collection("NoOfGuests")
         .get()
@@ -38,7 +36,7 @@ const Load = () => {
             .set({ Name: name, uid: loginUser.user.uid, Deleted: false });
 
           nog.docs[0].ref.update({ count: newCount });
-          setUsername(name);
+          //setUsername(name);
 
           db
             .collection("GuestUsers")
@@ -59,20 +57,24 @@ const Load = () => {
                     Name: allTasbihs[randPick].data().Name,
                     Status: "Running"
                   });
-                  currUser.ref.collection("Settings").add(settings);
-                  setLoading(false);
-                  setTotalTasbihsCount(allTasbihs.length);
+                  currUser.ref.collection("Settings").add(settings.settings);
+
+                  dispatch(
+                    updateSettings({
+                      loading: false,
+                      totalTasbihsCount: allTasbihs.length
+                    })
+                  );
                 });
             });
         });
     });
   };
 
+  //Moved To SignIn Component
   const LoginUser = () => {
     auth.signInWithPopup(provider).then(res => {
-      setUser(res.user);
-      setUID(res.user.uid);
-      setUsername(res.user.displayName);
+      dispatch(setUpUserData(res.user));
       db
         .collection("Users")
         .doc(res.user.uid)
@@ -86,7 +88,7 @@ const Load = () => {
               .then(() => {
                 db
                   .collection("Users")
-                  .doc(uid)
+                  .doc(currUser.uid)
                   .get()
                   .then(user => {
                     db
@@ -98,41 +100,51 @@ const Load = () => {
                         var randPick = Math.floor(
                           Math.random() * allTasbihs.length
                         );
-
-                        console.log(allTasbihs);
-
                         user.ref.collection("Tasbihs").add({
                           count: 0,
                           TasbihID: allTasbihs[randPick].id,
                           Name: allTasbihs[randPick].data().Name,
                           Status: "Running"
                         });
-                        user.ref.collection("Settings").add(settings);
-                        setLoading(false);
-                        setTotalTasbihsCount(allTasbihs.length);
+                        user.ref.collection("Settings").add(settings.settings);
+                        dispatch(
+                          updateSettings({
+                            loading: false,
+                            totalTasbihsCount: allTasbihs.length
+                          })
+                        );
                       });
                   });
               });
           } else {
             console.log("User found");
-            setLoading(false);
+            dispatch(
+              updateSettings({
+                loading: false
+              })
+            );
           }
         });
     });
   };
 
   const LogOutUser = () => {
-    if (user.isAnonymous) {
+    // dispatch(
+    //   updateSettings({
+    //     loading: true
+    //   })
+    // );
+    if (currUser.isAnonymous) {
       db
         .collection("GuestUsers")
-        .doc(uid)
+        .doc(currUser.uid)
         .update({ Deleted: true })
         .then(() => {
           setUserDeleted(true);
           auth
             .signOut()
             .then(() => {
-              user
+              currUser
                 .delete()
                 .then(() => {
                   resetUser();
@@ -156,11 +168,8 @@ const Load = () => {
   };
 
   const resetUser = () => {
-    setUser(null);
-    setUID("null");
-    setLoading(false);
-    setAnonymous(false);
-    setUserDeleted(false);
+    dispatch(setUpUserData(null));
+    dispatch(updateSettings({ loading: false }));
   };
 
   const setCurrentUser = user => {
@@ -175,16 +184,21 @@ const Load = () => {
               if (!data.data().Deleted) {
                 let unSubSet = data.ref.collection("Settings").onSnapshot(
                   snap => {
-                    console.log("[Settings] Sanpshot Run");
                     if (!snap.empty) {
-                      setSettings(snap.docs[0].data());
-                      setSPath(snap.docs[0].ref.path);
+                      console.log(settings);
+                      dispatch(
+                        updateSettings({
+                          isUserIn: true,
+                          settings: snap.docs[0].data(),
+                          path: snap.docs[0].ref.path,
+                          loading: false
+                        })
+                      );
                     } else {
-                      data.ref.collection("Settings").add(settings);
+                      data.ref.collection("Settings").add(settings.settings);
                     }
 
                     if (userDeleted) {
-                      console.log("[SETTING] User Remove");
                       unSubSet();
                     }
                   },
@@ -192,20 +206,25 @@ const Load = () => {
                     console.log(err);
                   }
                 );
+                dispatch(setUpUserData(user));
                 user.updateProfile({ displayName: data.data().Name });
-                setUser(user);
-                setUID(user.uid);
-                setAnonymous(user.isAnonymous);
-                setUsername(data.data().Name);
-                setLoading(false);
+                //setUsername(data.data().Name);
                 setUserDeleted(false);
               } else {
                 console.log("[GETUSERS] User Removed");
-                setLoading(false);
+                dispatch(
+                  updateSettings({
+                    loading: false
+                  })
+                );
                 setUserDeleted(true);
               }
             } else {
-              setLoading(false);
+              dispatch(
+                updateSettings({
+                  loading: false
+                })
+              );
             }
           });
       } else {
@@ -218,10 +237,16 @@ const Load = () => {
               let unSubSet = data.ref.collection("Settings").onSnapshot(
                 snap => {
                   if (!snap.empty) {
-                    setSettings(snap.docs[0].data());
-                    setSPath(snap.docs[0].ref.path);
+                    dispatch(
+                      updateSettings({
+                        isUserIn: true,
+                        settings: snap.docs[0].data(),
+                        path: snap.docs[0].ref.path,
+                        isLoading: false
+                      })
+                    );
                   } else {
-                    data.ref.collection("Settings").add(settings);
+                    data.ref.collection("Settings").add(settings.settings);
                   }
                   if (userDeleted) {
                     unSubSet();
@@ -231,52 +256,56 @@ const Load = () => {
                   console.log(err);
                 }
               );
-
-              setUser(user);
-              setUID(user.uid);
-              setAnonymous(user.isAnonymous);
-              setUsername(data.data().Name);
-              setLoading(false);
+              dispatch(setUpUserData({ user: user }));
+              dispatch(
+                updateSettings({
+                  loading: false
+                })
+              );
               setUserDeleted(false);
             } else {
               console.log("User Removed");
               setUserDeleted(true);
-              setLoading(false);
+              dispatch(
+                updateSettings({
+                  loading: false
+                })
+              );
             }
           });
       }
     } else {
       setUserDeleted(false);
-      setLoading(false);
+      dispatch(
+        updateSettings({
+          loading: false
+        })
+      );
     }
   };
 
   useEffect(() => {
-    auth.onAuthStateChanged(user => {
+    const unsub = auth.onAuthStateChanged(user => {
       setCurrentUser(user);
     });
+
+    return unsub;
   }, []);
 
+  //useEffect(() => {}, [currUser]);
+
   let loadPage =
-    user || isAnonymous ? (
-      <HomePage
-        currentUser={user}
-        click={LogOutUser}
-        skip={isAnonymous}
-        uid={uid}
-        userProfilePic={!isAnonymous ? user.photoURL : ""}
-        userName={userName}
-        totalTasbihCounts={totalTasbihCounts}
-        isLoading={loading}
-        settings={settings}
-        sPath={sPath}
-        userDeleted={userDeleted}
-      />
+    currUser && !settings.loading ? (
+      <HomePage click={LogOutUser} userDeleted={userDeleted} />
     ) : (
       <SignInPage click={LoginUser} skip={SkipSignIn} />
     );
 
-  return loading ? <div className="initialize flex">Loading...</div> : loadPage;
+  return settings.loading ? (
+    <div className="initialize flex">Loading...</div>
+  ) : (
+    loadPage
+  );
 };
 
 export default Load;

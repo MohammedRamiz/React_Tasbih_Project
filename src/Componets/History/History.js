@@ -3,12 +3,13 @@ import './History.css'
 import db from '../Firebase/firebase';
 import HistoryTemplate from './HistoryBlockTemplate/Template'
 
-const History = props => {
+import {useSelector} from "react-redux"
 
+const History = props => {
     const [tasbihsHistory, setTasbihHistory] = useState([]);
-    const uid = props.uid;
-    const isSkipped = props.isSkipped;
     const userDeleted = props.userDeleted;
+
+    const currUser = useSelector(state => state.User);
 
     const DeletePermenantData = (path) => {
         db.doc(path).update({ deleterPermanently: true }).then((data) => {
@@ -23,8 +24,8 @@ const History = props => {
 
     useEffect(() => {
         props.pageName('History');
-        if (!isSkipped) {
-            db.collection('Users').doc(uid).get().then(userData => {
+        if (!currUser.isAnonymous) {
+            db.collection('Users').doc(currUser.uid).get().then(userData => {
                 let unSubs = userData.ref.collection("HistoryTasbihs").where('deleterPermanently', "==", false).orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
 
                     const historyTasbihs = tasbihData.docs.map(doc => {
@@ -39,7 +40,7 @@ const History = props => {
             });
         }
         else {
-            db.collection('GuestUsers').doc(uid).get().then(userData => {
+            db.collection('GuestUsers').doc(currUser.uid).get().then(userData => {
                 let unSubs = userData.ref.collection("HistoryTasbihs").where('deleterPermanently', "==", false).orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
 
                     const historyTasbihs = tasbihData.docs.map(doc => {

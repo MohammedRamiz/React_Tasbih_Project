@@ -1,172 +1,174 @@
-.outer-shell{
-    display: flex;
-    height: 95vh;
-    width: 100%;
-    flex-direction: column;
-    overflow: scroll;
+.outer-shell {
+  display: flex;
+  height: 95vh;
+  width: 100%;
+  flex-direction: column;
+  overflow: scroll;
 }
 
-.home-header{
-    flex: .1;
-    background: #bbbbbb;
+.home-header {
+  flex: 0.1;
+  background: #bbbbbb;
 }
 
-.home-body{
-    flex: 1;
+.home-body {
+  flex: 1;
 }
 
-.add-tasbih{
-    float: right;
-    height: 100%;
-    
-    display: flex;
-    align-items: center;
+.add-tasbih {
+  float: right;
+  height: 100%;
+
+  display: flex;
+  align-items: center;
 }
 
-.span-icon{
-    height: 40px;
-    width: 40px;
-    font-size: 40px;
-    line-height: 30px;
-    background: #97979700;
+.span-icon {
+  height: 40px;
+  width: 40px;
+  font-size: 40px;
+  line-height: 30px;
+  background: #97979700;
 }
 
-.span-icon:hover{
-    background: #b68181;
+.span-icon:hover {
+  background: #b68181;
 }
 
-.tasbih-card-shell,.tasbih-card-shell-doted{
-    width: 50%;
-    height: 150px;
-    float: left;
-    padding: 10px;
+.tasbih-card-shell,
+.tasbih-card-shell-doted {
+  width: 50%;
+  height: 150px;
+  float: left;
+  padding: 10px;
 }
 
-.colomn-layout{
-    width: 100%;
+.colomn-layout {
+  width: 100%;
 }
 
-.row-layout{
-    width: 50%;
+.row-layout {
+  width: 50%;
 }
 
-.tasbih-card-inner{
-    background: #fff;
-    height: 100%;
-    width: 100%;
-    border-radius: 8px;
-    box-shadow: 1px 1px 3px 0px #cecece, 0 0 2px 1px #dedede52;
-    display: flex;
-    flex-direction: column;
-    cursor: pointer;
-    overflow: hidden;
+.tasbih-card-inner {
+  background: #fff;
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  box-shadow: 1px 1px 3px 0px #cecece, 0 0 2px 1px #dedede52;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  overflow: hidden;
 }
 
-.tasbih-card-inner-dotted{
-    background: rgb(255 255 255 / 0%);
-    height: 100%;
-    width: 100%;
-    border-radius: 8px;
-    border: 2px dashed #dddddd;
-    text-align: center;
-    cursor: pointer;
+.tasbih-card-inner-dotted {
+  background: rgb(255 255 255 / 0%);
+  height: 100%;
+  width: 100%;
+  border-radius: 8px;
+  border: 2px dashed #dddddd;
+  text-align: center;
+  cursor: pointer;
 }
-.tasbih-icon-plus{
-    font-size: 20px;
-    color: #ddd;
-}
-
-.middle-card{
-    flex: 1;
-    text-align: center;
-    align-items: center;
-    /* align-content: center; */
-    /* align-self: center; */
-    display: grid;
-    font-size: 50px;
-    user-select: none;
+.tasbih-icon-plus {
+  font-size: 20px;
+  color: #ddd;
 }
 
-.header-card{
-    text-align: center;
-    padding: 4px;
-    background: #36e865;
-    flex: 1 1;
-    border-top-left-radius: 8px;
-    border-top-right-radius: 8px;
-    font-size: 13px;
-    color: #064a0e;
-    flex-direction: row;
-    position: relative;
-    overflow: hidden;
+.middle-card {
+  flex: 1;
+  text-align: center;
+  align-items: center;
+  /* align-content: center; */
+  /* align-self: center; */
+  display: grid;
+  font-size: 50px;
+  user-select: none;
 }
 
-.footer-card{
-    flex:1;
-    text-align: center;
-    font-size: 12px;
-    padding: 0 0 5px;
-    border-top: 1px solid #dadada;
-    position: relative;
+.header-card {
+  text-align: center;
+  padding: 4px;
+  background: #36e865;
+  flex: 1 1;
+  border-top-left-radius: 8px;
+  border-top-right-radius: 8px;
+  font-size: 13px;
+  color: #064a0e;
+  flex-direction: row;
+  position: relative;
+  overflow: hidden;
 }
 
-.right {
-    position: absolute;
-    right: -4px;
-    top: 0;
-    font-size: 14px;
-    line-height: 28px;
-    /* transform: rotate(-14deg); */
+.footer-card {
+  flex: 1;
+  text-align: center;
+  font-size: 12px;
+  padding: 0 0 5px;
+  border-top: 1px solid #dadada;
+  position: relative;
 }
 
 .right {
-    width: 26px;
-    height: 100%;   
-    background: #2ac253;
-    overflow: hidden;
-    padding-right: 4px;
-    box-shadow: inset 0 0 20px 0px #116b2a9e;
-    color: #ff2a2a;
+  position: absolute;
+  right: -4px;
+  top: 0;
+  font-size: 14px;
+  line-height: 28px;
+  /* transform: rotate(-14deg); */
+}
+
+.right {
+  width: 26px;
+  height: 100%;
+  background: #2ac253;
+  overflow: hidden;
+  padding-right: 4px;
+  box-shadow: inset 0 0 20px 0px #116b2a9e;
+  color: #ff2a2a;
 }
 
 svg {
-    height: 100%;
-    font-size: 28px !important;
+  height: 100%;
+  font-size: 28px !important;
 }
 
-.tasbih-remove{
-    user-select: none;
-    -moz-user-select: none;
-    -ms-user-select: none;
-    -webkit-user-select: none;
+.tasbih-remove {
+  user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  -webkit-user-select: none;
 }
 
-.tasbih-remove svg{
-    font-size: 16px !important;
+.tasbih-remove svg {
+  font-size: 16px !important;
 }
 
-.tasbih-reset{
-    bottom: 0;
-    top: 0;
-    position: absolute;
-    border-top-left-radius: 4px;
-    right: 0px;
-    width: 20px;
-    border-bottom-left-radius: 4px;
-    background: #2ac253;
-    line-height: 22px;
-    color: white;
+.tasbih-reset {
+  bottom: 0;
+  top: 0;
+  position: absolute;
+  border-top-left-radius: 4px;
+  right: 0px;
+  width: 20px;
+  border-bottom-left-radius: 4px;
+  background: #2ac253;
+  line-height: 22px;
+  color: white;
 }
 
-.tasbih-reset svg{
-    font-size: 18px !important;
+.tasbih-reset svg {
+  font-size: 18px !important;
 }
 
 .left {
-    flex: 1;
+  flex: 1;
 }
 
 .no-more-tasbihs {
-    width: 100%;
-    color: #969696;
+  width: 100%;
+  color: #969696;
+  padding: 10px 0;
 }
