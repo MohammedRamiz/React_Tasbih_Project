@@ -31,6 +31,13 @@
 .user-sign-in {
     height: 100vh;
     flex-direction: column;
+    padding: 0px 40px;
+    max-width: 50vh;
+    margin: auto;
+}
+
+.user-sign-in > div {
+  width: 100%;
 }
 
 .user-sign-in button{
@@ -38,12 +45,11 @@
 }
 
 button.skip-btn {
-    width: 50% !important;
     background: #fff !important;
 }
 
 .user-sign-in button {
-    width: 80%;
+    width: 100%;
     height: 35px;
     border: 1px solid #0f4a0c;
     background-color: #36e865;

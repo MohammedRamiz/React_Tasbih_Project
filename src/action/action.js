@@ -11,3 +11,16 @@ export const updateSettings = settings => {
     data: settings
   };
 };
+
+export const recoredUnSubCall = call => {
+  return {
+    type: "RECORD",
+    data: call
+  };
+};
+
+export const execCalls = () => {
+  return {
+    type: "RELEASE"
+  };
+};
