@@ -10,8 +10,11 @@ const UnSubscribe = (unSubs = snapshotUnsbs, action) => {
             unSubs.push(action.data);
             return unSubs
         case "RELEASE":
-            console.log("[RELESING All onSnapShot]")
-            return unSubs.map(call => { return call() })
+            unSubs.map(call => {
+                call();
+                return null
+            })
+            return []
         default:
             return unSubs
     }

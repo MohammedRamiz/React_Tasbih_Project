@@ -8,7 +8,6 @@ import { useSelector, useDispatch } from "react-redux";
 import { setUpUserData, updateSettings, recoredUnSubCall, execCalls } from "../../action/action";
 
 const Load = () => {
-  const [userDeleted, setUserDeleted] = useState(false);
   const dispatch = useDispatch();
   const currUser = useSelector(state => state.User);
   const settings = useSelector(state => state.Settings);
@@ -131,31 +130,17 @@ const Load = () => {
   const LogOutUser = () => {
     setUserState('LOS');
     if (currUser.isAnonymous) {
-      db
-        .collection("GuestUsers")
-        .doc(currUser.uid)
-        .update({ Deleted: true })
-        .then(() => {
-          setUserDeleted(true);
-          dispatch(execCalls());
-          auth
-            .signOut()
-            .then(() => {
-              currUser
-                .delete()
-                .then(() => {
-                  resetUser();
-                  console.log("user Removed end");
-                })
-                .catch(er => {
-                  console.log(er);
-                });
-            })
-            .catch(er => console.log(er));
-        })
-        .catch(error => {
-          console.log(error);
-        });
+      // db.collection("GuestUsers").doc(currUser.uid)
+      //   .update({ Deleted: true }).then(() => {
+      //setUserDeleted(true);
+      dispatch(execCalls());
+      auth.signOut().then(() => {
+        resetUser();
+        console.log("user Removed end");
+      }).catch(er => console.log(er));
+      // }).catch(error => {
+      //   console.log(error);
+      // });
     } else {
       auth.signOut().then(() => {
         resetUser();
@@ -194,10 +179,6 @@ const Load = () => {
                     } else {
                       data.ref.collection("Settings").add(settings.settings);
                     }
-
-                    if (userDeleted) {
-                      unSubSet();
-                    }
                   },
                   err => {
                     console.log(err);
@@ -208,7 +189,7 @@ const Load = () => {
 
                 user.updateProfile({ displayName: data.data().Name });
                 //setUsername(data.data().Name);
-                setUserDeleted(false);
+                //setUserDeleted(false);
               } else {
                 console.log("[GETUSERS] User Removed");
                 dispatch(
@@ -216,7 +197,7 @@ const Load = () => {
                     loading: false
                   })
                 );
-                setUserDeleted(true);
+                //setUserDeleted(true);
               }
             } else {
               dispatch(
@@ -247,9 +228,6 @@ const Load = () => {
                   } else {
                     data.ref.collection("Settings").add(settings.settings);
                   }
-                  if (userDeleted) {
-                    unSubSet();
-                  }
                 },
                 err => {
                   console.log(err);
@@ -262,10 +240,10 @@ const Load = () => {
                   loading: false
                 })
               );
-              setUserDeleted(false);
+              //setUserDeleted(false);
             } else {
               console.log("User Removed");
-              setUserDeleted(true);
+              //setUserDeleted(true);
               dispatch(
                 updateSettings({
                   loading: false
@@ -276,7 +254,7 @@ const Load = () => {
         dispatch(recoredUnSubCall(func));
       }
     } else {
-      setUserDeleted(false);
+      //setUserDeleted(false);
       if (userState === 'LOR' || userState === '') {
         dispatch(
           updateSettings({
@@ -301,7 +279,7 @@ const Load = () => {
 
   let loadPage =
     currUser && !settings.loading ? (
-      <HomePage click={LogOutUser} userDeleted={userDeleted} />
+      <HomePage click={LogOutUser} />
     ) : (
       <SignInPage click={setUser} />
     );

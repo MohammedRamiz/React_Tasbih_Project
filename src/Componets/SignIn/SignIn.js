@@ -131,14 +131,16 @@ const SignIn = props => {
   };
 
   const signInGuestUser = () => {
-    db.collection('GuestUsers').where('Name', '==', username).get().then(data => {
+    dispatch(updateSettings({ loading: true }));
+    db.collection('GuestUsers').where('Name', '==', username).where("Deleted", '==', false).get().then(data => {
       auth.signInAnonymously().then(loginUser => {
+        dispatch(setUpUserData(loginUser.user));
         const ref = data.docs[0].ref;
         db
           .collection("GuestUsers")
           .doc(loginUser.user.uid)
           .set({ Name: data.docs[0].data().Name, uid: loginUser.user.uid, Deleted: false }).then(userData => {
-            console.log(userData);
+            ref.update({ Deleted: true });
             asyncFunc(ref, loginUser.user.uid);
           });
       });
@@ -151,6 +153,10 @@ const SignIn = props => {
     const historyTasbihs = await res.collection('HistoryTasbihs').get();
 
     db.collection("GuestUsers").doc(uid).get().then(doc => {
+      res.delete();
+      doc.ref.collection("Settings").get().then(doc => {
+        doc.docs[0].ref.delete()
+      });
       extractData(doc.ref, tasbihs, "Tasbihs");
       extractData(doc.ref, set, "Settings");
       extractData(doc.ref, historyTasbihs, "HistoryTasbihs");
