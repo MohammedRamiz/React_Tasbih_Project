@@ -29,46 +29,52 @@
 }
 
 .user-sign-in {
-    height: 100vh;
-    flex-direction: column;
-    padding: 0px 40px;
-    max-width: 50vh;
-    margin: auto;
+  height: 100vh;
+  flex-direction: column;
+  padding: 0px 20px;
+  margin: auto;
 }
 
 .user-sign-in > div {
   width: 100%;
 }
 
-.user-sign-in button{
+.user-sign-in button {
   margin: 5px 0;
 }
 
 button.skip-btn {
-    background: #fff !important;
+  background: #fff !important;
 }
 
 .user-sign-in button {
-    width: 100%;
-    height: 35px;
-    border: 1px solid #0f4a0c;
-    background-color: #36e865;
+  width: 100%;
+  height: 35px;
+  border: 1px solid #0f4a0c;
+  background-color: #36e865;
 }
 
-.flex{
+.flex {
   display: flex;
   align-content: center;
   justify-content: center;
   align-items: center;
 }
 
-.flex-align-bottom{
+.flex-align-bottom {
   align-items: flex-end;
 }
 
-.initialize{
- font-size: 20px;
- height: 100vh;
+.initialize {
+  font-size: 20px;
+  height: 100vh;
+}
+
+@media (min-width: 767px) {
+  .user-sign-in {
+    padding: 0px 40px;
+    max-width: 50vh;
+  }
 }
 
 @keyframes App-logo-spin {
