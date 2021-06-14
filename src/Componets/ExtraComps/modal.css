@@ -1,0 +1,18 @@
+#dropdown-basic,
+.dropdown-menu {
+  width: 100%;
+  text-align: left;
+  display: flex;
+  align-content: center;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.dropdown-toggle::after {
+  text-align: right;
+}
+
+button {
+  border: none;
+  background: none;
+}

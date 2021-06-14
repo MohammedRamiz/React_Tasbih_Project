@@ -3,7 +3,7 @@
   height: 95vh;
   width: 100%;
   flex-direction: column;
-  overflow: scroll;
+  overflow: auto;
 }
 
 .home-header {

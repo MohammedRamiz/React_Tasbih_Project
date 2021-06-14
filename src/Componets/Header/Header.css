@@ -25,7 +25,7 @@
   flex: 1 1;
   align-items: center;
   justify-content: center;
-  font-size: 22px;
+  font-size: 20px;
   text-transform: uppercase;
 }
 
@@ -40,11 +40,11 @@ span.layout {
 }
 
 .Bar-class svg {
-  font-size: 26px !important;
+  font-size: 23px !important;
 }
 
 .layout svg {
-  font-size: 28px !important;
+  font-size: 25px !important;
 }
 
 span.log-out-btn button {

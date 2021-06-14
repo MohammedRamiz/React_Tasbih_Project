@@ -3,12 +3,14 @@ import Modal from "react-bootstrap/Modal";
 import Button from "react-bootstrap/Button";
 import "bootstrap/dist/css/bootstrap.min.css";
 import db from "../Firebase/firebase.js";
+import { Dropdown } from "react-bootstrap";
+import "./modal.css";
 
 import { updateSettings } from "../../action/action";
 import { useSelector, useDispatch } from "react-redux";
 
 const AddBody = props => {
-  const [name, setName] = useState("");
+  const [name, setName] = useState("Choose Tasbih");
   const [noOfTasbihs, setNoOfTasbih] = useState([]);
   const [tid, setTID] = useState("None");
   const userDeleted = props.userDeleted;
@@ -29,13 +31,14 @@ const AddBody = props => {
     }
   };
 
-  const handleOnChange = e => {
+  const handleOnChange = (obj, e) => {
     e.preventDefault();
 
     var val = noOfTasbihs.filter(function(item) {
-      return item.Name === e.target.value;
+      return item.Name === e.target.text;
     });
-    setName(e.target.value);
+    setName(e.target.text);
+    console.log(val);
     setTID(val[0].ID);
   };
 
@@ -73,7 +76,7 @@ const AddBody = props => {
         {
           <div className="add-tasbih-name" key="0">
             <div className="tasbih">
-              <select onChange={handleOnChange}>
+              {/* <select onChange={handleOnChange}>
                 <option>Choose Tasbih</option>
                 {noOfTasbihs.map(tasbih => {
                   var disable = props.displayedIds.filter(t => {
@@ -86,13 +89,37 @@ const AddBody = props => {
                     </option>
                   );
                 })}
-              </select>
+              </select> */}
+
+              <Dropdown>
+                <Dropdown.Toggle variant="success" id="dropdown-basic">
+                  {name}
+                </Dropdown.Toggle>
+
+                <Dropdown.Menu>
+                  {noOfTasbihs.map(tasbih => {
+                    var disable = props.displayedIds.filter(t => {
+                      return t === tasbih.ID ? true : false;
+                    });
+
+                    return (
+                      <Dropdown.Item
+                        onSelect={handleOnChange}
+                        disabled={disable[0]}
+                        key={tasbih.ID}
+                      >
+                        {tasbih.Name}
+                      </Dropdown.Item>
+                    );
+                  })}
+                </Dropdown.Menu>
+              </Dropdown>
             </div>
           </div>
         }
       </Modal.Body>
       <Modal.Footer>
-        <Button variant="primary" className="save-btn" onClick={handleAddData}>
+        <Button variant="success" className="save-btn" onClick={handleAddData}>
           Add
         </Button>
       </Modal.Footer>

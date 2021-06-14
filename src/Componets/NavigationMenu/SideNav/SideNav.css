@@ -1,134 +1,132 @@
 .side-navigation {
-    display: flex;
-    height: 95vh;
-    width: 280px;
-    background: #caffd8;
-    position: absolute;
-    left: -280px;
-    top: 40px;
-    border-right: 5px solid #36e865;
-    flex-direction: column;
-    padding: 0 10px;
+  display: flex;
+  height: 95vh;
+  width: 280px;
+  background: #caffd8;
+  position: absolute;
+  left: -280px;
+  top: 40px;
+  border-right: 5px solid #36e865;
+  flex-direction: column;
+  padding: 0 10px;
 }
 
-.side-navigation.nav-menu{
-    transform: translateX(-280px);
-    transition: .3s ease-in;
-    z-index: 999999;
-} 
+.side-navigation.nav-menu {
+  transform: translateX(-280px);
+  transition: 0.3s ease-in;
+  z-index: 999999;
+}
 
- .side-navigation.nav-menu.open{
-    transform: translateX(280px);
-    transition: .5s ease-out;
-    box-shadow: 7px 1px 13px 0px #0000005e;
-    z-index: 2;
- }
+.side-navigation.nav-menu.open {
+  transform: translateX(280px);
+  transition: 0.5s ease-out;
+  z-index: 2;
+}
 
 .backbone {
-    z-index: 1;
-    position: absolute;
-    height: 95vh;
-    width: 100%;
-    right: 0px;
-    top: 40px;
-    bottom: 0;
-    background: #000;
-    opacity: 0%;
-    display: none;
+  z-index: 1;
+  position: absolute;
+  height: 95vh;
+  width: 100%;
+  right: 0px;
+  top: 40px;
+  bottom: 0;
+  background: #000;
+  opacity: 0%;
+  display: none;
 }
 
 .backbone.open {
-    animation: fadeInAnimation ease .3s;
-    animation-iteration-count: 1;
-    animation-fill-mode: forwards;
+  animation: fadeInAnimation ease 0.3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: forwards;
 }
 
-.backbone{
-    animation: fadeOutAnimation ease .3s;
-    animation-iteration-count: 1;
-    animation-fill-mode: backwards;
+.backbone {
+  animation: fadeOutAnimation ease 0.3s;
+  animation-iteration-count: 1;
+  animation-fill-mode: backwards;
 }
 
 @keyframes fadeInAnimation {
-    0% {
-        opacity: 0%;
-    }
-    100% {
-        opacity: 25%;
-    }
+  0% {
+    opacity: 0%;
+  }
+  100% {
+    opacity: 25%;
+  }
 }
 
 @keyframes fadeOutAnimation {
-    0% {
-        opacity: 25%;
-    }
-    100% {
-        opacity: 0%;
-    }
+  0% {
+    opacity: 25%;
+  }
+  100% {
+    opacity: 0%;
+  }
 }
 
-.backbone.open{
-    display: block !important;
-    transition: .5s;
-    
-}
-
- .profile-picture-box {
-    height: 200px;
-    display: flex;
-    align-content: center;
-    justify-content: center;
-    align-items: center;
+.backbone.open {
+  display: block !important;
+  transition: 0.5s;
 }
 
 .profile-picture-box {
-    height: 180px;
-    display: flex;
-    align-content: center;
-    justify-content: flex-end;
-    align-items: center;
-    flex-direction: column;
-    flex: 2
+  height: 200px;
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
 }
 
-.footer{
-    flex: 2;
-    padding: 10px 0;
+.profile-picture-box {
+  height: 180px;
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+  align-items: center;
+  flex-direction: column;
+  flex: 2;
+}
+
+.footer {
+  flex: 2;
+  padding: 10px 0;
 }
 
 .profile-picture-box > img {
-    height: 90px;
-    width: 90px;
-    border-radius: 50%;
+  height: 90px;
+  width: 90px;
+  border-radius: 50%;
 }
 
 span.user-name {
-    color: #000;
-    font-size: 15px;
-    margin-top: 10px;
+  color: #000;
+  font-size: 15px;
+  margin-top: 10px;
 }
 
-.content{
-    border-top: 1px solid #8df1a7;
-    margin-top: 20px;
-    flex: 6;
-    flex-direction: column;
-    justify-content: flex-start !important;
+.content {
+  border-top: 1px solid #8df1a7;
+  margin-top: 20px;
+  flex: 6;
+  flex-direction: column;
+  justify-content: flex-start !important;
 }
 
-.content > div,.footer > div{
-    width: 75%;
-    background: #17a10b;
-    border-radius: 4px;
-    font-size: 14px;
-    text-align: center;
-    margin: 5px;
+.content > div,
+.footer > div {
+  width: 75%;
+  background: #17a10b;
+  border-radius: 4px;
+  font-size: 14px;
+  text-align: center;
+  margin: 5px;
 }
 
 span.content-btn > a {
-    color: #fff;
-    text-decoration: none;
-    display: block;
-    padding: 5px 0;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 5px 0;
 }
-

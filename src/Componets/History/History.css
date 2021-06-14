@@ -65,5 +65,5 @@ span.history-counts {
 
 .inner-container {
   height: 95vh;
-  overflow: scroll;
+  overflow: auto;
 }
