@@ -5,6 +5,9 @@
   background: #36e865;
   border-radius: 5px;
   border: 1px solid;
+  justify-content: space-between;
+  align-content: center;
+  align-items: center;
 }
 
 .history-container svg {
@@ -66,4 +69,35 @@ span.history-counts {
 .inner-container {
   height: 95vh;
   overflow: auto;
+}
+
+.history-container > p {
+  margin: 0;
+}
+
+.history-counter {
+  display: flex;
+  bottom: -5px;
+  width: 50%;
+  text-align: center;
+  height: 25px;
+  background: #ffffff;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 0 10px 0 5px;
+  border: 2px solid;
+  justify-content: space-between;
+  border-bottom: none;
+  color: #1f4a20;
+  font-weight: bold;
+}
+
+.history-tasbih-counter {
+  position: absolute;
+  display: flex;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  justify-content: center;
+  align-items: center;
 }

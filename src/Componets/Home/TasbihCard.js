@@ -53,13 +53,12 @@ const TasbihCard = props => {
             tasbihData.ref.delete();
             console.log("Tasbih Has Been Removed");
           }
-          console.log("tasbih Has been Removed");
+          console.log("Tasbih Has Been Removed");
         });
     }
   };
 
   const historyDataTemplate = (data, type) => {
-    console.log(data);
     return {
       counts: data.count,
       deletedTime: new Date(),
@@ -71,7 +70,6 @@ const TasbihCard = props => {
   };
 
   const ResetTasbih = () => {
-    console.log(uid);
     if (counts > 0) {
       db
         .doc(path)

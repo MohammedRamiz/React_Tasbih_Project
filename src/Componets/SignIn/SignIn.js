@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import db from "../Firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSettings, setUpUserData } from "../../action/action";
@@ -9,7 +9,9 @@ const SignIn = props => {
   const dispatch = useDispatch();
   const settings = useSelector(s => s.Settings);
   const currUser = useSelector(s => s.User);
+
   const [username, setUsername] = useState("");
+  const [isUserNameLoginVisible, setUserNameLogin] = useState(false);
 
   //Guest User Sign In
   const GuestSignIn = () => {
@@ -141,36 +143,40 @@ const SignIn = props => {
       .where("Deleted", "==", false)
       .get()
       .then(data => {
-        auth.signInAnonymously().then(loginUser => {
-          dispatch(setUpUserData(loginUser.user));
-          const ref = data.docs[0].ref;
-          db
-            .collection("GuestUsers")
-            .doc(loginUser.user.uid)
-            .set({
-              Name: data.docs[0].data().Name,
-              uid: loginUser.user.uid,
-              Deleted: false
-            })
-            .then(userData => {
-              ref.update({ Deleted: true });
-              asyncFunc(ref, loginUser.user.uid);
-            });
-        });
+        if (!data.empty) {
+          auth.signInAnonymously().then(loginUser => {
+            const ref = data.docs[0].ref;
+            db
+              .collection("GuestUsers")
+              .doc(loginUser.user.uid)
+              .set({
+                Name: data.docs[0].data().Name,
+                uid: loginUser.user.uid,
+                Deleted: false
+              })
+              .then(userData => {
+                ref.update({ Deleted: true });
+                asyncFunc(ref, loginUser.user);
+              });
+          });
+        } else {
+          console.log("User Does Not Exists");
+          dispatch(updateSettings({ loading: false }));
+        }
       })
       .catch(er => {
         console.log(er);
       });
   };
 
-  const asyncFunc = async (res, uid) => {
+  const asyncFunc = async (res, curretUser) => {
     const tasbihs = await res.collection("Tasbihs").get();
     const set = await res.collection("Settings").get();
     const historyTasbihs = await res.collection("HistoryTasbihs").get();
 
     db
       .collection("GuestUsers")
-      .doc(uid)
+      .doc(curretUser.uid)
       .get()
       .then(doc => {
         res.delete();
@@ -183,14 +189,14 @@ const SignIn = props => {
         extractData(doc.ref, tasbihs, "Tasbihs");
         extractData(doc.ref, set, "Settings");
         extractData(doc.ref, historyTasbihs, "HistoryTasbihs");
+
+        dispatch(setUpUserData(curretUser));
       });
   };
 
   const extractData = (ref, data, type) => {
-    console.log(ref);
-    var mappdeData = data.docs.map(data => {
+    data.docs.forEach(data => {
       ref.collection(type).add(data.data());
-      return data.data();
     });
   };
 
@@ -198,9 +204,20 @@ const SignIn = props => {
     setUsername(e.target.value);
   };
 
+  useEffect(() => {
+    db
+      .collection("SiteSettings")
+      .get()
+      .then(data => {
+        setUserNameLogin(data.docs[0].data().IsUserNameLoginVisible);
+      });
+  }, []);
+
   return (
     <div className="user-sign-in flex">
-      <div className="sign-in-with-username">
+      {isUserNameLoginVisible ? (
+        <>
+        <div className="sign-in-with-username">
         <Form>
           <Form.Group className="mb-3" controlId="formBasicEmail">
             <Form.Label>Username</Form.Label>
@@ -211,11 +228,13 @@ const SignIn = props => {
             />
           </Form.Group>
           <Button type="button" onClick={signInGuestUser} variant="">
-            Sign In Guest
+            Guest Sign In
           </Button>
         </Form>
       </div>
       <p>-- OR --</p>
+      </>
+      ) : ''}
       <div className="sign-in-with">
         <button onClick={LoginUser} className="btn">
           Sign In With Google

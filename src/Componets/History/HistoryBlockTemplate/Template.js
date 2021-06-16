@@ -18,18 +18,22 @@ const Template = props => {
           <span className="history-counts">{props.counts}</span>
         </div>
       </div>
-      <div className="history-block history-right">
-        <div className="history-delete" onClick={deleteTasbih}>
-          <span>
-            <MdDeleteForever />
-          </span>
+      {props.delete && props.restore ? (
+        <div className="history-block history-right">
+          <div className="history-delete" onClick={deleteTasbih}>
+            <span>
+              <MdDeleteForever />
+            </span>
+          </div>
+          <div className="history-restore" onClick={props.restore}>
+            <span>
+              <MdRestore />
+            </span>
+          </div>
         </div>
-        <div className="history-restore" onClick={props.restore}>
-          <span>
-            <MdRestore />
-          </span>
-        </div>
-      </div>
+      ) : (
+        <p>Deletet</p>
+      )}
     </div>
   );
 };

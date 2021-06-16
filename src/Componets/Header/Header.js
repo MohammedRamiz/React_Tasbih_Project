@@ -16,7 +16,6 @@ const Header = props => {
     setsidebar(!sidebar);
   };
 
-  console.log(settings.path);
   const ChangeLayout = () => {
     const layout =
       settings.settings.Layout === "colomn-layout"
