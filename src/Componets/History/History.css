@@ -93,7 +93,7 @@ span.history-counts {
 }
 
 .history-tasbih-counter {
-  position: absolute;
+  position: fixed;
   display: flex;
   bottom: 0;
   left: 0;
