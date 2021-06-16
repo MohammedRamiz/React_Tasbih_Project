@@ -207,8 +207,7 @@ const SignIn = props => {
   useEffect(() => {
     db
       .collection("SiteSettings")
-      .get()
-      .then(data => {
+      .onSnapshot(data => {
         setUserNameLogin(data.docs[0].data().IsUserNameLoginVisible);
       });
   }, []);
