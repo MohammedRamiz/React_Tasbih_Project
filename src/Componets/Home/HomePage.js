@@ -28,7 +28,7 @@ const HomePage = props => {
       />
       <div className="inner-container">
         <Route path="/" exact>
-          <Body userDeleted={props.userDeleted} />
+          <Body />
         </Route>
         <Route path="/history">
           <History

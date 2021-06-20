@@ -3,14 +3,15 @@ import './History.css'
 import db from '../Firebase/firebase';
 import HistoryTemplate from './HistoryBlockTemplate/Template'
 
-import {useSelector} from "react-redux"
+import { useSelector, useDispatch } from "react-redux"
+import { recoredUnSubCall } from '../../action/action'
 
 const History = props => {
     const [tasbihsHistory, setTasbihHistory] = useState([]);
-    const [totalCounts,setTotalCounts] = useState(0);
-    const userDeleted = props.userDeleted;
+    const [totalCounts, setTotalCounts] = useState(0);
 
     const currUser = useSelector(state => state.User);
+    const dispatch = useDispatch();
 
     const DeletePermenantData = (path) => {
         db.doc(path).update({ deleterPermanently: true }).then((data) => {
@@ -27,21 +28,24 @@ const History = props => {
         props.pageName('History');
         if (!currUser.isAnonymous) {
             db.collection('Users').doc(currUser.uid).get().then(userData => {
-                let unSubs = userData.ref.collection("HistoryTasbihs").where('deleterPermanently', "==", false).orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
-
+                let unSubs = userData.ref.collection("HistoryTasbihs").orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
+                    let counts = 0;
                     const historyTasbihs = tasbihData.docs.map(doc => {
-                        let counts = totalCounts;
-                        setTotalCounts(counts + doc.data().counts);
+                        counts += doc.data().counts;
                         return { id: doc.id, path: doc.ref.path, ...doc.data() };
                     });
-                        console.log(totalCounts);
+
+                    setTotalCounts(counts)
                     setTasbihHistory(historyTasbihs);
                 }, er => console.log(er));
+
+                dispatch(recoredUnSubCall(unSubs));
+
             });
         }
         else {
             db.collection('GuestUsers').doc(currUser.uid).get().then(userData => {
-                userData.ref.collection("HistoryTasbihs").orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
+                var unSubs = userData.ref.collection("HistoryTasbihs").orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
                     let counts = 0;
                     const historyTasbihs = tasbihData.docs.map(doc => {
                         counts += doc.data().counts;
@@ -52,26 +56,28 @@ const History = props => {
                     setTasbihHistory(historyTasbihs);
 
                 }, er => console.log(er));
+
+                dispatch(recoredUnSubCall(unSubs));
             });
         }
     }, []);
 
     return (
         <>
-        <div className='history-tasbih-counter'>
-            <div className='history-counter'>
-                <p>Total:</p>
-                {totalCounts}
+            <div className='history-tasbih-counter'>
+                <div className='history-counter'>
+                    <p>Total:</p>
+                    {totalCounts}
+                </div>
             </div>
-        </div>
-        {
-            tasbihsHistory.map(th => {
-                if(th.deleterPermanently)
-                    return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts}/> 
-                else 
-                    return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} delete={DeletePermenantData} restore={RestoreTasbih} />
-            })
-        }
+            {
+                tasbihsHistory.map(th => {
+                    if (th.deleterPermanently)
+                        return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} />
+                    else
+                        return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} delete={DeletePermenantData} restore={RestoreTasbih} />
+                })
+            }
         </>
     )
 }

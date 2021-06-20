@@ -9,7 +9,8 @@ import {
   setUpUserData,
   updateSettings,
   recoredUnSubCall,
-  execCalls
+  execCalls,
+  resetSettings
 } from "../../action/action";
 
 const Load = () => {
@@ -23,6 +24,7 @@ const Load = () => {
     setUserState("LOS");
     if (currUser.isAnonymous) {
       dispatch(execCalls());
+      dispatch(resetSettings())
       auth
         .signOut()
         .then(() => {
@@ -31,6 +33,8 @@ const Load = () => {
         })
         .catch(er => console.log(er));
     } else {
+      dispatch(execCalls());
+      dispatch(resetSettings())
       auth.signOut().then(() => {
         resetUser();
         console.log("user Logout Successfully");
@@ -122,7 +126,7 @@ const Load = () => {
                   }
                 );
                 dispatch(recoredUnSubCall(unSubSet));
-                dispatch(setUpUserData({ user: user }));
+                dispatch(setUpUserData(user));
                 dispatch(
                   updateSettings({
                     loading: false

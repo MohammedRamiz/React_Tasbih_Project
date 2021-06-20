@@ -12,6 +12,12 @@ export const updateSettings = settings => {
   };
 };
 
+export const resetSettings = () => {
+  return {
+    type: "RESET"
+  };
+};
+
 export const recoredUnSubCall = call => {
   return {
     type: "RECORD",

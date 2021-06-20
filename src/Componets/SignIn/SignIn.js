@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import db from "../Firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSettings, setUpUserData } from "../../action/action";
@@ -216,23 +216,23 @@ const SignIn = props => {
     <div className="user-sign-in flex">
       {isUserNameLoginVisible ? (
         <>
-        <div className="sign-in-with-username">
-        <Form>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>Username</Form.Label>
-            <Form.Control
-              onChange={getusername}
-              type="email"
-              placeholder="Your Username"
-            />
-          </Form.Group>
-          <Button type="button" onClick={signInGuestUser} variant="">
-            Guest Sign In
-          </Button>
-        </Form>
-      </div>
-      <p>-- OR --</p>
-      </>
+          <div className="sign-in-with-username">
+            <Form>
+              <Form.Group className="mb-3" controlId="formBasicEmail">
+                <Form.Label>Username</Form.Label>
+                <Form.Control
+                  onChange={getusername}
+                  type="email"
+                  placeholder="Your Username"
+                />
+              </Form.Group>
+              <Button type="button" onClick={signInGuestUser} variant="">
+                Guest Sign In
+              </Button>
+            </Form>
+          </div>
+          <p>-- OR --</p>
+        </>
       ) : ''}
       <div className="sign-in-with">
         <button onClick={LoginUser} className="btn">

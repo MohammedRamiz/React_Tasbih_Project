@@ -9,7 +9,6 @@ const TasbihCard = props => {
   const name = props.name;
   const status = props.status;
   const path = props.path;
-  const userDeleted = props.userDeleted;
 
   const isAnonymous = useSelector(state => state.User.isAnonymous);
   const uid = useSelector(state => state.User.uid);
@@ -127,8 +126,6 @@ const TasbihCard = props => {
         let unSub = db.doc(path).onSnapshot(
           tasbihData => {
             if (tasbihData.data()) setCounts(tasbihData.data().count);
-
-            if (userDeleted) unSub();
           },
           err => {
             unSub();
