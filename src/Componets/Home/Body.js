@@ -22,7 +22,7 @@ const Body = props => {
     setShow(!show);
   };
 
-  const appendNewBlock = (tasbihName, tid, totalTasbihsCount) => {
+  const appendNewBlock = (tasbihName, tid) => {
     if (tasbihName) {
       if (!isSkipped) {
         db
@@ -44,7 +44,6 @@ const Body = props => {
           });
 
         setShow(false);
-        //setTotalTasbihCounts(totalTasbihsCount);
       } else {
         db
           .collection("GuestUsers")
