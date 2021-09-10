@@ -66,8 +66,13 @@ span.history-counts {
   font-size: 15px;
 }
 
+@media (min-width: 768px) {
+  .inner-container {
+    height: 100vh;
+  }
+}
+
 .inner-container {
-  height: 100vh;
   overflow: auto;
 }
 

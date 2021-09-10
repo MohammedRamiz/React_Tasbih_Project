@@ -21,7 +21,7 @@ const History = props => {
     }
 
     const RestoreTasbih = () => {
-        console.log("Tasbih Restore Successfully");
+        console.log("Tasbih Restored Successfully");
     }
 
     useEffect(() => {
