@@ -5,6 +5,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import SideNav from "../NavigationMenu/SideNav/SideNav.js";
 import db from "../Firebase/firebase";
 import { RiLayoutRowLine, RiLayoutColumnLine } from "react-icons/ri";
+import { BrowserView, MobileView } from "react-device-detect";
 
 import { useSelector } from "react-redux";
 
@@ -29,9 +30,11 @@ const Header = props => {
     <div className="header-bar">
       <div className="left-h sub-header">
         <div className="menu-bar">
-          <span className="Bar-class" onClick={OpenSideNavigation}>
-            <FontAwesomeIcon icon={faBars} />
-          </span>
+          <MobileView>
+            <span className="Bar-class" onClick={OpenSideNavigation}>
+              <FontAwesomeIcon icon={faBars} />
+            </span>
+          </MobileView>
           <div className="page-name">
             <span>{props.pageName}</span>
           </div>
@@ -47,18 +50,28 @@ const Header = props => {
             ""
           )}
         </div>
-        <SideNav
-          navClass={
-            sidebar ? (
-              "side-navigation nav-menu open"
-            ) : (
-              "side-navigation nav-menu"
-            )
-          }
-          click={props.click}
-          navMan={OpenSideNavigation}
-          setPageName={props.setPageName}
-        />
+        <MobileView>
+          <SideNav
+            navClass={
+              sidebar ? (
+                "side-navigation nav-menu open"
+              ) : (
+                "side-navigation nav-menu"
+              )
+            }
+            click={props.click}
+            navMan={OpenSideNavigation}
+            setPageName={props.setPageName}
+          />
+        </MobileView>
+        <BrowserView>
+          <SideNav
+            navClass="side-navigation nav-menu"
+            navMan={OpenSideNavigation}
+            click={props.click}
+            setPageName={props.setPageName}
+          />
+        </BrowserView>
 
         <div
           className={sidebar ? "backbone open" : "backbone"}

@@ -25,7 +25,7 @@ const AddBody = props => {
   const handleAddData = () => {
     if (name !== "") {
       props.click(name, tid);
-      setName("");
+      setName("Choose Tasbih");
     } else {
       alert("Select Tasbih First");
     }
@@ -34,7 +34,7 @@ const AddBody = props => {
   const handleOnChange = (obj, e) => {
     e.preventDefault();
 
-    var val = noOfTasbihs.filter(function (item) {
+    var val = noOfTasbihs.filter(function(item) {
       return item.Name === e.target.text;
     });
     setName(e.target.text);

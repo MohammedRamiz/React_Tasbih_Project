@@ -1,74 +1,11 @@
 .side-navigation {
   display: flex;
-  height: 95vh;
-  width: 280px;
+  height: calc(100vh - 40px);
+  width: 350px;
   background: #caffd8;
-  position: absolute;
-  left: -280px;
-  top: 40px;
   border-right: 5px solid #36e865;
   flex-direction: column;
   padding: 0 10px;
-}
-
-.side-navigation.nav-menu {
-  transform: translateX(-280px);
-  transition: 0.3s ease-in;
-  z-index: 999999;
-}
-
-.side-navigation.nav-menu.open {
-  transform: translateX(280px);
-  transition: 0.5s ease-out;
-  z-index: 2;
-}
-
-.backbone {
-  z-index: 1;
-  position: absolute;
-  height: 95vh;
-  width: 100%;
-  right: 0px;
-  top: 40px;
-  bottom: 0;
-  background: #000;
-  opacity: 0%;
-  display: none;
-}
-
-.backbone.open {
-  animation: fadeInAnimation ease 0.3s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-}
-
-.backbone {
-  animation: fadeOutAnimation ease 0.3s;
-  animation-iteration-count: 1;
-  animation-fill-mode: backwards;
-}
-
-@keyframes fadeInAnimation {
-  0% {
-    opacity: 0%;
-  }
-  100% {
-    opacity: 25%;
-  }
-}
-
-@keyframes fadeOutAnimation {
-  0% {
-    opacity: 25%;
-  }
-  100% {
-    opacity: 0%;
-  }
-}
-
-.backbone.open {
-  display: block !important;
-  transition: 0.5s;
 }
 
 .profile-picture-box {
@@ -129,4 +66,73 @@ span.content-btn > a {
   text-decoration: none;
   display: block;
   padding: 5px 0;
+}
+
+@media (max-width: 767px) {
+  .side-navigation {
+    position: absolute;
+    top: 40px;
+    left: -280px;
+    width: 280px !important;
+  }
+
+  .side-navigation.nav-menu {
+    transform: translateX(-280px);
+    transition: 0.3s ease-in;
+    z-index: 999999;
+  }
+
+  .side-navigation.nav-menu.open {
+    transform: translateX(280px);
+    transition: 0.5s ease-out;
+    z-index: 2;
+  }
+
+  .backbone {
+    z-index: 1;
+    position: fixed;
+    height: 95vh;
+    width: 100%;
+    right: 0px;
+    top: 40px;
+    bottom: 0;
+    background: #000;
+    opacity: 0%;
+    display: none;
+  }
+
+  .backbone.open {
+    animation: fadeInAnimation ease 0.3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
+  }
+
+  .backbone {
+    animation: fadeOutAnimation ease 0.3s;
+    animation-iteration-count: 1;
+    animation-fill-mode: backwards;
+  }
+
+  @keyframes fadeInAnimation {
+    0% {
+      opacity: 0%;
+    }
+    100% {
+      opacity: 25%;
+    }
+  }
+
+  @keyframes fadeOutAnimation {
+    0% {
+      opacity: 25%;
+    }
+    100% {
+      opacity: 0%;
+    }
+  }
+
+  .backbone.open {
+    display: block !important;
+    transition: 0.5s;
+  }
 }

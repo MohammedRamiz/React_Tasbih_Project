@@ -22,19 +22,18 @@ const Load = () => {
 
   const LogOutUser = () => {
     setUserState("LOS");
+    dispatch(execCalls());
+    dispatch(resetSettings());
+
     if (currUser.isAnonymous) {
-      dispatch(execCalls());
-      dispatch(resetSettings())
       auth
         .signOut()
         .then(() => {
           resetUser();
-          console.log("user Removed end");
+          console.log("user Removed");
         })
         .catch(er => console.log(er));
     } else {
-      dispatch(execCalls());
-      dispatch(resetSettings())
       auth.signOut().then(() => {
         resetUser();
         console.log("user Logout Successfully");

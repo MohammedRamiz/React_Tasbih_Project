@@ -1,5 +1,18 @@
+@media (max-width: 767px) {
+  .header-bar {
+    width: 100% !important;
+    height: 40px;
+    background: #36e865;
+    display: flex;
+  }
+
+  .page-name {
+    justify-content: center !important;
+  }
+}
+
 .header-bar {
-  width: 100%;
+  width: 350px;
   height: 40px;
   background: #36e865;
   display: flex;
@@ -24,7 +37,7 @@
   display: flex;
   flex: 1 1;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
   font-size: 18px;
   text-transform: uppercase;
 }

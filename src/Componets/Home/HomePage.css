@@ -1,3 +1,14 @@
+@media (min-width: 768px) {
+  .outer-container {
+    display: flex;
+    flex-direction: row;
+  }
+
+  .inner-container {
+    flex: 1;
+  }
+}
+
 .outer-shell {
   display: flex;
   height: 95vh;
@@ -18,7 +29,6 @@
 .add-tasbih {
   float: right;
   height: 100%;
-
   display: flex;
   align-items: center;
 }
@@ -38,7 +48,7 @@
 .tasbih-card-shell,
 .tasbih-card-shell-doted {
   width: 50%;
-  height: 150px;
+  height: 180px;
   float: left;
   padding: 10px;
 }
@@ -72,6 +82,7 @@
   text-align: center;
   cursor: pointer;
 }
+
 .tasbih-icon-plus {
   font-size: 20px;
   color: #ddd;
@@ -92,7 +103,7 @@
   text-align: center;
   padding: 4px;
   background: #36e865;
-  flex: 1 1;
+  /* flex: 1 1; */
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   font-size: 13px;
@@ -102,8 +113,15 @@
   overflow: hidden;
 }
 
+@media (max-width: 767px) {
+  .tasbih-card-shell,
+  .tasbih-card-shell-doted {
+    height: 150px;
+  }
+}
+
 .footer-card {
-  flex: 1;
+  /* flex: 1; */
   text-align: center;
   font-size: 12px;
   padding: 0 0 5px;
@@ -155,7 +173,7 @@ svg {
   width: 20px;
   border-bottom-left-radius: 4px;
   background: #2ac253;
-  line-height: 22px;
+  /* line-height: 22px; */
   color: white;
 }
 
