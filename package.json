@@ -12,6 +12,7 @@
     "@testing-library/user-event": "^12.6.0",
     "bootstrap": "^5.0.1",
     "firebase": "^8.2.3",
+    "netlify-cli": "^6.8.12",
     "react": "^17.0.1",
     "react-bootstrap": "^1.6.1",
     "react-device-detect": "^1.17.0",
