@@ -3,27 +3,19 @@
   height: calc(100vh - 40px);
   width: 350px;
   background: #caffd8;
-  border-right: 5px solid #36e865;
+  /* border-right: 5px solid #36e865; */
   flex-direction: column;
-  padding: 0 10px;
 }
 
 .profile-picture-box {
-  height: 200px;
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  align-items: center;
-}
-
-.profile-picture-box {
-  height: 180px;
+  height: auto;
   display: flex;
   align-content: center;
   justify-content: flex-end;
   align-items: center;
   flex-direction: column;
-  flex: 2;
+  background: #36e865;
+  padding: 10px 0;
 }
 
 .footer {
@@ -31,10 +23,54 @@
   padding: 10px 0;
 }
 
-.profile-picture-box > img {
-  height: 90px;
-  width: 90px;
+label.custom-img-upload{
+  height: 95px;
+  width: 95px;
+  position: relative;
   border-radius: 50%;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+/* 
+.profile-picture-box .img-block img {
+  border-radius: 50%;
+} */
+
+.overlay{
+  display: flex;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+  border-radius: 50%;
+  transition: .2s ease-in-out;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+  cursor: pointer;
+}
+
+.overlay:hover{
+  background: #00000069;
+  display: flex;
+}
+
+span.overlay:after {content: "";display: none;background: #0000002b;height: 100%;width: 1000%;position: absolute;}
+span.overlay:hover:after{content: "";display: flex};
+
+#photo-upload{
+  display: none;
+}
+
+.overlay .profile-camera{
+  position: absolute;
+  width: 20px;
+  color: transparent;
+}
+.overlay:hover .profile-camera{
+  color: #fff;  
+  transition: .3s ease-in-out;
 }
 
 span.user-name {
@@ -45,7 +81,7 @@ span.user-name {
 
 .content {
   border-top: 1px solid #8df1a7;
-  margin-top: 20px;
+  padding-top:10px;
   flex: 6;
   flex-direction: column;
   justify-content: flex-start !important;

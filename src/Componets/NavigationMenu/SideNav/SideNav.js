@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import "./SideNav.css";
 
 import { useSelector } from "react-redux";
@@ -7,16 +9,36 @@ import { useSelector } from "react-redux";
 const SideNav = props => {
   const userDisplayName = useSelector(s => s.User.displayName);
   const profilePic = useSelector(s => s.User.photoURL);
+  const [profileDetails, setProfileDetails] = useState({});
 
   const setPageConfigs = pageConfig => {
     props.navMan();
     props.setPageName(pageConfig);
   };
 
+  const onChange = e => {
+    e.preventDefault();
+    const reader = new FileReader();
+    const file = e.target.files[0];
+    reader.onloadend = () => {
+      setProfileDetails({
+        file: file,
+        imagePreviewUrl: reader.result
+      });
+    }
+    reader.readAsDataURL(file);
+  }
+
   return (
     <div className={props.navClass}>
       <div className="profile-picture-box">
-        <img alt="img" src={profilePic ? profilePic : "favicon.jpg"} />
+        <label htmlFor="photo-upload" className="custom-img-upload">
+          <span className="overlay" onClick="">
+            <img for="photo-upload" className="img-upload" alt="img" src={profilePic ? profilePic : "favicon.jpg"} />
+            <FontAwesomeIcon className="profile-camera" icon={faCamera} />
+          </span>
+          <input id="photo-upload" type="file" onChange={onChange} />
+        </label>
         <span className="user-name">{userDisplayName}</span>
       </div>
       <div className="content flex">

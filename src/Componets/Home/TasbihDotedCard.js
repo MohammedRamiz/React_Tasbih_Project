@@ -11,7 +11,7 @@ const TasbihDotedCard = props => {
       onClick={props.click}
     >
       <div className="tasbih-card-inner-dotted flex">
-        <span className="tasbih-icon-plus">New Tasbih</span>
+        <span className="tasbih-icon-plus">Add Tasbih</span>
       </div>
     </div>
   );
