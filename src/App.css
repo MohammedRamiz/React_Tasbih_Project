@@ -66,8 +66,31 @@ button.skip-btn {
 }
 
 .initialize {
-  font-size: 20px;
+  font-size: 16px;
   height: 100vh;
+  color: #1f9e2e;
+}
+
+.initialize.flex:after {
+  content: "";
+  display: flex;
+  height: 100px;
+  width: 100px;
+  background: #1f9e2e;
+  position: absolute;
+  z-index: -11;
+  border-radius: 50%;
+}
+
+.initialize.flex:before {
+  content: "";
+  display: flex;
+  height: 80px;
+  width: 80px;
+  position: absolute;
+  z-index: -1;
+  background: #fff;
+  border-radius: 50%;
 }
 
 @media (min-width: 767px) {

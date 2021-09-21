@@ -173,7 +173,6 @@ const Load = () => {
     ) : (
       <SignInPage click={setUser} />
     );
-
   return settings.loading ? (
     <div className="initialize flex">Loading...</div>
   ) : (
