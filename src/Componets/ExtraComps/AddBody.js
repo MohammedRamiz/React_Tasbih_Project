@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
-import Modal from "react-bootstrap/Modal";
-import Button from "react-bootstrap/Button";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { Modal, Button, Dropdown } from "react-bootstrap";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import db from "../Firebase/firebase.js";
-import { Dropdown } from "react-bootstrap";
 import "./modal.css";
 
 import { updateSettings } from "../../action/action";
@@ -34,7 +32,7 @@ const AddBody = props => {
   const handleOnChange = (obj, e) => {
     e.preventDefault();
 
-    var val = noOfTasbihs.filter(function(item) {
+    var val = noOfTasbihs.filter(function (item) {
       return item.Name === e.target.text;
     });
     setName(e.target.text);

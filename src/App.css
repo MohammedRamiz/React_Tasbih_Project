@@ -39,6 +39,12 @@
   width: 100%;
 }
 
+.sign-in-with p {
+  text-align: center;
+  margin: 0;
+  color: #2e5c29;
+}
+
 .user-sign-in button {
   margin: 5px 0;
 }

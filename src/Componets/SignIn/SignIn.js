@@ -238,6 +238,7 @@ const SignIn = props => {
         <button onClick={LoginUser} className="btn">
           Sign In With Google
         </button>
+        <p >-- OR --</p>
         <button className="skip-btn btn" onClick={GuestSignIn}>
           Sign Up As Guest
         </button>
