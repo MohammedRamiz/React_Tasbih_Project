@@ -210,30 +210,32 @@ const SignIn = props => {
       .onSnapshot(data => {
         setUserNameLogin(data.docs[0].data().IsUserNameLoginVisible);
       });
+
+    //GuestSignIn();
   }, []);
 
   return (
     <div className="user-sign-in flex">
-      {isUserNameLoginVisible ? (
+      {/* {isUserNameLoginVisible ? (
         <>
-          <div className="sign-in-with-username">
-            <Form>
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Username</Form.Label>
-                <Form.Control
-                  onChange={getusername}
-                  type="email"
-                  placeholder="Your Username"
-                />
-              </Form.Group>
-              <Button type="button" onClick={signInGuestUser} variant="">
-                Guest Sign In
+        <div className="sign-in-with-username">
+          <Form>
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Username</Form.Label>
+              <Form.Control
+                onChange={getusername}
+                type="email"
+                placeholder="Your Username"
+              />
+            </Form.Group>
+            <Button type="button" onClick={signInGuestUser} variant="">
+              Guest Sign In
               </Button>
-            </Form>
-          </div>
-          <p>-- OR --</p>
+          </Form>
+        </div>
+        <p>-- OR --</p>
         </>
-      ) : ''}
+      ) : ''} */}
       <div className="sign-in-with">
         <button onClick={LoginUser} className="btn">
           Sign In With Google

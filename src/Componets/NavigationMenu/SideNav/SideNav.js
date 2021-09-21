@@ -33,8 +33,8 @@ const SideNav = props => {
     <div className={props.navClass}>
       <div className="profile-picture-box">
         <label htmlFor="photo-upload" className="custom-img-upload">
-          <span className="overlay" onClick="">
-            <img for="photo-upload" className="img-upload" alt="img" src={profilePic ? profilePic : "favicon.jpg"} />
+          <span className="overlay">
+            <img htmlFor="photo-upload" className="img-upload" alt="img" src={profilePic ? profilePic : "favicon.jpg"} />
             <FontAwesomeIcon className="profile-camera" icon={faCamera} />
           </span>
           <input id="photo-upload" type="file" onChange={onChange} />

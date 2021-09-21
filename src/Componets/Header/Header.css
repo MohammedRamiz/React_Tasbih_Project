@@ -59,18 +59,3 @@ span.layout {
 .layout svg {
   font-size: 25px !important;
 }
-
-span.log-out-btn button {
-  font-size: 12px;
-  border: none;
-  padding: 5px 8px;
-  width: 100%;
-  background: #17a10b;
-  border-radius: 4px;
-  color: white;
-}
-
-span.log-out-btn {
-  height: auto;
-  width: 75%;
-}

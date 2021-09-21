@@ -19,8 +19,7 @@
 }
 
 .footer {
-  flex: 2;
-  padding: 10px 0;
+  flex: 1;
 }
 
 label.custom-img-upload{
@@ -30,6 +29,11 @@ label.custom-img-upload{
   border-radius: 50%;
   overflow: hidden;
   cursor: pointer;
+}
+
+.img-upload{
+  height: 100%;
+  width: 100%;
 }
 
 /* 
@@ -56,10 +60,10 @@ label.custom-img-upload{
   display: flex;
 }
 
-span.overlay:after {content: "";display: none;background: #0000002b;height: 100%;width: 1000%;position: absolute;}
-span.overlay:hover:after{content: "";display: flex};
+span.overlay:after {content: "";display: none;background: #0000002b;height: 100%;width: 100%; position: absolute;}
+span.overlay:hover:after{content: "";display: flex}
 
-#photo-upload{
+.custom-img-upload input#photo-upload{
   display: none;
 }
 
@@ -102,6 +106,20 @@ span.content-btn > a {
   text-decoration: none;
   display: block;
   padding: 5px 0;
+}
+
+span.log-out-btn button {
+    font-size: 14px;
+    border: none;
+    padding: 5px 8px;
+    width: 100%;
+    background: #ff3030;
+    /* border-radius: 4px; */
+    color: #fff;
+}
+
+span.log-out-btn {
+  width: 100%;
 }
 
 @media (max-width: 767px) {
