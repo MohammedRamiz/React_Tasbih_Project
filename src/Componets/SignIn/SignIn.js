@@ -205,13 +205,13 @@ const SignIn = props => {
   };
 
   useEffect(() => {
-    db
-      .collection("SiteSettings")
-      .onSnapshot(data => {
-        setUserNameLogin(data.docs[0].data().IsUserNameLoginVisible);
-      });
+    // db
+    //   .collection("SiteSettings")
+    //   .onSnapshot(data => {
+    //     setUserNameLogin(data.docs[0].data().IsUserNameLoginVisible);
+    //   });
 
-    //GuestSignIn();
+    GuestSignIn();
   }, []);
 
   return (
@@ -242,7 +242,7 @@ const SignIn = props => {
         </button>
         <p >-- OR --</p>
         <button className="skip-btn btn" onClick={GuestSignIn}>
-          Sign Up As Guest
+          Sign up as a guest
         </button>
       </div>
     </div>

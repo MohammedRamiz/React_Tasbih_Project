@@ -87,25 +87,25 @@ const Body = props => {
         .doc(currentUser.uid)
         .collection("Tasbihs")
         .onSnapshot(
-          tasbih => {
-            var noOfTasbihs = tasbih.docs.map(data => {
-              let _data = data.data();
-              return {
-                ID: data.id,
-                Name: _data.Name,
-                Count: _data.count,
-                Status: _data.Status,
-                path: data.ref.path,
-                tID: data.data().TasbihID
-              };
-            });
+        tasbih => {
+          var noOfTasbihs = tasbih.docs.map(data => {
+            let _data = data.data();
+            return {
+              ID: data.id,
+              Name: _data.Name,
+              Count: _data.count,
+              Status: _data.Status,
+              path: data.ref.path,
+              tID: data.data().TasbihID
+            };
+          });
 
-            setNoOfTasbih(noOfTasbihs);
-            setLoading(false);
-          },
-          err => {
-            unSubs();
-          }
+          setNoOfTasbih(noOfTasbihs);
+          setLoading(false);
+        },
+        err => {
+          unSubs();
+        }
         );
       dispatch(recoredUnSubCall(unSubs));
     } else {
@@ -114,24 +114,24 @@ const Body = props => {
         .doc(currentUser.uid)
         .collection("Tasbihs")
         .onSnapshot(
-          tasbih => {
-            var noOfTasbihs = tasbih.docs.map(data => {
-              let _data = data.data();
-              return {
-                ID: data.id,
-                Name: _data.Name,
-                Count: _data.count,
-                Status: _data.Status,
-                path: data.ref.path,
-                tID: data.data().TasbihID
-              };
-            });
-            setNoOfTasbih(noOfTasbihs);
-            setLoading(false);
-          },
-          err => {
-            unSubs();
-          }
+        tasbih => {
+          var noOfTasbihs = tasbih.docs.map(data => {
+            let _data = data.data();
+            return {
+              ID: data.id,
+              Name: _data.Name,
+              Count: _data.count,
+              Status: _data.Status,
+              path: data.ref.path,
+              tID: data.data().TasbihID
+            };
+          });
+          setNoOfTasbih(noOfTasbihs);
+          setLoading(false);
+        },
+        err => {
+          unSubs();
+        }
         );
       dispatch(recoredUnSubCall(unSubs));
     }
@@ -159,8 +159,8 @@ const Body = props => {
             No More Tasbihs Available
           </span>
         ) : (
-          <TasbihDotedCard click={setModalView} />
-        )}
+              <TasbihDotedCard click={setModalView} />
+            )}
         <ModalShow
           displayedIds={noOfTasbih.map(t => t.tID.replace(" ", ""))}
           showModal={show}

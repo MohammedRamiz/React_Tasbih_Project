@@ -18,9 +18,8 @@
   padding: 10px 0;
 }
 
-.footer {
-  flex: 1;
-}
+/* .footer {
+} */
 
 label.custom-img-upload{
   height: 95px;
@@ -85,20 +84,35 @@ span.user-name {
 
 .content {
   border-top: 1px solid #8df1a7;
-  padding-top:10px;
+  padding-top:5px;
   flex: 6;
+  padding-left:25%; 
   flex-direction: column;
   justify-content: flex-start !important;
 }
 
+div.home-page.homepage,div.tasbih-history.history,div.req-tasbih.request{
+    background: #36e865 !important;
+    border:1px solid #1f4a20;
+    border-right: none;
+}
+
+div.home-page.homepage a,div.tasbih-history.history a,div.req-tasbih.request a{
+    color: #1f4a20 !important;
+    font-weight: 600;
+}
+
 .content > div,
 .footer > div {
-  width: 75%;
-  background: #17a10b;
-  border-radius: 4px;
-  font-size: 14px;
-  text-align: center;
-  margin: 5px;
+    width: 100%;
+    background: #1f4a20;
+    border: 1px solid #1f4a20;
+    /* border-radius: 4px; */
+    font-size: 14px;
+    text-align: center;
+    margin: 2.5px;
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
 }
 
 span.content-btn > a {
@@ -108,7 +122,7 @@ span.content-btn > a {
   padding: 5px 0;
 }
 
-span.log-out-btn button {
+span.log-out-btn button,span.google-sign-up button {
     font-size: 14px;
     border: none;
     padding: 5px 8px;
@@ -118,8 +132,21 @@ span.log-out-btn button {
     color: #fff;
 }
 
-span.log-out-btn {
+span.google-sign-up button{
+  background: #4285f4;
+  display: flex;
+  place-content: Center;
+  align-items: center;
+  font-size: 16px;
+  justify-content: space-between;
+}
+
+span.log-out-btn,.google-sign-up {
   width: 100%;
+}
+
+svg.svg-inline--fa.fa-google.fa-w-16.google-icon {
+    width: 16px;
 }
 
 @media (max-width: 767px) {

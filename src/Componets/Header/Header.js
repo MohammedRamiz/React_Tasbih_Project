@@ -43,12 +43,12 @@ const Header = props => {
               {settings.settings.Layout === "colomn-layout" ? (
                 <RiLayoutColumnLine />
               ) : (
-                <RiLayoutRowLine />
-              )}
+                  <RiLayoutRowLine />
+                )}
             </span>
           ) : (
-            ""
-          )}
+              ""
+            )}
         </div>
         <MobileView>
           <SideNav
@@ -56,12 +56,13 @@ const Header = props => {
               sidebar ? (
                 "side-navigation nav-menu open"
               ) : (
-                "side-navigation nav-menu"
-              )
+                  "side-navigation nav-menu"
+                )
             }
             click={props.click}
             navMan={OpenSideNavigation}
             setPageName={props.setPageName}
+            activePage={props.activePage}
           />
         </MobileView>
         <BrowserView>
@@ -70,6 +71,7 @@ const Header = props => {
             navMan={OpenSideNavigation}
             click={props.click}
             setPageName={props.setPageName}
+            activePage={props.activePage}
           />
         </BrowserView>
 

@@ -35,10 +35,10 @@
 
 .page-name {
   display: flex;
-  flex: 1 1;
+  flex: 1;
   align-items: center;
   justify-content: flex-start;
-  font-size: 18px;
+  font-size: 17px;
   text-transform: uppercase;
 }
 

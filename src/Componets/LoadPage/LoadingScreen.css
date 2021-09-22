@@ -1,0 +1,56 @@
+
+.loader span.tasbih-points {
+    background: #92ff9f;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    position: absolute;
+    transform-origin: 48px;
+}
+
+.loader{
+        position: absolute;
+    height: 96px;
+    width: 96px;
+    animation: rotate 4.5s linear infinite;
+    display: flex;
+    align-items: center;
+    align-content: center;
+}
+
+@keyframes rotate{
+    0%{
+        transform: rotate(0deg);
+    }
+    100%{
+        transform: rotate(359.99deg)
+    }
+}
+   
+ .loader span.tasbih-points:nth-child(1){
+  transform:rotate(0deg);
+}
+
+.loader span.tasbih-points:nth-child(2){
+  transform:rotate(51.42deg);
+}
+
+.loader span.tasbih-points:nth-child(3){
+  transform:rotate(102.84deg);
+}
+
+.loader span.tasbih-points:nth-child(4){
+  transform:rotate(154.26deg);
+}
+
+.loader span.tasbih-points:nth-child(5){
+  transform:rotate(205.68deg);
+}
+
+.loader span.tasbih-points:nth-child(6){
+  transform:rotate(257.10deg);
+}
+
+.loader span.tasbih-points:nth-child(7){
+  transform:rotate(308.52deg);
+}    

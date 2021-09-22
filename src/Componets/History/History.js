@@ -25,7 +25,7 @@ const History = props => {
     }
 
     useEffect(() => {
-        props.pageName('History');
+        props.pageName('History', "history");
         if (!currUser.isAnonymous) {
             db.collection('Users').doc(currUser.uid).get().then(userData => {
                 let unSubs = userData.ref.collection("HistoryTasbihs").orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
@@ -62,22 +62,27 @@ const History = props => {
         }
     }, []);
 
+
+    var renderComp = tasbihsHistory.legnth > 0 ? (
+        tasbihsHistory.map(th => {
+            if (th.deleterPermanently)
+                return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} />
+            else
+                return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} delete={DeletePermenantData} restore={RestoreTasbih} />
+        })
+    ) : (
+            <span className="flex no-more-tasbihs">No history found</span>
+        );
+
     return (
         <>
-            <div className='history-tasbih-counter'>
-                <div className='history-counter'>
-                    <p>Total:</p>
-                    {totalCounts}
-                </div>
+        <div className='history-tasbih-counter'>
+            <div className='history-counter'>
+                <p>Total:</p>
+                {totalCounts}
             </div>
-            {
-                tasbihsHistory.map(th => {
-                    if (th.deleterPermanently)
-                        return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} />
-                    else
-                        return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} delete={DeletePermenantData} restore={RestoreTasbih} />
-                })
-            }
+        </div>
+        {renderComp }
         </>
     )
 }

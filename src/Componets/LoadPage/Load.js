@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { provider, auth } from "../Firebase/firebase";
 import HomePage from "../Home/HomePage.js";
 import SignInPage from "../SignIn/SignIn";
+import LoadingScreen from "./LoadingScreen"
 
 import db from "../Firebase/firebase.js";
 import { useSelector, useDispatch } from "react-redux";
@@ -54,57 +55,9 @@ const Load = () => {
           .collection("GuestUsers")
           .doc(user.uid)
           .onSnapshot(
-            data => {
-              if (data.data()) {
-                if (!data.data().Deleted) {
-                  let unSubSet = data.ref.collection("Settings").onSnapshot(
-                    snap => {
-                      if (!snap.empty) {
-                        dispatch(
-                          updateSettings({
-                            isUserIn: true,
-                            settings: snap.docs[0].data(),
-                            path: snap.docs[0].ref.path,
-                            loading: false
-                          })
-                        );
-                      } else {
-                        data.ref.collection("Settings").add(settings.settings);
-                      }
-                    },
-                    err => {
-                      console.log(err);
-                    }
-                  );
-                  dispatch(setUpUserData(user));
-                  dispatch(recoredUnSubCall(unSubSet));
-
-                  user.updateProfile({ displayName: data.data().Name });
-                } else {
-                  dispatch(
-                    updateSettings({
-                      loading: false
-                    })
-                  );
-                }
-              } else {
-                dispatch(
-                  updateSettings({
-                    loading: false
-                  })
-                );
-              }
-            },
-            err => console.log(err)
-          );
-        dispatch(recoredUnSubCall(unSub));
-      } else {
-        var func = db
-          .collection("Users")
-          .doc(user.uid)
-          .onSnapshot(
-            data => {
-              if (data.data()) {
+          data => {
+            if (data.data()) {
+              if (!data.data().Deleted) {
                 let unSubSet = data.ref.collection("Settings").onSnapshot(
                   snap => {
                     if (!snap.empty) {
@@ -113,7 +66,7 @@ const Load = () => {
                           isUserIn: true,
                           settings: snap.docs[0].data(),
                           path: snap.docs[0].ref.path,
-                          isLoading: false
+                          loading: false
                         })
                       );
                     } else {
@@ -124,23 +77,71 @@ const Load = () => {
                     console.log(err);
                   }
                 );
-                dispatch(recoredUnSubCall(unSubSet));
                 dispatch(setUpUserData(user));
-                dispatch(
-                  updateSettings({
-                    loading: false
-                  })
-                );
+                dispatch(recoredUnSubCall(unSubSet));
+
+                user.updateProfile({ displayName: data.data().Name });
               } else {
-                console.log("User Removed");
                 dispatch(
                   updateSettings({
                     loading: false
                   })
                 );
               }
-            },
-            er => console.log(er)
+            } else {
+              dispatch(
+                updateSettings({
+                  loading: false
+                })
+              );
+            }
+          },
+          err => console.log(err)
+          );
+        dispatch(recoredUnSubCall(unSub));
+      } else {
+        var func = db
+          .collection("Users")
+          .doc(user.uid)
+          .onSnapshot(
+          data => {
+            if (data.data()) {
+              let unSubSet = data.ref.collection("Settings").onSnapshot(
+                snap => {
+                  if (!snap.empty) {
+                    dispatch(
+                      updateSettings({
+                        isUserIn: true,
+                        settings: snap.docs[0].data(),
+                        path: snap.docs[0].ref.path,
+                        isLoading: false
+                      })
+                    );
+                  } else {
+                    data.ref.collection("Settings").add(settings.settings);
+                  }
+                },
+                err => {
+                  console.log(err);
+                }
+              );
+              dispatch(recoredUnSubCall(unSubSet));
+              dispatch(setUpUserData(user));
+              dispatch(
+                updateSettings({
+                  loading: false
+                })
+              );
+            } else {
+              console.log("User Removed");
+              dispatch(
+                updateSettings({
+                  loading: false
+                })
+              );
+            }
+          },
+          er => console.log(er)
           );
         dispatch(recoredUnSubCall(func));
       }
@@ -171,13 +172,13 @@ const Load = () => {
     currUser && !settings.loading ? (
       <HomePage click={LogOutUser} />
     ) : (
-      <SignInPage click={setUser} />
-    );
+        <SignInPage click={setUser} />
+      );
   return settings.loading ? (
-    <div className="initialize flex">Loading...</div>
+    <LoadingScreen />
   ) : (
-    loadPage
-  );
+      loadPage
+    );
 };
 
 export default Load;

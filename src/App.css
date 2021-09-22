@@ -91,8 +91,8 @@ button.skip-btn {
 .initialize.flex:before {
   content: "";
   display: flex;
-  height: 80px;
-  width: 80px;
+  height: 75px;
+  width: 75px;
   position: absolute;
   z-index: -1;
   background: #fff;

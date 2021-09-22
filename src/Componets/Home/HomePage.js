@@ -9,12 +9,14 @@ import { Route } from "react-router-dom";
 
 const HomePage = props => {
   const [pageName, setPageName] = useState("My Tasbihs");
+  const [activePage, setActivePage] = useState("homepage");
 
   const assignPageName = pageName => {
     setPageName(pageName);
   };
 
-  const changePageName = pageName => {
+  const changePageName = (pageName, activePage) => {
+    setActivePage(activePage);
     setPageName(pageName);
   };
 
@@ -25,6 +27,7 @@ const HomePage = props => {
         signIn={props.signIn}
         pageName={pageName}
         setPageName={changePageName}
+        activePage={activePage}
       />
       <div className="inner-container">
         <Route path="/" exact>
