@@ -63,7 +63,7 @@ const History = props => {
     }, []);
 
 
-    var renderComp = tasbihsHistory.legnth > 0 ? (
+    var renderComp = tasbihsHistory.length > 0 ? (
         tasbihsHistory.map(th => {
             if (th.deleterPermanently)
                 return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} />
@@ -71,7 +71,7 @@ const History = props => {
                 return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} delete={DeletePermenantData} restore={RestoreTasbih} />
         })
     ) : (
-            <span className="flex no-more-tasbihs">No history found</span>
+            < span className="flex no-more-tasbihs" > No history found</span>
         );
 
     return (

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Dropdown } from "react-bootstrap";
+import { Modal, Button, Dropdown, Form } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import db from "../Firebase/firebase.js";
 import "./modal.css";
@@ -45,23 +45,23 @@ const AddBody = props => {
       .collection("Tasbihs")
       .where("Visible", "==", true)
       .onSnapshot(
-        snap => {
-          var noOfTasbihs = snap.docs.map(doc => {
-            return { ID: doc.id, Name: doc.data().Name };
-          });
+      snap => {
+        var noOfTasbihs = snap.docs.map(doc => {
+          return { ID: doc.id, Name: doc.data().Name };
+        });
 
-          dispach(
-            updateSettings({
-              totalTasbihsCount: noOfTasbihs.length
-            })
-          );
-          setNoOfTasbih(noOfTasbihs);
+        dispach(
+          updateSettings({
+            totalTasbihsCount: noOfTasbihs.length
+          })
+        );
+        setNoOfTasbih(noOfTasbihs);
 
-          if (userDeleted) {
-            unSubs();
-          }
-        },
-        er => console.log(er)
+        if (userDeleted) {
+          unSubs();
+        }
+      },
+      er => console.log(er)
       );
   }, []);
 

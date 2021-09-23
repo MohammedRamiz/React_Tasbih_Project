@@ -48,25 +48,27 @@ const Load = () => {
     setUserState("LOR");
   };
 
-  const setCurrentUser = user => {
+  const setCurrentUser = async user => {
     if (user) {
+      dispatch(updateSettings({ loading: true }));
       if (user.isAnonymous) {
         var unSub = db
           .collection("GuestUsers")
           .doc(user.uid)
           .onSnapshot(
-          data => {
+          async (data) => {
             if (data.data()) {
               if (!data.data().Deleted) {
-                let unSubSet = data.ref.collection("Settings").onSnapshot(
+                //await user.updateProfile({ displayName: data.data().Name });
+
+                let unSubSet = await data.ref.collection("Settings").onSnapshot(
                   snap => {
                     if (!snap.empty) {
                       dispatch(
                         updateSettings({
                           isUserIn: true,
                           settings: snap.docs[0].data(),
-                          path: snap.docs[0].ref.path,
-                          loading: false
+                          path: snap.docs[0].ref.path
                         })
                       );
                     } else {
@@ -77,10 +79,11 @@ const Load = () => {
                     console.log(err);
                   }
                 );
+
                 dispatch(setUpUserData(user));
                 dispatch(recoredUnSubCall(unSubSet));
+                dispatch(updateSettings({ loading: false }));
 
-                user.updateProfile({ displayName: data.data().Name });
               } else {
                 dispatch(
                   updateSettings({
@@ -89,6 +92,7 @@ const Load = () => {
                 );
               }
             } else {
+              console.log("loading = false");
               dispatch(
                 updateSettings({
                   loading: false
@@ -104,9 +108,9 @@ const Load = () => {
           .collection("Users")
           .doc(user.uid)
           .onSnapshot(
-          data => {
+          async (data) => {
             if (data.data()) {
-              let unSubSet = data.ref.collection("Settings").onSnapshot(
+              let unSubSet = await data.ref.collection("Settings").onSnapshot(
                 snap => {
                   if (!snap.empty) {
                     dispatch(
@@ -128,9 +132,7 @@ const Load = () => {
               dispatch(recoredUnSubCall(unSubSet));
               dispatch(setUpUserData(user));
               dispatch(
-                updateSettings({
-                  loading: false
-                })
+                updateSettings({ loading: false })
               );
             } else {
               console.log("User Removed");
@@ -145,8 +147,12 @@ const Load = () => {
           );
         dispatch(recoredUnSubCall(func));
       }
-    } else {
+    }
+    else {
+      console.log(user);
+      console.log("user not found");
       if (userState === "LOR" || userState === "") {
+        console.log("LOR");
         dispatch(
           updateSettings({
             loading: false
@@ -160,25 +166,17 @@ const Load = () => {
     setUserState("LOR");
   };
 
-  useEffect(() => {
-    const unsub = auth.onAuthStateChanged(user => {
+  useEffect(async () => {
+    const unsub = await auth.onAuthStateChanged(user => {
+      console.log(user);
       setCurrentUser(user);
     });
-
     return unsub;
   }, []);
 
-  let loadPage =
-    currUser && !settings.loading ? (
-      <HomePage click={LogOutUser} />
-    ) : (
-        <SignInPage click={setUser} />
-      );
-  return settings.loading ? (
-    <LoadingScreen />
-  ) : (
-      loadPage
-    );
+  let loadPage = currUser && !settings.loading ? <HomePage click={LogOutUser} /> : <SignInPage click={setUser} />;
+
+  return settings.loading ? <LoadingScreen /> : loadPage;
 };
 
 export default Load;

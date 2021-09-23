@@ -135,7 +135,7 @@ const Body = props => {
         );
       dispatch(recoredUnSubCall(unSubs));
     }
-  }, []);
+  }, [currentUser]);
 
   return (
     <div className="outer-shell">

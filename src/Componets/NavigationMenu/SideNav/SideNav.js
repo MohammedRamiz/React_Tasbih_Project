@@ -3,6 +3,10 @@ import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons"
+
+import SignInPage from "../../SignIn/SignIn";
+import GoogleSignIn from "../../SignIn/GoogleSignIn";
+
 import "./SideNav.css";
 
 import { useSelector } from "react-redux";
@@ -41,7 +45,7 @@ const SideNav = props => {
           </span>
           <input id="photo-upload" type="file" onChange={onChange} />
         </label>
-        <span className="user-name">{userDisplayName}</span>
+        <span className="user-name">{userDisplayName ? userDisplayName : "loading..."}</span>
       </div>
       <div className="content flex">
         <div className={props.activePage + " home-page"}>
@@ -60,7 +64,7 @@ const SideNav = props => {
             <Link to="/history">Tasbih History</Link>
           </span>
         </div>
-        <div className={props.activePage + " req-tasbih"} disable>
+        <div className={props.activePage + " req-tasbih"} disable='diasabled'>
           <span
             className="tasbih-history-btn content-btn"
             onClick={() => setPageConfigs("Request", "request")}
@@ -75,13 +79,9 @@ const SideNav = props => {
             {<button onClick={props.click}>Log Out</button>}
           </span>
         ) : (
+
             <span className="google-sign-up">
-              {<button onClick={props.click}>
-                <span>Sign In with</span>
-                <span>
-                  <FontAwesomeIcon className="google-icon" icon={faGoogle} />
-                </span>
-              </button>}
+              <GoogleSignIn />
             </span>
           )}
       </div>
