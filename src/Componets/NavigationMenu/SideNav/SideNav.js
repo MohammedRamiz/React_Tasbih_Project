@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
-import { faGoogle } from "@fortawesome/free-brands-svg-icons"
 
-import SignInPage from "../../SignIn/SignIn";
 import GoogleSignIn from "../../SignIn/GoogleSignIn";
 
 import "./SideNav.css";

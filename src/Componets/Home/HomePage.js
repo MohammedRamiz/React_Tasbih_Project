@@ -5,15 +5,9 @@ import History from "../History/History";
 import Header from "../Header/Header.js";
 import { Route } from "react-router-dom";
 
-//import db from '../Firebase/firebase.js';
-
 const HomePage = props => {
   const [pageName, setPageName] = useState("My Tasbihs");
   const [activePage, setActivePage] = useState("homepage");
-
-  const assignPageName = pageName => {
-    setPageName(pageName);
-  };
 
   const changePageName = (pageName, activePage) => {
     setActivePage(activePage);
@@ -38,7 +32,7 @@ const HomePage = props => {
             userDeleted={props.userDeleted}
             uid={props.uid}
             isSkipped={props.skip}
-            pageName={assignPageName}
+            pageName={changePageName}
           />
         </Route>
       </div>

@@ -10,7 +10,7 @@ import { recoredUnSubCall } from "../../action/action";
 const Body = props => {
   const [noOfTasbih, setNoOfTasbih] = useState([]);
   const [show, setShow] = useState(false);
-  const isSkipped = useSelector(state => state.User.isAnonymous);
+  const userType = useSelector(state => state.Settings.userType);
 
   const [isLoading, setLoading] = useState(true);
 
@@ -22,119 +22,43 @@ const Body = props => {
     setShow(!show);
   };
 
-  const appendNewBlock = (tasbihName, tid) => {
+  const appendNewBlock = async (tasbihName, tid) => {
     if (tasbihName) {
-      if (!isSkipped) {
-        db
-          .collection("Users")
-          .doc(currentUser.uid)
-          .get()
-          .then(user => {
-            user.ref
-              .collection("Tasbihs")
-              .add({
-                Status: "Running",
-                Name: tasbihName,
-                TasbihID: tid,
-                count: 0
-              })
-              .then(user => {
-                console.log("Tasbih Added To Collection");
-              });
-          });
-
-        setShow(false);
-      } else {
-        db
-          .collection("GuestUsers")
-          .doc(currentUser.uid)
-          .get()
-          .then(user => {
-            user.ref
-              .collection("Tasbihs")
-              .add({
-                Status: "Running",
-                Name: tasbihName,
-                TasbihID: tid,
-                count: 0
-              })
-              .then(user => {
-                console.log("Tasbih Added To Collection");
-              })
-              .catch(er => {
-                console.log(er);
-              });
-          })
-          .catch(er => {
-            console.log(er);
-          });
-        setShow(false);
-        //setTotalTasbihCounts(totalTasbihsCount);
-      }
+      setShow(false);
+      var user = await db.collection(userType).doc(currentUser.uid).get();
+      await user.ref.collection("Tasbihs").add({
+        Status: "Running",
+        Name: tasbihName,
+        TasbihID: tid,
+        count: 0
+      });
+      console.log("Tasbih Added To Collection");
     }
   };
-
-  //   const onTasbihsChange = totalTasbihs => {
-  //     setTotalTasbihCounts(totalTasbihs);
-  //   };
 
   useEffect(() => {
     setNoOfTasbih([]);
 
-    if (isSkipped) {
-      let unSubs = db
-        .collection("GuestUsers")
-        .doc(currentUser.uid)
-        .collection("Tasbihs")
-        .onSnapshot(
-        tasbih => {
-          var noOfTasbihs = tasbih.docs.map(data => {
-            let _data = data.data();
-            return {
-              ID: data.id,
-              Name: _data.Name,
-              Count: _data.count,
-              Status: _data.Status,
-              path: data.ref.path,
-              tID: data.data().TasbihID
-            };
-          });
+    let unSubs = db.collection(userType).doc(currentUser.uid).collection("Tasbihs").onSnapshot(tasbih => {
+      var noOfTasbihs = tasbih.docs.map(data => {
+        let _data = data.data();
+        return {
+          ID: data.id,
+          Name: _data.Name,
+          Count: _data.count,
+          Status: _data.Status,
+          path: data.ref.path,
+          tID: data.data().TasbihID
+        };
+      });
 
-          setNoOfTasbih(noOfTasbihs);
-          setLoading(false);
-        },
-        err => {
-          unSubs();
-        }
-        );
-      dispatch(recoredUnSubCall(unSubs));
-    } else {
-      let unSubs = db
-        .collection("Users")
-        .doc(currentUser.uid)
-        .collection("Tasbihs")
-        .onSnapshot(
-        tasbih => {
-          var noOfTasbihs = tasbih.docs.map(data => {
-            let _data = data.data();
-            return {
-              ID: data.id,
-              Name: _data.Name,
-              Count: _data.count,
-              Status: _data.Status,
-              path: data.ref.path,
-              tID: data.data().TasbihID
-            };
-          });
-          setNoOfTasbih(noOfTasbihs);
-          setLoading(false);
-        },
-        err => {
-          unSubs();
-        }
-        );
-      dispatch(recoredUnSubCall(unSubs));
-    }
+      setNoOfTasbih(noOfTasbihs);
+      setLoading(false);
+    }, err => {
+      unSubs();
+    });
+
+    dispatch(recoredUnSubCall(unSubs));
   }, [currentUser]);
 
   return (

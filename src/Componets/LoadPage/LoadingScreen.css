@@ -1,4 +1,62 @@
 
+@media (max-width:767px){
+  .loader span.tasbih-points {
+    height: 5px !important;
+    width: 5px !important;
+    transform-origin: 38px !important;
+}
+
+.loader{
+    height: 76px !important;
+    width: 76px !important;
+    animation: rotate 6s linear infinite;
+}
+
+.initialize.flex:after {
+  height: 80px !important;
+  width: 80px !important;
+}
+
+.initialize.flex:before {
+  height: 60px !important;
+  width: 60px !important;
+}
+
+
+.initialize {
+  font-size: 10px !important;
+}
+
+}
+
+.initialize {
+  font-size: 14px;
+  height: 100vh;
+  color: #1f9e2e;
+}
+
+.initialize.flex:after {
+  content: "";
+  display: flex;
+  height: 100px;
+  width: 100px;
+  background: #1f9e2e;
+  position: absolute;
+  z-index: -11;
+  border-radius: 50%;
+}
+
+.initialize.flex:before {
+  content: "";
+  display: flex;
+  height: 75px;
+  width: 75px;
+  position: absolute;
+  z-index: -1;
+  background: #fff;
+  border-radius: 50%;
+}
+
 .loader span.tasbih-points {
     background: #92ff9f;
     height: 8px;

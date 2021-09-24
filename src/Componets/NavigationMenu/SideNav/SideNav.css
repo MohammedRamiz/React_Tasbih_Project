@@ -86,7 +86,7 @@ span.user-name {
   border-top: 1px solid #8df1a7;
   padding-top:5px;
   flex: 6;
-  padding-left:25%; 
+  padding-left:15%; 
   flex-direction: column;
   justify-content: flex-start !important;
 }
@@ -94,12 +94,25 @@ span.user-name {
 div.home-page.homepage,div.tasbih-history.history,div.req-tasbih.request{
     background: #36e865 !important;
     border:1px solid #1f4a20;
-    border-right: none;
+    position: relative;
 }
 
 div.home-page.homepage a,div.tasbih-history.history a,div.req-tasbih.request a{
     color: #1f4a20 !important;
     font-weight: 600;
+}
+
+div.home-page.homepage:after, div.tasbih-history.history::after, div.req-tasbih.request:after{
+          content: "";
+    background: #ffffff;
+    height: 18px;
+    width: 6px;
+    position: absolute;
+    right: -4px;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1px solid;
+    border-right: none;
 }
 
 .content > div,

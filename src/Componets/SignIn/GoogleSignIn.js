@@ -37,7 +37,7 @@ function GoogleSignIn() {
             var retUser = await db.collection("Users").doc(retValue.user.uid).get();
 
             if (!retUser.exists) {
-                var retData = await db.collection("Users").doc(retUser.id).set({
+                await db.collection("Users").doc(retUser.id).set({
                     Name: retValue.user.displayName,
                     uid: retUser.id
                 });

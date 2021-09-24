@@ -50,109 +50,48 @@ const Load = () => {
 
   const setCurrentUser = async user => {
     if (user) {
-      dispatch(updateSettings({ loading: true }));
-      if (user.isAnonymous) {
-        var unSub = db
-          .collection("GuestUsers")
-          .doc(user.uid)
-          .onSnapshot(
-          async (data) => {
-            if (data.data()) {
-              if (!data.data().Deleted) {
-                //await user.updateProfile({ displayName: data.data().Name });
-
-                let unSubSet = await data.ref.collection("Settings").onSnapshot(
-                  snap => {
-                    if (!snap.empty) {
-                      dispatch(
-                        updateSettings({
-                          isUserIn: true,
-                          settings: snap.docs[0].data(),
-                          path: snap.docs[0].ref.path
-                        })
-                      );
-                    } else {
-                      data.ref.collection("Settings").add(settings.settings);
-                    }
-                  },
-                  err => {
-                    console.log(err);
-                  }
-                );
-
-                dispatch(setUpUserData(user));
-                dispatch(recoredUnSubCall(unSubSet));
-                dispatch(updateSettings({ loading: false }));
-
-              } else {
-                dispatch(
-                  updateSettings({
-                    loading: false
-                  })
-                );
-              }
-            } else {
-              console.log("loading = false");
-              dispatch(
-                updateSettings({
-                  loading: false
-                })
-              );
-            }
-          },
-          err => console.log(err)
-          );
-        dispatch(recoredUnSubCall(unSub));
-      } else {
-        var func = db
-          .collection("Users")
-          .doc(user.uid)
-          .onSnapshot(
-          async (data) => {
-            if (data.data()) {
-              let unSubSet = await data.ref.collection("Settings").onSnapshot(
-                snap => {
-                  if (!snap.empty) {
-                    dispatch(
-                      updateSettings({
-                        isUserIn: true,
-                        settings: snap.docs[0].data(),
-                        path: snap.docs[0].ref.path,
-                        isLoading: false
-                      })
-                    );
-                  } else {
-                    data.ref.collection("Settings").add(settings.settings);
-                  }
-                },
-                err => {
-                  console.log(err);
+      var userType = user.isAnonymous ? "GuestUsers" : "Users";
+      dispatch(updateSettings({ loading: true, userType: userType }));
+      console.log(userType);
+      var unSub = db.collection(userType).doc(user.uid).onSnapshot(async (data) => {
+        if (data.data()) {
+          var optionExist = data.data().Deleted ? data.data().Deleted : false;
+          if (!optionExist) {
+            let unSubSet = data.ref.collection("Settings").onSnapshot(
+              snap => {
+                if (!snap.empty) {
+                  dispatch(
+                    updateSettings({
+                      isUserIn: true,
+                      settings: snap.docs[0].data(),
+                      path: snap.docs[0].ref.path
+                    })
+                  );
+                } else {
+                  data.ref.collection("Settings").add(settings.settings);
                 }
-              );
-              dispatch(recoredUnSubCall(unSubSet));
-              dispatch(setUpUserData(user));
-              dispatch(
-                updateSettings({ loading: false })
-              );
-            } else {
-              console.log("User Removed");
-              dispatch(
-                updateSettings({
-                  loading: false
-                })
-              );
-            }
-          },
-          er => console.log(er)
-          );
-        dispatch(recoredUnSubCall(func));
-      }
+              },
+              err => {
+                console.log(err);
+              }
+            );
+
+            dispatch(setUpUserData(user));
+            dispatch(recoredUnSubCall(unSubSet));
+            dispatch(updateSettings({ loading: false }));
+
+          } else {
+            dispatch(updateSettings({ loading: false }));
+          }
+        } else {
+          dispatch(updateSettings({ loading: false }));
+        }
+      }, err => console.log(err));
+      dispatch(recoredUnSubCall(unSub));
     }
     else {
-      console.log(user);
       console.log("user not found");
       if (userState === "LOR" || userState === "") {
-        console.log("LOR");
         dispatch(
           updateSettings({
             loading: false
@@ -168,7 +107,6 @@ const Load = () => {
 
   useEffect(async () => {
     const unsub = await auth.onAuthStateChanged(user => {
-      console.log(user);
       setCurrentUser(user);
     });
     return unsub;

@@ -59,43 +59,43 @@ const SignIn = props => {
   };
 
   //Google Sign In
-  const LoginUser = async () => {
-    auth.signInWithPopup(provider).then(async (res) => {
-      //
-      var retUser = await db.collection("Users").doc(res.user.uid).get();
-      if (!retUser.exists) {
-        await db.collection("Users").doc(retUser.id).set({ Name: res.user.displayName, uid: retUser.id })
-        var updatedUserData = await db.collection("Users").doc(retUser.uid).get()
-        var tasbihData = await db.collection("Tasbihs").where("Visible", "==", true).get()
+  // const LoginUser = async () => {
+  //   auth.signInWithPopup(provider).then(async (res) => {
+  //     //
+  //     var retUser = await db.collection("Users").doc(res.user.uid).get();
+  //     if (!retUser.exists) {
+  //       await db.collection("Users").doc(retUser.id).set({ Name: res.user.displayName, uid: retUser.id })
+  //       var updatedUserData = await db.collection("Users").doc(retUser.uid).get()
+  //       var tasbihData = await db.collection("Tasbihs").where("Visible", "==", true).get()
 
-        var allTasbihs = tasbihData.docs.map(doc => doc);
-        var randPick = Math.floor(
-          Math.random() * allTasbihs.length
-        );
+  //       var allTasbihs = tasbihData.docs.map(doc => doc);
+  //       var randPick = Math.floor(
+  //         Math.random() * allTasbihs.length
+  //       );
 
-        await updatedUserData.ref.collection("Tasbihs").add({
-          count: 0,
-          TasbihID: allTasbihs[randPick].id,
-          Name: allTasbihs[randPick].data().Name,
-          Status: "Running"
-        });
-        await updatedUserData.ref.collection("Settings").add(settings.settings);
+  //       await updatedUserData.ref.collection("Tasbihs").add({
+  //         count: 0,
+  //         TasbihID: allTasbihs[randPick].id,
+  //         Name: allTasbihs[randPick].data().Name,
+  //         Status: "Running"
+  //       });
+  //       await updatedUserData.ref.collection("Settings").add(settings.settings);
 
-        dispatch(setUpUserData(res.user));
+  //       dispatch(setUpUserData(res.user));
 
-        dispatch(
-          updateSettings({
-            isUserIn: true,
-            loading: false,
-            totalTasbihsCount: allTasbihs.length
-          })
-        );
-      } else {
-        console.log("User found");
-        dispatch(updateSettings({ loading: false }));
-      }
-    });
-  };
+  //       dispatch(
+  //         updateSettings({
+  //           isUserIn: true,
+  //           loading: false,
+  //           totalTasbihsCount: allTasbihs.length
+  //         })
+  //       );
+  //     } else {
+  //       console.log("User found");
+  //       dispatch(updateSettings({ loading: false }));
+  //     }
+  //   });
+  // };
 
   useEffect(() => {
     console.log("sign in useEffect Called")

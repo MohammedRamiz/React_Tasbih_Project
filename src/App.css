@@ -71,34 +71,6 @@ button.skip-btn {
   align-items: flex-end;
 }
 
-.initialize {
-  font-size: 16px;
-  height: 100vh;
-  color: #1f9e2e;
-}
-
-.initialize.flex:after {
-  content: "";
-  display: flex;
-  height: 100px;
-  width: 100px;
-  background: #1f9e2e;
-  position: absolute;
-  z-index: -11;
-  border-radius: 50%;
-}
-
-.initialize.flex:before {
-  content: "";
-  display: flex;
-  height: 75px;
-  width: 75px;
-  position: absolute;
-  z-index: -1;
-  background: #fff;
-  border-radius: 50%;
-}
-
 @media (min-width: 767px) {
   .user-sign-in {
     padding: 0px 40px;

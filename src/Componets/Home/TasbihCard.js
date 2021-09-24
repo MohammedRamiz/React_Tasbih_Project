@@ -10,52 +10,26 @@ const TasbihCard = props => {
   const status = props.status;
   const path = props.path;
 
-  const isAnonymous = useSelector(state => state.User.isAnonymous);
   const uid = useSelector(state => state.User.uid);
   const layout = useSelector(state => state.Settings.settings.Layout);
 
-  const RemoveTasbih = () => {
-    if (uid !== "null") {
-      db
-        .doc(path)
-        .get()
-        .then(tasbihData => {
-          if (counts > 0) {
-            if (!isAnonymous) {
-              db
-                .collection("Users")
-                .doc(uid)
-                .get()
-                .then(user => {
-                  user.ref
-                    .collection("HistoryTasbihs")
-                    .add(historyDataTemplate(tasbihData.data(), "delete"))
-                    .then(data => {
-                      tasbihData.ref.delete();
-                    });
-                });
-            } else {
-              db
-                .collection("GuestUsers")
-                .doc(uid)
-                .get()
-                .then(user => {
-                  user.ref
-                    .collection("HistoryTasbihs")
-                    .add(historyDataTemplate(tasbihData.data(), "delete"))
-                    .then(data => {
-                      tasbihData.ref.delete();
-                    });
-                });
-            }
-          } else {
-            tasbihData.ref.delete();
-            console.log("Tasbih Has Been Removed");
-          }
-          console.log("Tasbih Has Been Removed");
-        });
+  const RemoveTasbih = async () => {
+    try {
+      if (uid !== "null" && counts > 0) {
+
+        var userDocPath = path.split("/")[0];
+        var tasbihData = await db.doc(path).get();
+        var userData = await db.collection(userDocPath).doc(uid).get();
+        await userData.ref.collection("HistoryTasbihs").add(historyDataTemplate(tasbihData.data(), "delete"))
+        await tasbihData.ref.delete();
+      }
+
+      console.log("Tasbih Has Been Removed");
     }
-  };
+    catch (e) {
+      console.log(e);
+    }
+  }
 
   const historyDataTemplate = (data, type) => {
     return {
@@ -68,54 +42,25 @@ const TasbihCard = props => {
     };
   };
 
-  const ResetTasbih = () => {
+  const ResetTasbih = async () => {
     if (counts > 0) {
-      db
-        .doc(path)
-        .get()
-        .then(tasbihData => {
-          if (!isAnonymous) {
-            db
-              .collection("Users")
-              .doc(uid)
-              .get()
-              .then(user => {
-                user.ref
-                  .collection("HistoryTasbihs")
-                  .add(historyDataTemplate(tasbihData.data(), "reset"))
-                  .then(data => {
-                    tasbihData.ref.update({ count: 0 });
-                    setCounts(0);
-                  });
-              });
-          } else {
-            db
-              .collection("GuestUsers")
-              .doc(uid)
-              .get()
-              .then(user => {
-                user.ref
-                  .collection("HistoryTasbihs")
-                  .add(historyDataTemplate(tasbihData.data(), "reset"))
-                  .then(data => {
-                    tasbihData.ref.update({ count: 0 });
-                    setCounts(0);
-                  });
-              });
-          }
-        });
+      var userDocName = path.split("/")[0];
+      var tasbihData = await db.doc(path).get();
+      var user = await db.collection(userDocName).doc(uid).get();
+      if (user) {
+        await user.ref.collection("HistoryTasbihs").add(historyDataTemplate(tasbihData.data(), "reset"));
+        tasbihData.ref.update({ count: 0 });
+        setCounts(0);
+      }
     }
   };
 
   const increseCounter = () => {
     var newCount = counts + 1;
     if (path !== "") {
-      db
-        .doc(path)
-        .get()
-        .then(tasbihData => {
-          tasbihData.ref.update({ count: newCount });
-        });
+      db.doc(path).get().then(tasbihData => {
+        tasbihData.ref.update({ count: newCount });
+      });
     }
     setCounts(newCount);
   };
@@ -140,24 +85,21 @@ const TasbihCard = props => {
     <div className={layout + " tasbih-card-shell"}>
       <div className="tasbih-card-inner">
         <div className="header-card">
-          <div className="left">{name}</div>
-          <div className="right">
+          <div className="tasbih-name">{name}</div>
+        </div>
+        <div className="middle-card flex">
+          <div className="tasbih-counts flex" onClick={increseCounter}>{counts}</div>
+          <div className="side-panel">
             <span className="tasbih-remove" onClick={RemoveTasbih}>
               <RiDeleteBin5Line />
             </span>
+            <span className="tasbih-reset" onClick={ResetTasbih}>
+              <BiReset />
+            </span>
           </div>
         </div>
-        <div className="middle-card" onClick={increseCounter}>
-          {counts}
-        </div>
-        <div className="footer-card">
-          {status}
-          <span className="tasbih-reset" onClick={ResetTasbih}>
-            <BiReset />
-          </span>
-        </div>
       </div>
-    </div>
+    </div >
   );
 };
 
