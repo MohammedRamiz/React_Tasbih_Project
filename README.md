@@ -1,5 +1,5 @@
 
-Live Link : mytasbih.netlify.app
+Live Link : [MyTasbih](mytasbih.netlify.app)
 
 # Getting Started with Create React App
 
