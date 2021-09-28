@@ -113,7 +113,6 @@
   flex: 1;
   font-size: 21px;   
     border-left: 1px solid;
-    border-bottom: 1px solid;
     border-color: #e2e2e2;
 
 }
@@ -150,6 +149,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   -webkit-user-select: none;
+  border-bottom: 1px solid;
   color: #f00;
 }
 
