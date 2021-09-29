@@ -3,6 +3,7 @@ import "./HomePage.css";
 import Body from "./Body.js";
 import History from "../History/History";
 import Header from "../Header/Header.js";
+import RequestTasbihs from "../RequestTasbihs/RequestTasbihs.js"
 import { Route } from "react-router-dom";
 
 const HomePage = props => {
@@ -34,6 +35,10 @@ const HomePage = props => {
             isSkipped={props.skip}
             pageName={changePageName}
           />
+        </Route>
+        <Route path="/request-tasbih">
+          <RequestTasbihs
+            pageName={changePageName} />
         </Route>
       </div>
     </div>
