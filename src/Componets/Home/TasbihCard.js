@@ -15,12 +15,15 @@ const TasbihCard = props => {
 
   const RemoveTasbih = async () => {
     try {
-      if (uid !== "null" && counts > 0) {
-
-        var userDocPath = path.split("/")[0];
+      if (uid !== "null") {
         var tasbihData = await db.doc(path).get();
-        var userData = await db.collection(userDocPath).doc(uid).get();
-        await userData.ref.collection("HistoryTasbihs").add(historyDataTemplate(tasbihData.data(), "delete"))
+
+        if (counts > 0) {
+          var userDocPath = path.split("/")[0];
+          var userData = await db.collection(userDocPath).doc(uid).get();
+          await userData.ref.collection("HistoryTasbihs").add(historyDataTemplate(tasbihData.data(), "delete"));
+        }
+
         await tasbihData.ref.delete();
       }
 

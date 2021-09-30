@@ -103,17 +103,6 @@ const SignIn = props => {
   }, [currUser]);
 
   return (
-    // <div className="user-sign-in flex">
-    //   <div className="sign-in-with">
-    //     <button onClick={LoginUser} className="btn">
-    //       Sign In With Google
-    //     </button>
-    //     <p >-- OR --</p>
-    //     <button className="skip-btn btn" onClick={GuestSignIn}>
-    //       Sign up as a guest
-    //     </button>
-    //   </div>
-    // </div>
     <LoadingScreen />
   );
 };

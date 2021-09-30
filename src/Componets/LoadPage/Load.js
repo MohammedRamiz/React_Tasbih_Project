@@ -3,6 +3,7 @@ import { provider, auth } from "../Firebase/firebase";
 import HomePage from "../Home/HomePage.js";
 import SignInPage from "../SignIn/SignIn";
 import LoadingScreen from "./LoadingScreen"
+import LandingPage from "../Home/LandingPage/LandingPage.js"
 
 import db from "../Firebase/firebase.js";
 import { useSelector, useDispatch } from "react-redux";
@@ -112,7 +113,7 @@ const Load = () => {
     return unsub;
   }, []);
 
-  let loadPage = currUser && !settings.loading ? <HomePage click={LogOutUser} /> : <SignInPage click={setUser} />;
+  let loadPage = currUser && !settings.loading ? <HomePage click={LogOutUser} /> : <SignInPage click={setUser} />; //<LandingPage />
 
   return settings.loading ? <LoadingScreen /> : loadPage;
 };

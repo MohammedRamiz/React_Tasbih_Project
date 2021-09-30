@@ -1,13 +1,13 @@
 import React from 'react'
 import SliderPage from './Top/SliderPage'
-import './loadpage.css'
+import './LandingPage.css'
 
-function LoadPage() {
+function LandingPage() {
     return (
         <div>
-
+            <SliderPage />
         </div>
     )
 }
 
-export default LoadPage
+export default LandingPage

@@ -28,38 +28,6 @@
   color: #61dafb;
 }
 
-.user-sign-in {
-  height: 100vh;
-  flex-direction: column;
-  padding: 0px 20px;
-  margin: auto;
-}
-
-.user-sign-in > div {
-  width: 100%;
-}
-
-.sign-in-with p {
-  text-align: center;
-  margin: 0;
-  color: #2e5c29;
-}
-
-.user-sign-in button {
-  margin: 5px 0;
-}
-
-button.skip-btn {
-  background: #fff !important;
-}
-
-.user-sign-in button {
-  width: 100%;
-  height: 35px;
-  border: 1px solid #0f4a0c;
-  background-color: #36e865;
-}
-
 .flex {
   display: flex;
   align-content: center;
@@ -72,10 +40,6 @@ button.skip-btn {
 }
 
 @media (min-width: 767px) {
-  .user-sign-in {
-    padding: 0px 40px;
-    max-width: 50vh;
-  }
 }
 
 @keyframes App-logo-spin {
