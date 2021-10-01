@@ -3,6 +3,7 @@
     background: #2dc653;
     height: 400px;
     flex-direction: column;
+    padding: 20px;
 }
 
 .slider-text{
@@ -12,18 +13,10 @@
     flex: 1;
     text-align: center;
     flex-direction: column;
-    justify-content: flex-end;
 }
 
 .btn-user-interaction{
-    margin: 20px 0; 
     width: 40%;
-}
-
-.user-sign-in {
-  padding: 0px 20px;
-  margin: auto;
-  width: auto;
 }
 
 .or-text{
@@ -47,17 +40,13 @@
   color: #2e5c29;
 }
 
-.user-sign-in button {
-  margin: 5px 0;
-}
-
 button.skip-btn {
-  background: #fff !important;
+  background: #ecf39e !important;
+  color: #2dc653;
 }
 
 .user-sign-in button {
   width: 100%;
-  height: 35px;
   border: 1px solid #0f4a0c;
   background-color: #36e865;
 }

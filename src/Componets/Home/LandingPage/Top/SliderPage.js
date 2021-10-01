@@ -5,10 +5,10 @@ function SliderPage() {
     return (
         <div className="slider-container flex">
             <div className="slider-text flex">
-                <h2>This is your destination to make efortless zikr and gain blessings of almighty.</h2>
-                <p>Lets heal our soul with zikr.</p>
+                <h2>This is your destination to make zikr and gain blessings of almighty.</h2>
+                <p>Lets heal our soul with zikr of allah and rasool(s.a.w).</p>
                 <div className="flex quote-line">
-                    <h3>"Quote"</h3>
+                    <h3>"beshaq allah hi ke zikr se dilo ko karar milta hain"</h3>
                 </div>
             </div>
             <div className="btn-user-interaction">
@@ -18,7 +18,6 @@ function SliderPage() {
                             Try Now!
                         </button>
                     </div>
-                    <span className="or-text">-- OR --</span>
                     <div className="sign-in-with">
                         <button className="btn">
                             Sign In With Google

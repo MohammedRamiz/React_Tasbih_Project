@@ -113,7 +113,7 @@ const Load = () => {
     return unsub;
   }, []);
 
-  let loadPage = currUser && !settings.loading ? <HomePage click={LogOutUser} /> : <SignInPage click={setUser} />; //<LandingPage />
+  let loadPage = currUser && !settings.loading ? <HomePage click={LogOutUser} /> : <SignInPage click={setUser} />; //<LandingPage />;
 
   return settings.loading ? <LoadingScreen /> : loadPage;
 };

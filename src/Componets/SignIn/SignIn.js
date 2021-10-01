@@ -2,7 +2,7 @@ import React, { useEffect } from "react";//useState,
 import db from "../Firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSettings, setUpUserData } from "../../action/action";
-import { provider, auth } from "../Firebase/firebase";
+import { auth } from "../Firebase/firebase";
 
 import LoadingScreen from "../LoadPage/LoadingScreen"
 //import { Form, Button } from "react-bootstrap";
