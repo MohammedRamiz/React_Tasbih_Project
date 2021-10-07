@@ -59,3 +59,21 @@ span.layout {
 .layout svg {
   font-size: 25px !important;
 }
+
+.history-total-count{
+  font-size: 18px;
+  margin-right: -15px;
+  margin-top: 15px;
+  background: #fff;
+}
+
+.history-total-count{
+  --ribbon-size:10px;
+  --ribbon-padding:5px;
+  padding:var(--ribbon-padding);
+  padding-inline-start:calc(var(--ribbon-size) + var(--ribbon-padding));
+  border-radius:4px;
+  color:#1f4a20;
+  width:80px;
+  clip-path:polygon(0 0, var(--ribbon-size) 50%, 0 100%, 100% 100%, 100% 0);
+}

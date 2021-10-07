@@ -16,6 +16,7 @@ const Body = props => {
 
   const currentUser = useSelector(state => state.User);
   const totalTasbihsCount = useSelector(s => s.Settings.totalTasbihsCount);
+  const currentTasbihData = useSelector(s => s.Settings.settings.CurrentTasbihData);
   const dispatch = useDispatch();
 
   const setModalView = () => {
@@ -27,36 +28,38 @@ const Body = props => {
       setShow(false);
       var user = await db.collection(userType).doc(currentUser.uid).get();
       await user.ref.collection("Tasbihs").add({
-        Status: "Running",
         Name: tasbihName,
         TasbihID: tid,
-        count: 0
+        count: 0,
+        running: false
       });
       console.log("Tasbih Added To Collection");
     }
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     setNoOfTasbih([]);
 
-    let unSubs = db.collection(userType).doc(currentUser.uid).collection("Tasbihs").onSnapshot(tasbih => {
-      var noOfTasbihs = tasbih.docs.map(data => {
-        let _data = data.data();
-        return {
-          ID: data.id,
-          Name: _data.Name,
-          Count: _data.count,
-          Status: _data.Status,
-          path: data.ref.path,
-          tID: data.data().TasbihID
-        };
-      });
+    let unSubs = db.collection(userType).doc(currentUser.uid).collection("Tasbihs")
+      .orderBy("running", "desc")
+      .onSnapshot(tasbih => {
+        var noOfTasbihs = tasbih.docs.map(data => {
+          const _data = data.data();
+          return {
+            ID: data.id,
+            Name: _data.Name,
+            Count: _data.count,
+            path: data.ref.path,
+            tID: _data.TasbihID,
+            running: _data.running
+          };
+        });
 
-      setNoOfTasbih(noOfTasbihs);
-      setLoading(false);
-    }, err => {
-      unSubs();
-    });
+        setNoOfTasbih(noOfTasbihs);
+        setLoading(false);
+      }, err => {
+        unSubs();
+      });
 
     dispatch(recoredUnSubCall(unSubs));
   }, [currentUser]);
@@ -70,8 +73,10 @@ const Body = props => {
               key={x.ID}
               name={x.Name}
               count={x.Count}
-              status={x.Status}
               path={x.path}
+              running={x.running}
+              tasbihDocID={x.ID}
+              tID={x.tID}
             />
           );
         })}
@@ -80,7 +85,7 @@ const Body = props => {
           <div className="no-more-tasbihs flex">Loading Your Tasbihs...</div>
         ) : noOfTasbih.length >= totalTasbihsCount ? (
           <span className="flex no-more-tasbihs">
-            No More Tasbihs Available
+            No More Tasbihs Available. You can request for tasbih.
           </span>
         ) : (
               <TasbihDotedCard click={setModalView} />

@@ -38,7 +38,7 @@ const Header = props => {
           <div className="page-name">
             <span>{props.pageName}</span>
           </div>
-          {props.pageName !== "History" ? (
+          {props.pageName == "My Tasbihs" ? (
             <span className="layout" onClick={ChangeLayout}>
               {settings.settings.Layout === "colomn-layout" ? (
                 <RiLayoutColumnLine />
@@ -47,7 +47,11 @@ const Header = props => {
                 )}
             </span>
           ) : (
-              ""
+              props.pageName == "Request" ? ("") : (
+                <span className="history-total-count layout">
+                  {props.totalCount}
+                </span>
+              )
             )}
         </div>
         <MobileView>

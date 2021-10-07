@@ -1,17 +1,20 @@
 import React, { useEffect, useState } from "react";
 import db from "../Firebase/firebase";
-import { RiDeleteBin5Line } from "react-icons/ri";
+import { RiDeleteBin5Line, RiPlayFill, RiPauseFill } from "react-icons/ri";
 import { BiReset } from "react-icons/bi";
 
 import { useSelector } from "react-redux";
 const TasbihCard = props => {
   const [counts, setCounts] = useState(props.count);
   const name = props.name;
-  const status = props.status;
   const path = props.path;
+  const isTasbihRunnig = props.running;
+
 
   const uid = useSelector(state => state.User.uid);
   const layout = useSelector(state => state.Settings.settings.Layout);
+  const settingsPath = useSelector(state => state.Settings.path);
+  const userType = useSelector(state => state.Settings.userType);
 
   const RemoveTasbih = async () => {
     try {
@@ -59,14 +62,24 @@ const TasbihCard = props => {
   };
 
   const increseCounter = () => {
-    var newCount = counts + 1;
-    if (path !== "") {
-      db.doc(path).get().then(tasbihData => {
-        tasbihData.ref.update({ count: newCount });
-      });
+    if (isTasbihRunnig) {
+      var newCount = counts + 1;
+      if (path !== "") {
+        db.doc(path).get().then(tasbihData => {
+          tasbihData.ref.update({ count: newCount });
+        });
+      }
+      setCounts(newCount);
     }
-    setCounts(newCount);
   };
+
+  const runPauseTabih = async () => {
+    var tasbihData = await db.collection(userType).doc(uid).collection("Tasbihs").get()
+    tasbihData.docs.forEach((data) => { data.ref.update({ running: false }) })
+
+    tasbihData = await db.collection(userType).doc(uid).collection("Tasbihs").doc(props.tasbihDocID).get()
+    tasbihData.ref.update({ running: !isTasbihRunnig });
+  }
 
   useEffect(
     () => {
@@ -74,8 +87,7 @@ const TasbihCard = props => {
         let unSub = db.doc(path).onSnapshot(
           tasbihData => {
             if (tasbihData.data()) setCounts(tasbihData.data().count);
-          },
-          err => {
+          }, err => {
             unSub();
           }
         );
@@ -91,8 +103,13 @@ const TasbihCard = props => {
           <div className="tasbih-name">{name}</div>
         </div>
         <div className="middle-card flex">
+          <div className="side-panel-r">
+            <span className="tasbih-start-pause" onClick={runPauseTabih}>
+              {!isTasbihRunnig ? <RiPlayFill /> : <RiPauseFill />}
+            </span>
+          </div>
           <div className="tasbih-counts flex" onClick={increseCounter}>{counts}</div>
-          <div className="side-panel">
+          <div className="side-panel-l">
             <span className="tasbih-remove" onClick={RemoveTasbih}>
               <RiDeleteBin5Line />
             </span>
@@ -102,7 +119,7 @@ const TasbihCard = props => {
           </div>
         </div>
       </div>
-    </div >
+    </div>
   );
 };
 

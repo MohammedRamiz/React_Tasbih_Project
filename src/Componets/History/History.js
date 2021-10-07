@@ -36,6 +36,7 @@ const History = props => {
                     });
 
                     setTotalCounts(counts)
+                    props.countsHandler(counts);
                     setTasbihHistory(historyTasbihs);
                 }, er => console.log(er));
 
@@ -71,20 +72,10 @@ const History = props => {
                 return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} delete={DeletePermenantData} restore={RestoreTasbih} />
         })
     ) : (
-            < span className="flex no-more-tasbihs" > No history found</span>
+            < span className="flex no-more-tasbihs" >No history found</span>
         );
 
-    return (
-        <>
-        <div className='history-tasbih-counter'>
-            <div className='history-counter'>
-                <p>Total:</p>
-                {totalCounts}
-            </div>
-        </div>
-        {renderComp }
-        </>
-    )
+    return ( <> { renderComp } </> )
 }
 
 export default History
