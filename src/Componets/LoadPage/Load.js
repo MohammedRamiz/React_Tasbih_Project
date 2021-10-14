@@ -24,7 +24,7 @@ const Load = () => {
 
   const LogOutUser = () => {
     setUserState("LOS");
-    dispatch(execCalls());
+    dispatch(execCalls("RELEASE"));
     dispatch(resetSettings());
 
     if (currUser.isAnonymous) {
@@ -78,7 +78,7 @@ const Load = () => {
             );
 
             dispatch(setUpUserData(user));
-            dispatch(recoredUnSubCall(unSubSet));
+            dispatch(recoredUnSubCall(unSubSet, "LOAD"));
             dispatch(updateSettings({ loading: false }));
 
           } else {
@@ -88,7 +88,7 @@ const Load = () => {
           dispatch(updateSettings({ loading: false }));
         }
       }, err => console.log(err));
-      dispatch(recoredUnSubCall(unSub));
+      dispatch(recoredUnSubCall(unSub, "LOAD"));
     }
     else {
       console.log("user not found");

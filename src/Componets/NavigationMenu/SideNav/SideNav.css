@@ -114,13 +114,14 @@ div.home-page.homepage:after, div.tasbih-history.history::after, div.req-tasbih.
     border: 1px solid;
     border-right: none;
 }
+  .content > div{
+    background: #1f4a20;
+    border: 1px solid #1f4a20;
+  }
 
 .content > div,
 .footer > div {
     width: 100%;
-    background: #1f4a20;
-    border: 1px solid #1f4a20;
-    /* border-radius: 4px; */
     font-size: 14px;
     text-align: center;
     margin: 2.5px;
@@ -160,6 +161,13 @@ span.log-out-btn,.google-sign-up {
 
 svg.svg-inline--fa.fa-google.fa-w-16.google-icon {
     width: 16px;
+}
+
+.timer-section{
+  display: flex;
+  margin:0px !important; 
+  padding: 0px 10px;
+  margin-bottom: 10px !important;
 }
 
 @media (max-width: 767px) {

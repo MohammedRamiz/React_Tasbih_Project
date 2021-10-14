@@ -4,6 +4,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 import GoogleSignIn from "../../SignIn/GoogleSignIn";
+import Timer from "../../Timer/Timer"
 
 import "./SideNav.css";
 
@@ -72,6 +73,9 @@ const SideNav = props => {
         </div>
       </div>
       <div className="footer flex flex-align-bottom">
+        <div className="timer-section">
+          <Timer />
+        </div>
         {!isUserAnonymous ? (
           <span className="log-out-btn">
             {<button onClick={props.click}>Log Out</button>}

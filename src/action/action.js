@@ -18,15 +18,15 @@ export const resetSettings = () => {
   };
 };
 
-export const recoredUnSubCall = call => {
+export const recoredUnSubCall = (call, type) => {
   return {
-    type: "RECORD",
+    type: type,
     data: call
   };
 };
 
-export const execCalls = () => {
+export const execCalls = (type) => {
   return {
-    type: "RELEASE"
+    type: type
   };
 };

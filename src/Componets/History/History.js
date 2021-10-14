@@ -4,7 +4,7 @@ import db from '../Firebase/firebase';
 import HistoryTemplate from './HistoryBlockTemplate/Template'
 
 import { useSelector, useDispatch } from "react-redux"
-import { recoredUnSubCall } from '../../action/action'
+import { recoredUnSubCall, execCalls } from '../../action/action'
 
 const History = props => {
     const [tasbihsHistory, setTasbihHistory] = useState([]);
@@ -26,6 +26,7 @@ const History = props => {
 
     useEffect(() => {
         props.pageName('History', "history");
+        dispatch(execCalls("RELEASE_HISTORY"));
         if (!currUser.isAnonymous) {
             db.collection('Users').doc(currUser.uid).get().then(userData => {
                 let unSubs = userData.ref.collection("HistoryTasbihs").orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
@@ -40,7 +41,7 @@ const History = props => {
                     setTasbihHistory(historyTasbihs);
                 }, er => console.log(er));
 
-                dispatch(recoredUnSubCall(unSubs));
+                dispatch(recoredUnSubCall(unSubs, "HISTORY"));
 
             });
         }
@@ -58,7 +59,7 @@ const History = props => {
 
                 }, er => console.log(er));
 
-                dispatch(recoredUnSubCall(unSubs));
+                dispatch(recoredUnSubCall(unSubs, "HISTORY"));
             });
         }
     }, []);

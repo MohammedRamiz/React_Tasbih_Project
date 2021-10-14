@@ -35,8 +35,17 @@
   align-items: center;
 }
 
+.abs{
+  position: absolute;
+}
+
+.relative{
+  position: relative;
+}
+
 .flex-align-bottom {
   align-items: flex-end;
+  flex-direction: column;
 }
 
 @media (min-width: 767px) {

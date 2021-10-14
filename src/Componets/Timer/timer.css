@@ -1,0 +1,37 @@
+.timer-container{
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.timer-container .timer{
+    flex-direction: row
+}
+.timer{
+    margin-bottom: 10px; 
+}
+
+.timer > p{
+    margin: 0 5px;
+    padding: 7px 12px;
+    font-size: 14px;
+    background: #fff;
+    color: #1f4a20;
+    border-radius: 4px;
+    border: 1px solid #1f4a20;
+}
+
+.timer-start{
+    flex: 1;
+    display: flex;
+}
+
+.timer-start > button{
+    padding: 8px 16px;
+    color: #1f4a20;
+    background: #fff;
+    margin: 0 5px;
+    flex: 1;
+    border-radius: 4px; 
+    border: 1px solid #1f4a20;
+}

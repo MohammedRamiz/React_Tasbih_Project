@@ -15,6 +15,7 @@
   width: 100%;
   flex-direction: column;
   overflow: auto;
+  padding: 0 5px; 
 }
 
 .home-header {
@@ -52,6 +53,11 @@
   float: left;
   padding: 10px;
   display: flex;
+}
+
+.do-flip {
+    transform: rotateY(90deg);
+    transition: .4s;
 }
 
 .colomn-layout {
@@ -156,6 +162,7 @@
 
 .tasbih-start-pause{
   cursor: pointer;
+  border-bottom: none;
 }
 
 .tasbih-start-pause > svg{

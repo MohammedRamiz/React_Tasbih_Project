@@ -5,23 +5,18 @@ import TasbihCard from "./TasbihCard.js";
 import ModalShow from "../ExtraComps/AddBody.js";
 import db from "../Firebase/firebase.js";
 import { useSelector, useDispatch } from "react-redux";
-import { recoredUnSubCall } from "../../action/action";
+import { recoredUnSubCall, execCalls } from "../../action/action";
 
 const Body = props => {
   const [noOfTasbih, setNoOfTasbih] = useState([]);
   const [show, setShow] = useState(false);
   const userType = useSelector(state => state.Settings.userType);
-
   const [isLoading, setLoading] = useState(true);
 
   const currentUser = useSelector(state => state.User);
   const totalTasbihsCount = useSelector(s => s.Settings.totalTasbihsCount);
   const currentTasbihData = useSelector(s => s.Settings.settings.CurrentTasbihData);
   const dispatch = useDispatch();
-
-  const setModalView = () => {
-    setShow(!show);
-  };
 
   const appendNewBlock = async (tasbihName, tid) => {
     if (tasbihName) {
@@ -39,7 +34,7 @@ const Body = props => {
 
   useEffect(async () => {
     setNoOfTasbih([]);
-
+    dispatch(execCalls("RELEASE_BODY"));
     let unSubs = db.collection(userType).doc(currentUser.uid).collection("Tasbihs")
       .orderBy("running", "desc")
       .onSnapshot(tasbih => {
@@ -61,7 +56,7 @@ const Body = props => {
         unSubs();
       });
 
-    dispatch(recoredUnSubCall(unSubs));
+    dispatch(recoredUnSubCall(unSubs, 'BODY'));
   }, [currentUser]);
 
   return (
@@ -88,13 +83,13 @@ const Body = props => {
             No More Tasbihs Available. You can request for tasbih.
           </span>
         ) : (
-              <TasbihDotedCard click={setModalView} />
+              <TasbihDotedCard click={() => { setShow(!show) }} />
             )}
         <ModalShow
           displayedIds={noOfTasbih.map(t => t.tID.replace(" ", ""))}
           showModal={show}
           click={appendNewBlock}
-          hideModal={setModalView}
+          hideModal={() => { setShow(!show) }}
         />
       </div>
     </div>

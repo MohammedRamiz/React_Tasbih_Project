@@ -5,12 +5,11 @@ const TasbihDotedCard = props => {
   return (
     <div
       className={
-        "tasbih-card-shell-doted " +
-        useSelector(state => state.Settings.settings.Layout)
+        "tasbih-card-shell-doted relative " +
+        useSelector(state => state.Settings.settings.Layout) + " "
       }
-      onClick={props.click}
     >
-      <div className="tasbih-card-inner-dotted flex">
+      <div className="tasbih-card-inner-dotted flex" onClick={props.click}>
         <span className="tasbih-icon-plus">Add Tasbih</span>
       </div>
     </div>
