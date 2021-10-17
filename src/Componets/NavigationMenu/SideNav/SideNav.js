@@ -73,19 +73,19 @@ const SideNav = props => {
         </div>
       </div>
       <div className="footer flex flex-align-bottom">
-        <div className="timer-section">
+        {/* <div className="timer-section">
           <Timer />
-        </div>
+        </div> */}
         {!isUserAnonymous ? (
           <span className="log-out-btn">
             {<button onClick={props.click}>Log Out</button>}
           </span>
         ) : (
 
-            <span className="google-sign-up">
-              <GoogleSignIn />
-            </span>
-          )}
+          <span className="google-sign-up">
+            <GoogleSignIn />
+          </span>
+        )}
       </div>
     </div>
   );

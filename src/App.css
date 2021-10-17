@@ -48,6 +48,12 @@
   flex-direction: column;
 }
 
+.text-demo{
+  width: 100%;
+  color: #969696;
+  padding: 10px 0;
+}
+
 @media (min-width: 767px) {
 }
 

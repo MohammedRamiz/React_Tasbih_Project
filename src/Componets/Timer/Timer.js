@@ -23,13 +23,13 @@ function Timer() {
 
     const counter = () => {
         if (timerReset) {
-            secontToTime(0);
+            secondToTime(0);
             setRunning(false);
             setReset(false);
         }
         else {
             let tempSeconds = seconds + 1;
-            secontToTime(tempSeconds);
+            secondToTime(tempSeconds);
         }
     }
 
@@ -43,7 +43,7 @@ function Timer() {
             timer = setTimeout(counter, 1000)
     }, [seconds, running, timerReset])
 
-    const secontToTime = (currentSeconds) => {
+    const secondToTime = (currentSeconds) => {
 
         let hours = Math.floor(currentSeconds / (60 * 60));
 
@@ -60,7 +60,6 @@ function Timer() {
         })
         setSeconds(currentSeconds);
     }
-
 
     return (
         <div className="timer-container">

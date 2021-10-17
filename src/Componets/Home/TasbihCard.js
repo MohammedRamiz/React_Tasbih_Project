@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from "react";
 import db from "../Firebase/firebase";
-import { RiDeleteBin5Line, RiPlayFill, RiPauseFill } from "react-icons/ri";
-import { BiReset } from "react-icons/bi";
+import { RiDeleteBin5Line, RiPlayFill, RiPauseFill, RiTimer2Line, RiHashtag } from "react-icons/ri";
+import { BiReset, BiHash } from "react-icons/bi";
 
 import { useSelector } from "react-redux";
 const TasbihCard = props => {
   const [counts, setCounts] = useState(props.count);
+  const [displayContSection, setCountSection] = useState(false);
+  const [displayComponent, setDisplayComp] = useState('hide');
   const name = props.name;
   const path = props.path;
   const isTasbihRunnig = props.running;
@@ -81,6 +83,10 @@ const TasbihCard = props => {
     tasbihData.ref.update({ running: !isTasbihRunnig });
   }
 
+  const toggleMainBody = () => {
+    setCountSection(!displayContSection);
+  }
+
   useEffect(
     () => {
       if (path !== "") {
@@ -107,8 +113,15 @@ const TasbihCard = props => {
             <span className="tasbih-start-pause" onClick={runPauseTabih}>
               {!isTasbihRunnig ? <RiPlayFill /> : <RiPauseFill />}
             </span>
+            <span className="tasbih-record" onClick={toggleMainBody}>
+              <RiTimer2Line className={!displayContSection ? "move-down ri-timer" : "move-up ri-timer "} />
+              <BiHash className={!displayContSection ? "move-down bi-hash" : "move-up bi-hash"} />
+            </span>
           </div>
-          <div className="tasbih-counts flex" onClick={increseCounter}>{counts}</div>
+          <div className="main-body relative">
+            <div className={!displayContSection ? "move-down tasbih-counts main-inner flex" : "move-up tasbih-counts main-inner flex"} onClick={increseCounter}>{counts}</div>
+            <div className={!displayContSection ? "move-down timer-panel main-inner flex" : "move-up timer-panel main-inner flex"}>Timer Section</div>
+          </div>
           <div className="side-panel-l">
             <span className="tasbih-remove" onClick={RemoveTasbih}>
               <RiDeleteBin5Line />

@@ -8,7 +8,7 @@ const RequestTasbihs = props => {
     });
     return (
         <div className="flex">
-            <h2>Under Devlopment</h2>
+            <span className="flex text-demo">Under Devlopment</span>
         </div>
     )
 }
