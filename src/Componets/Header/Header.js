@@ -5,7 +5,7 @@ import { faBars } from "@fortawesome/free-solid-svg-icons";
 import SideNav from "../NavigationMenu/SideNav/SideNav.js";
 import db from "../Firebase/firebase";
 import { RiLayoutRowLine, RiLayoutColumnLine } from "react-icons/ri";
-import { BrowserView, MobileView } from "react-device-detect";
+import { BrowserView, MobileView, isMobile } from "react-device-detect";
 
 import { useSelector } from "react-redux";
 
@@ -18,12 +18,19 @@ const Header = props => {
   };
 
   const ChangeLayout = () => {
-    const layout =
-      settings.settings.Layout === "colomn-layout"
-        ? "row-layout"
-        : "colomn-layout";
+    if (settings.path != "") {
+      if (isMobile) {
+        db.doc(settings.path).update({ Layout: "colomn-layout" })
+        return;
+      }
+      const layout =
+        settings.settings.Layout === "colomn-layout"
+          ? "row-layout"
+          : "colomn-layout";
 
-    db.doc(settings.path).update({ Layout: layout });
+
+      db.doc(settings.path).update({ Layout: layout });
+    }
   };
 
   return (
@@ -39,13 +46,15 @@ const Header = props => {
             <span>{props.pageName}</span>
           </div>
           {props.pageName == "My Tasbihs" ? (
-            <span className="layout" onClick={ChangeLayout}>
-              {settings.settings.Layout === "colomn-layout" ? (
-                <RiLayoutColumnLine />
-              ) : (
-                  <RiLayoutRowLine />
-                )}
-            </span>
+            isMobile ? (ChangeLayout()) : (
+              <span className="layout" onClick={ChangeLayout}>
+                {settings.settings.Layout === "colomn-layout" ? (
+                  <RiLayoutColumnLine />
+                ) : (
+                    <RiLayoutRowLine />
+                  )}
+              </span>
+            )
           ) : (
               props.pageName == "Request" ? ("") : (
                 <span className="history-total-count layout">
@@ -84,7 +93,7 @@ const Header = props => {
           onClick={OpenSideNavigation}
         />
       </div>
-    </div>
+    </div >
   );
 };
 

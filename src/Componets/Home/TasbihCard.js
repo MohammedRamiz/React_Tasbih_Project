@@ -120,7 +120,7 @@ const TasbihCard = props => {
           </div>
           <div className="main-body relative">
             <div className={!displayContSection ? "move-down tasbih-counts main-inner flex" : "move-up tasbih-counts main-inner flex"} onClick={increseCounter}>{counts}</div>
-            <div className={!displayContSection ? "move-down timer-panel main-inner flex" : "move-up timer-panel main-inner flex"}>Timer Section</div>
+            <div className={!displayContSection ? "move-down timer-panel main-inner flex" : "move-up timer-panel main-inner flex"}>Loadnig data...</div>
           </div>
           <div className="side-panel-l">
             <span className="tasbih-remove" onClick={RemoveTasbih}>

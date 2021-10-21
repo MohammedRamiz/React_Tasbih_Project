@@ -69,7 +69,7 @@
 }
 
 .tasbih-card-inner {
-  background: #fff;
+  background: #caffd8;
   width: 100%;
   border-radius: 8px;
   box-shadow: 1px 1px 3px 0px #cecece, 0 0 2px 1px #dedede52;
@@ -129,13 +129,12 @@
   flex: 1;
   font-size: 21px;   
   border-left: 1px solid;
-  border-color: #e2e2e2;
+  border-color: #caffd8;
+  background: #b6f3c7;
 }
 
 .side-panel-r span{
-  
-  border-right: 1px solid;
-  border-color: #e2e2e2;
+    border-left: none;
 }
 
 .header-card {
@@ -155,8 +154,8 @@
   .tasbih-card-shell-doted {
     height: 150px;
   }
-    .middle-card{
-    font-size: 30px;
+    .tasbih-counts{
+    font-size: 25px;
   }
 
   .side-panel-l svg{
