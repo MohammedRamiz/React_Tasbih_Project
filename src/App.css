@@ -35,6 +35,14 @@
   align-items: center;
 }
 
+.flex-colomn{
+  flex-direction: column;
+}
+
+.width-100-per{
+  width: 100% !important;
+}
+
 .abs{
   position: absolute;
 }

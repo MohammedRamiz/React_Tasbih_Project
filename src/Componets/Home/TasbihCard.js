@@ -64,7 +64,7 @@ const TasbihCard = props => {
   };
 
   const increseCounter = () => {
-    if (isTasbihRunnig) {
+    if (isTasbihRunnig && !displayContSection) {
       var newCount = counts + 1;
       if (path !== "") {
         db.doc(path).get().then(tasbihData => {
@@ -105,9 +105,9 @@ const TasbihCard = props => {
   return (
     <div className={layout + " tasbih-card-shell"}>
       <div className="tasbih-card-inner">
-        <div className="header-card">
+        {/* <div className="header-card">
           <div className="tasbih-name">{name}</div>
-        </div>
+        </div> */}
         <div className="middle-card flex">
           <div className="side-panel-r">
             <span className="tasbih-start-pause" onClick={runPauseTabih}>
@@ -118,9 +118,15 @@ const TasbihCard = props => {
               <BiHash className={!displayContSection ? "move-down bi-hash" : "move-up bi-hash"} />
             </span>
           </div>
-          <div className="main-body relative">
-            <div className={!displayContSection ? "move-down tasbih-counts main-inner flex" : "move-up tasbih-counts main-inner flex"} onClick={increseCounter}>{counts}</div>
-            <div className={!displayContSection ? "move-down timer-panel main-inner flex" : "move-up timer-panel main-inner flex"}>Loadnig data...</div>
+          <div className="main-body relative flex flex-colomn">
+
+            <div className="upper-section header-card-shadow flex" onClick={increseCounter}>
+              <div className="tasbih-name">{name}</div>
+            </div>
+            <div className="bottom-section width-100-per">
+              <div className={!displayContSection ? "move-down tasbih-counts main-inner flex" : "move-up tasbih-counts main-inner flex"} onClick={increseCounter}>{counts}</div>
+              <div className={!displayContSection ? "move-down timer-panel main-inner flex" : "move-up timer-panel main-inner flex"}>Loadnig data...</div>
+            </div>
           </div>
           <div className="side-panel-l">
             <span className="tasbih-remove" onClick={RemoveTasbih}>

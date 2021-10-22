@@ -15,7 +15,6 @@ const Body = props => {
 
   const currentUser = useSelector(state => state.User);
   const totalTasbihsCount = useSelector(s => s.Settings.totalTasbihsCount);
-  const currentTasbihData = useSelector(s => s.Settings.settings.CurrentTasbihData);
   const dispatch = useDispatch();
 
   const appendNewBlock = async (tasbihName, tid) => {
@@ -83,8 +82,8 @@ const Body = props => {
             No More Tasbihs Available. You can request for tasbih.
           </span>
         ) : (
-              <TasbihDotedCard click={() => { setShow(!show) }} />
-            )}
+          <TasbihDotedCard click={() => { setShow(!show) }} />
+        )}
         <ModalShow
           displayedIds={noOfTasbih.map(t => t.tID.replace(" ", ""))}
           showModal={show}

@@ -69,6 +69,7 @@
 }
 
 .tasbih-card-inner {
+  position: relative;
   background: #caffd8;
   width: 100%;
   border-radius: 8px;
@@ -95,6 +96,7 @@
 }
 
 .middle-card {
+  position: relative;
   flex: 1;
   text-align: center;
   align-items: center;
@@ -130,7 +132,7 @@
   font-size: 21px;   
   border-left: 1px solid;
   border-color: #caffd8;
-  background: #b6f3c7;
+  background: #8dfbaa;
 }
 
 .side-panel-r span{
@@ -157,7 +159,7 @@
     .tasbih-counts{
     font-size: 25px;
   }
-
+  
   .side-panel-l svg{
     font-size: 16px !important;
   }
@@ -176,8 +178,8 @@
 .tasbih-record{
   cursor: pointer;
   border-bottom: none;
-  overflow: hidden;
-  
+  overflow: hidden;  
+
 }
 
 .tasbih-record > svg{
@@ -196,6 +198,7 @@
 
 .main-body{
   overflow: hidden;
+  color: #497153;
 }
 
 .tasbih-start-pause > svg{
@@ -232,3 +235,37 @@ svg {
   color: #969696;
   padding: 10px 0;
 }
+
+.header-card-shadow{
+  font-size: 150%;
+  color: #679f76;
+  width: 100%;
+  padding-top:10px;
+}
+
+.row-layout .header-card-shadow{
+  font-size: 120% !important;
+}
+
+.bottom-section{
+  height: 100%;
+  flex-direction: column;
+  overflow: hidden;
+}
+ 
+
+/*Future Changes*/
+/* .header-card{
+    position: absolute;
+    width: auto;
+    padding: 4px 25px;
+    margin: auto;
+    left: 50%;
+    transform: translate(-50%, 0px);
+    background: #b6f3c7;
+    border-bottom-left-radius: 20px;
+    border-bottom-right-radius: 20px;
+    font-size: 12px;
+    color: #1f4a20;
+    flex-direction: row;
+} */
