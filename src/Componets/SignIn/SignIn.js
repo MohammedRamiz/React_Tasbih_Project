@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";//useState,
-import db from "../Firebase/firebase";
+import db, { auth, v9Auth, signInAnonymously, collection, v9DB, updateProfile } from "../Firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSettings, setUpUserData } from "../../action/action";
-import { auth } from "../Firebase/firebase";
 
 import LoadingScreen from "../LoadPage/LoadingScreen"
+import { getDocs, doc, setDoc, addDoc, updateDoc, query, where } from "firebase/firestore";
 //import { Form, Button } from "react-bootstrap";
 
 const SignIn = props => {
@@ -58,6 +58,55 @@ const SignIn = props => {
     });
   };
 
+  const v9GuestSignIn = async () => {
+    dispatch(updateSettings({ loading: true }));
+    console.log("Guest sign in started");
+
+    var guestUserCred = await signInAnonymously(v9Auth);
+    console.log(guestUserCred.user);
+
+    dispatch(setUpUserData(guestUserCred.user));
+
+    var guestCountCol = await collection(v9DB, "NoOfGuests");
+    var guestDocs = await getDocs(guestCountCol);
+    var noOfGuestCount = guestDocs.docs[0].data().count + 1;
+
+    var name = "Guest" + noOfGuestCount;
+    await updateProfile(guestUserCred.user, {
+      displayName: name
+    });
+
+    var guestUser = await collection(v9DB, "GuestUsers");
+    var guestUserDoc = await doc(guestUser, guestUserCred.user.uid);
+    await setDoc(guestUserDoc, { Name: name, uid: guestUserCred.user.uid, Deleted: false })
+    updateDoc(guestDocs.docs[0].ref, { count: noOfGuestCount });
+
+
+    var tasbihs = await query(await collection(v9DB, "Tasbihs"), where("Visible", "==", true))
+    var allTasbihs = await getDocs(tasbihs)
+    console.log(allTasbihs.size);
+    var randPick = Math.floor(Math.random() * allTasbihs.size);
+
+    var userTasbihs = await collection(guestUserDoc, "Tasbihs");
+    await addDoc(userTasbihs, {
+      count: 0,
+      TasbihID: allTasbihs.docs[randPick].id,
+      Name: allTasbihs.docs[randPick].data().Name,
+      running: true
+    });
+
+    var set = await collection(guestUserDoc, "Settings");
+    var settingDoc = await addDoc(set, settings.settings);
+    console.log("Guest sign in ended");
+    dispatch(
+      updateSettings({
+        isUserIn: true,
+        path: settingDoc.path,
+        totalTasbihsCount: allTasbihs.size
+      })
+    );
+  }
+
   //Google Sign In
   // const LoginUser = async () => {
   //   auth.signInWithPopup(provider).then(async (res) => {
@@ -99,7 +148,8 @@ const SignIn = props => {
 
   useEffect(() => {
     console.log("sign in useEffect Called")
-    GuestSignIn();
+    //GuestSignIn();
+    v9GuestSignIn();
   }, [currUser]);
 
   return (

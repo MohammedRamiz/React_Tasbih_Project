@@ -4,20 +4,19 @@ import db from '../Firebase/firebase';
 import HistoryTemplate from './HistoryBlockTemplate/Template'
 
 import { useSelector, useDispatch } from "react-redux"
-import { recoredUnSubCall, execCalls } from '../../action/action'
+import { recoredUnSubCall, execCalls, saveHistoryCache } from '../../action/action'
 
 const History = props => {
     const [tasbihsHistory, setTasbihHistory] = useState([]);
     const [totalCounts, setTotalCounts] = useState(0);
 
     const currUser = useSelector(state => state.User);
+    const cachedHistory = useSelector(state => state.HistoryCache)
     const dispatch = useDispatch();
 
-    const DeletePermenantData = (path) => {
-        db.doc(path).update({ deleterPermanently: true }).then((data) => {
-            console.log(data);
-            console.log("Tasbih deleted Permenantly")
-        });
+    const DeletePermenantData = async (path) => {
+        await db.doc(path).update({ deleterPermanently: true });
+        console.log("Tasbih deleted Permenantly")
     }
 
     const RestoreTasbih = () => {
@@ -26,6 +25,12 @@ const History = props => {
 
     useEffect(() => {
         props.pageName('History', "history");
+
+        if (cachedHistory) {
+            setTasbihHistory(cachedHistory);
+            return;
+        }
+
         dispatch(execCalls("RELEASE_HISTORY"));
         if (!currUser.isAnonymous) {
             db.collection('Users').doc(currUser.uid).get().then(userData => {
@@ -35,10 +40,10 @@ const History = props => {
                         counts += doc.data().counts;
                         return { id: doc.id, path: doc.ref.path, ...doc.data() };
                     });
-
                     setTotalCounts(counts)
                     props.countsHandler(counts);
                     setTasbihHistory(historyTasbihs);
+                    dispatch(saveHistoryCache(historyTasbihs, "HCACHE"));
                 }, er => console.log(er));
 
                 dispatch(recoredUnSubCall(unSubs, "HISTORY"));
@@ -55,14 +60,16 @@ const History = props => {
                     });
 
                     setTotalCounts(counts)
+                    props.countsHandler(counts);
                     setTasbihHistory(historyTasbihs);
+                    dispatch(saveHistoryCache(historyTasbihs, "HCACHE"));
 
                 }, er => console.log(er));
 
                 dispatch(recoredUnSubCall(unSubs, "HISTORY"));
             });
         }
-    }, []);
+    }, [cachedHistory]);
 
 
     var renderComp = tasbihsHistory.length > 0 ? (
@@ -73,10 +80,10 @@ const History = props => {
                 return <HistoryTemplate key={th.id} name={th.tasbihName} path={th.path} counts={th.counts} delete={DeletePermenantData} restore={RestoreTasbih} />
         })
     ) : (
-            < span className="flex no-more-tasbihs" >No history found</span>
-        );
+        < span className="flex no-more-tasbihs" >No history found</span>
+    );
 
-    return ( <> { renderComp } </> )
+    return (<> {renderComp} </>)
 }
 
 export default History

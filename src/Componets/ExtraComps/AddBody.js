@@ -4,7 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import db from "../Firebase/firebase.js";
 import "./modal.css";
 
-import { updateSettings } from "../../action/action";
+import { updateSettings, saveAvailableTasbihCache } from "../../action/action";
 import { useSelector, useDispatch } from "react-redux";
 
 const AddBody = props => {
@@ -14,6 +14,7 @@ const AddBody = props => {
   const userDeleted = props.userDeleted;
 
   const settings = useSelector(s => s.Settings);
+  const AvailableTasbihsCached = useSelector(state => state.AvailableTasbihCache);
   const dispach = useDispatch();
 
   const handleClose = () => {
@@ -41,27 +42,34 @@ const AddBody = props => {
   };
 
   useEffect(() => {
+    if (AvailableTasbihsCached) {
+      dispach(updateSettings({ totalTasbihsCount: AvailableTasbihsCached.length }));
+      setNoOfTasbih(AvailableTasbihsCached);
+      return;
+    }
+
     let unSubs = db
       .collection("Tasbihs")
       .where("Visible", "==", true)
       .onSnapshot(
-      snap => {
-        var noOfTasbihs = snap.docs.map(doc => {
-          return { ID: doc.id, Name: doc.data().Name };
-        });
+        snap => {
+          var noOfTasbihs = snap.docs.map(doc => {
+            return { ID: doc.id, Name: doc.data().Name };
+          });
 
-        dispach(
-          updateSettings({
-            totalTasbihsCount: noOfTasbihs.length
-          })
-        );
-        setNoOfTasbih(noOfTasbihs);
+          dispach(
+            updateSettings({
+              totalTasbihsCount: noOfTasbihs.length
+            })
+          );
 
-        if (userDeleted) {
-          unSubs();
-        }
-      },
-      er => console.log(er)
+          setNoOfTasbih(noOfTasbihs);
+          dispach(saveAvailableTasbihCache(noOfTasbihs, "ATCACHE"));
+          if (userDeleted) {
+            unSubs();
+          }
+        },
+        er => console.log(er)
       );
   }, []);
 

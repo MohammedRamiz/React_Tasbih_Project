@@ -44,10 +44,10 @@ const HomePage = props => {
             countsHandler={totalHistoryCount}
           />
         </Route>
-        <Route path="/request-tasbih">
+        {/* <Route path="/request-tasbih">
           <RequestTasbihs
             pageName={changePageName} />
-        </Route>
+        </Route> */}
       </div>
     </div>
   );

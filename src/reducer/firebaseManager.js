@@ -7,8 +7,6 @@ const snapshotUnsbs = {
 
 
 const UnSubscribe = (unSubs = snapshotUnsbs, action) => {
-
-  console.log(action.type)
   switch (action.type) {
     case "LOAD":
       unSubs.loadPage.push(action.data)

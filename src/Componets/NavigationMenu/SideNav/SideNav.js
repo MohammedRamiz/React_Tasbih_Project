@@ -63,14 +63,14 @@ const SideNav = props => {
             <Link to="/history">Tasbih History</Link>
           </span>
         </div>
-        <div className={props.activePage + " req-tasbih"} disable='diasabled'>
+        {/* <div className={props.activePage + " req-tasbih"} disable='diasabled'>
           <span
             className="tasbih-history-btn content-btn"
             onClick={() => setPageConfigs("Request", "request")}
           >
             <Link to="/request-tasbih">Request Tasbih</Link>
           </span>
-        </div>
+        </div> */}
       </div>
       <div className="footer flex flex-align-bottom">
         {/* <div className="timer-section">

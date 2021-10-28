@@ -15,8 +15,8 @@ const TasbihCard = props => {
 
   const uid = useSelector(state => state.User.uid);
   const layout = useSelector(state => state.Settings.settings.Layout);
-  const settingsPath = useSelector(state => state.Settings.path);
   const userType = useSelector(state => state.Settings.userType);
+  const chachedTasbihs = useSelector(state => state.TasbihCache);
 
   const RemoveTasbih = async () => {
     try {
@@ -75,42 +75,45 @@ const TasbihCard = props => {
     }
   };
 
-  const runPauseTabih = async () => {
-    var tasbihData = await db.collection(userType).doc(uid).collection("Tasbihs").get()
-    tasbihData.docs.forEach((data) => { data.ref.update({ running: false }) })
+  const playPauseTasbih = async () => {
+    var tasbihData;
+    var currentRunning = chachedTasbihs.find(f => f.running === true);
+
+    if (currentRunning) {
+      tasbihData = await db.collection(userType).doc(uid).collection("Tasbihs").doc(currentRunning.ID).get();
+      await tasbihData.ref.update({ running: false });
+    }
 
     tasbihData = await db.collection(userType).doc(uid).collection("Tasbihs").doc(props.tasbihDocID).get()
-    tasbihData.ref.update({ running: !isTasbihRunnig });
+    await tasbihData.ref.update({ running: !isTasbihRunnig });
   }
 
   const toggleMainBody = () => {
     setCountSection(!displayContSection);
   }
 
-  useEffect(
-    () => {
-      if (path !== "") {
-        let unSub = db.doc(path).onSnapshot(
-          tasbihData => {
-            if (tasbihData.data()) setCounts(tasbihData.data().count);
-          }, err => {
-            unSub();
-          }
-        );
-      }
-    },
-    [path]
-  );
+  // useEffect(
+  //   () => {
+  //     // if (path !== "") {
+  //     //   let unSub = db.doc(path).onSnapshot(
+  //     //     tasbihData => {
+  //     //       console.log("count Changed");
+  //     //       if (tasbihData.data()) setCounts(tasbihData.data().count);
+  //     //     }, err => {
+  //     //       unSub();
+  //     //     }
+  //     //   );
+  //     // }
+  //   },
+  //   [path]
+  // );
 
   return (
     <div className={layout + " tasbih-card-shell"}>
       <div className="tasbih-card-inner">
-        {/* <div className="header-card">
-          <div className="tasbih-name">{name}</div>
-        </div> */}
         <div className="middle-card flex">
           <div className="side-panel-r">
-            <span className="tasbih-start-pause" onClick={runPauseTabih}>
+            <span className="tasbih-start-pause" onClick={playPauseTasbih}>
               {!isTasbihRunnig ? <RiPlayFill /> : <RiPauseFill />}
             </span>
             <span className="tasbih-record" onClick={toggleMainBody}>
@@ -119,7 +122,6 @@ const TasbihCard = props => {
             </span>
           </div>
           <div className="main-body relative flex flex-colomn">
-
             <div className="upper-section header-card-shadow flex" onClick={increseCounter}>
               <div className="tasbih-name">{name}</div>
             </div>

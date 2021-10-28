@@ -5,6 +5,27 @@ export const setUpUserData = user => {
   };
 };
 
+export const saveHistoryCache = hCache => {
+  return {
+    type: "HCACHE",
+    data: hCache
+  };
+}
+
+export const saveTasbihCache = tCache => {
+  return {
+    type: "TCACHE",
+    data: tCache
+  };
+}
+
+export const saveAvailableTasbihCache = atCache => {
+  return {
+    type: "ATCACHE",
+    data: atCache
+  };
+}
+
 export const updateSettings = settings => {
   return {
     type: "UPDATE",

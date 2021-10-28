@@ -1,28 +1,26 @@
 import React, { useState, useEffect } from "react";
-import db from "../Firebase/firebase";
 import { useDispatch, useSelector } from "react-redux";
 import { updateSettings, setUpUserData } from "../../action/action";
-import { provider, auth } from "../Firebase/firebase";
 import GuestSignInModal from "../ExtraComps/GuestSignInModel"
-
-
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faGoogle } from "@fortawesome/free-brands-svg-icons"
 
 
+import db, { auth, v9Auth, signInWithPopup, collection, v9DB, updateProfile, provider, v9Provider } from "../Firebase/firebase";
+import { getDocs, doc, setDoc, addDoc, updateDoc, query, where, onSnapshot, deleteDoc, getDoc } from "firebase/firestore";
+
 
 function GoogleSignIn() {
     const dispatch = useDispatch();
-    //const settings = useSelector(s => s.Settings);
     const currUser = useSelector(s => s.User);
-
-    //const [username, setUsername] = useState("");
     const [isUserNameLoginVisible, setUserNameLogin] = useState(false);
     const [show, setShowModal] = useState(false);
 
     useEffect(() => {
-        db.collection("SiteSettings").onSnapshot(data => {
-            setUserNameLogin(data.docs[0].data().IsUserNameLoginVisible);
+
+        var siteSet = collection(v9DB, "SiteSettings");
+        var unSubSiteSet = onSnapshot(siteSet, siteSetting => {
+            setUserNameLogin(siteSetting.docs[0].data().IsUserNameLoginVisible);
         });
     }, []);
 
@@ -31,21 +29,22 @@ function GoogleSignIn() {
             dispatch(
                 updateSettings({ loading: true })
             );
-
             const currentUser = await fetchCurrentSavedData();
-            var retValue = await auth.signInWithPopup(provider);
-            var retUser = await db.collection("Users").doc(retValue.user.uid).get();
+            var newUserCred = await signInWithPopup(v9Auth, provider);
+            var UsersCol = await collection(v9DB, "Users");
+            var user = await doc(UsersCol, newUserCred.user.uid);
+            var newDoc = await getDoc(user);
 
-            if (!retUser.exists) {
-                await db.collection("Users").doc(retUser.id).set({
-                    Name: retValue.user.displayName,
-                    uid: retUser.id
+            if (!newDoc.exists()) {
+                await setDoc(user, {
+                    Name: newUserCred.user.displayName,
+                    uid: user.id
                 });
-                await currentUser.ref.update({ Deleted: true });
-                setUserDataInFirebase(currentUser.ref, retValue.user);
+                await updateDoc(currentUser, { Deleted: true });
+                setUserDataInFirebase(currentUser, newUserCred.user);
             } else {
                 console.log("User found");
-                dispatch(setUpUserData(retValue.user));
+                dispatch(setUpUserData(newUserCred.user));
             }
         }
         catch (e) {
@@ -54,28 +53,25 @@ function GoogleSignIn() {
         }
     }
 
-    const setUserDataInFirebase = async (res, curretUser) => {
-        const tasbihs = await res.collection("Tasbihs").get();
-        const set = await res.collection("Settings").get();
-        const historyTasbihs = await res.collection("HistoryTasbihs").get();
+    const setUserDataInFirebase = async (oldUser, curretUser) => {
+        const tasbihs = await getDocs(await collection(oldUser, "Tasbihs"));
+        const set = await getDocs(await collection(oldUser, "Settings"));
+        const historyTasbihs = await getDocs(await collection(oldUser, "HistoryTasbihs"));
 
-        const userDocs = await db.collection("Users").doc(curretUser.uid).get();
+        const userDoc = await doc(await collection(v9DB, "Users"), curretUser.uid);
 
-        //res.delete();
-        const userSettings = await userDocs.ref.collection("Settings").get();
-
-        userSettings.docs[0].ref.delete();
-        extractDataAndInsert(userDocs.ref, tasbihs, "Tasbihs");
-        extractDataAndInsert(userDocs.ref, set, "Settings");
-        extractDataAndInsert(userDocs.ref, historyTasbihs, "HistoryTasbihs");
+        extractDataAndInsert(userDoc, tasbihs, "Tasbihs");
+        extractDataAndInsert(userDoc, set, "Settings");
+        extractDataAndInsert(userDoc, historyTasbihs, "HistoryTasbihs");
 
         dispatch(setUpUserData(curretUser));
         window.location.reload();
     };
 
     const extractDataAndInsert = async (ref, data, type) => {
-        data.docs.forEach(async (data) => {
-            await ref.collection(type).add(data.data());
+        data.docs.forEach(async (_data) => {
+            var col = await collection(ref, type);
+            await addDoc(col, _data.data());
         });
     };
 
@@ -84,25 +80,26 @@ function GoogleSignIn() {
     }
 
     const fetchCurrentSavedData = async () => {
-        var data = await db.collection("GuestUsers").doc(currUser.uid).get();
-        return data;
+        var guestUsers = await collection(v9DB, "GuestUsers")
+        var guestUserdoc = doc(guestUsers, currUser.uid);
+        return guestUserdoc;
     }
 
     return (
         <>
-        {
-            isUserNameLoginVisible?(
-                <button onClick= { showModalView } >
-        <span>Sign In to other occount</span>
-                </button >) : ""
-}
-<button onClick={signIn}>
-    <span>Sign In with</span>
-    <span>
-        <FontAwesomeIcon className="google-icon" icon={faGoogle} />
-    </span>
-</button>
-    <GuestSignInModal showModal={show} hideModal={showModalView} /> 
+            {
+                isUserNameLoginVisible ? (
+                    <button onClick={showModalView} >
+                        <span>Sign In to other occount</span>
+                    </button >) : ""
+            }
+            <button onClick={signIn}>
+                <span>Sign In with</span>
+                <span>
+                    <FontAwesomeIcon className="google-icon" icon={faGoogle} />
+                </span>
+            </button>
+            <GuestSignInModal showModal={show} hideModal={showModalView} />
         </>
     )
 

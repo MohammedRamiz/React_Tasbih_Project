@@ -3,7 +3,7 @@ import "./Header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import SideNav from "../NavigationMenu/SideNav/SideNav.js";
-import db from "../Firebase/firebase";
+import db, { } from "../Firebase/firebase";
 import { RiLayoutRowLine, RiLayoutColumnLine } from "react-icons/ri";
 import { BrowserView, MobileView, isMobile } from "react-device-detect";
 
@@ -51,17 +51,17 @@ const Header = props => {
                 {settings.settings.Layout === "colomn-layout" ? (
                   <RiLayoutColumnLine />
                 ) : (
-                    <RiLayoutRowLine />
-                  )}
+                  <RiLayoutRowLine />
+                )}
               </span>
             )
           ) : (
-              props.pageName == "Request" ? ("") : (
-                <span className="history-total-count layout">
-                  {props.totalCount}
-                </span>
-              )
-            )}
+            props.pageName == "Request" ? ("") : (
+              <span className="history-total-count layout">
+                {props.totalCount}
+              </span>
+            )
+          )}
         </div>
         <MobileView>
           <SideNav
@@ -69,8 +69,8 @@ const Header = props => {
               sidebar ? (
                 "side-navigation nav-menu open"
               ) : (
-                  "side-navigation nav-menu"
-                )
+                "side-navigation nav-menu"
+              )
             }
             click={props.click}
             navMan={OpenSideNavigation}
@@ -87,7 +87,6 @@ const Header = props => {
             activePage={props.activePage}
           />
         </BrowserView>
-
         <div
           className={sidebar ? "backbone open" : "backbone"}
           onClick={OpenSideNavigation}

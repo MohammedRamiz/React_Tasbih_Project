@@ -1,4 +1,10 @@
-import firebase from "firebase";
+import firebase from 'firebase/compat/app';
+import 'firebase/compat/auth';
+import 'firebase/compat/firestore';
+
+import { initializeApp } from 'firebase/app';
+import { getFirestore, collection } from 'firebase/firestore'
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInAnonymously, updateProfile, signInWithPopup } from 'firebase/auth'
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
@@ -15,5 +21,10 @@ const db = firebaseApp.firestore();
 const auth = firebase.auth();
 const provider = new firebase.auth.GoogleAuthProvider();
 
-export { firebaseApp, auth, provider };
+const v9FirebaseApp = initializeApp(firebaseConfig);
+const v9DB = getFirestore(v9FirebaseApp);
+const v9Auth = getAuth(v9FirebaseApp);
+const v9Provider = new GoogleAuthProvider();
+
+export { firebaseApp, auth, provider, v9FirebaseApp, v9DB, v9Auth, collection, onAuthStateChanged, signInAnonymously, signInWithPopup, updateProfile, v9Provider };
 export default db;

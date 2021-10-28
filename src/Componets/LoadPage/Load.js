@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { provider, auth } from "../Firebase/firebase";
 import HomePage from "../Home/HomePage.js";
 import SignInPage from "../SignIn/SignIn";
 import LoadingScreen from "./LoadingScreen"
 import LandingPage from "../Home/LandingPage/LandingPage.js"
 
+import { v9DB, provider, v9auth, auth, onAuthStateChanged, v9Auth } from "../Firebase/firebase";
+//import { auth } from "../Firebase/firebase";
 import db from "../Firebase/firebase.js";
+import { collection, getDoc, getDocs, onSnapshot, addDoc, setDoc, doc } from 'firebase/firestore'
+
 import { useSelector, useDispatch } from "react-redux";
 import {
   setUpUserData,
@@ -49,11 +52,14 @@ const Load = () => {
     setUserState("LOR");
   };
 
-  const setCurrentUser = async user => {
+  const xxsetCurrentUser = async user => {
     if (user) {
       var userType = user.isAnonymous ? "GuestUsers" : "Users";
       dispatch(updateSettings({ loading: true, userType: userType }));
       console.log(userType);
+
+      //var userData = getDoc(collection(v9db, userType));
+
       var unSub = db.collection(userType).doc(user.uid).onSnapshot(async (data) => {
         if (data.data()) {
           var optionExist = data.data().Deleted ? data.data().Deleted : false;
@@ -102,14 +108,63 @@ const Load = () => {
     }
   };
 
+  const setCurrentUser = async user => {
+    if (user) {
+      var userType = user.isAnonymous ? "GuestUsers" : "Users";
+      dispatch(updateSettings({ loading: true, userType: userType }));
+
+      var userRef = await collection(v9DB, userType);
+      var userDoc = await doc(userRef, user.uid);
+      var userDocUnsub = await onSnapshot(userDoc, doc => {
+        if (doc.data()) {
+          var optionExist = doc.data().Deleted ? doc.data().Deleted : false;
+          if (!optionExist) {
+            dispatch(setUpUserData(user));
+          }
+        }
+        dispatch(updateSettings({ loading: false }));
+      });
+
+      var userSettingDoc = await collection(userDoc, "Settings");
+
+      var settingUnsub = await onSnapshot(userSettingDoc, async (userSetting) => {
+        dispatch(recoredUnSubCall(settingUnsub, "LOAD"));
+        if (!userSetting.empty) {
+          dispatch(
+            updateSettings({
+              isUserIn: true,
+              settings: userSetting.docs[0].data(),
+              path: userSetting.docs[0].ref.path
+            })
+          );
+        }
+        // else {
+        //   await addDoc(userSettingDoc, settings.settings)
+        // }
+      })
+      dispatch(recoredUnSubCall(userDocUnsub, "LOAD"));
+    }
+    else {
+      console.log("user not found");
+      if (userState === "LOR" || userState === "") {
+        dispatch(
+          updateSettings({
+            loading: false
+          })
+        );
+      }
+    }
+  }
+
   const setUser = () => {
     setUserState("LOR");
   };
 
   useEffect(async () => {
-    const unsub = await auth.onAuthStateChanged(user => {
+    var unsub = onAuthStateChanged(v9Auth, user => {
       setCurrentUser(user);
-    });
+    })
+
     return unsub;
   }, []);
 

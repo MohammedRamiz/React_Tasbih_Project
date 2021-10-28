@@ -32,7 +32,7 @@ const Template = props => {
           </div>
         </div>
       ) : (
-        <p>Deletet</p>
+        <p>Deleted</p>
       )}
     </div>
   );

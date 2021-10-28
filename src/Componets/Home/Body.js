@@ -5,7 +5,7 @@ import TasbihCard from "./TasbihCard.js";
 import ModalShow from "../ExtraComps/AddBody.js";
 import db from "../Firebase/firebase.js";
 import { useSelector, useDispatch } from "react-redux";
-import { recoredUnSubCall, execCalls } from "../../action/action";
+import { recoredUnSubCall, execCalls, saveTasbihCache } from "../../action/action";
 
 const Body = props => {
   const [noOfTasbih, setNoOfTasbih] = useState([]);
@@ -15,6 +15,7 @@ const Body = props => {
 
   const currentUser = useSelector(state => state.User);
   const totalTasbihsCount = useSelector(s => s.Settings.totalTasbihsCount);
+  const tasbihCached = useSelector(state => state.TasbihCache)
   const dispatch = useDispatch();
 
   const appendNewBlock = async (tasbihName, tid) => {
@@ -33,10 +34,18 @@ const Body = props => {
 
   useEffect(async () => {
     setNoOfTasbih([]);
+
+    if (tasbihCached) {
+      setNoOfTasbih(tasbihCached);
+      setLoading(false);
+      return;
+    }
+
     dispatch(execCalls("RELEASE_BODY"));
     let unSubs = db.collection(userType).doc(currentUser.uid).collection("Tasbihs")
       .orderBy("running", "desc")
       .onSnapshot(tasbih => {
+        console.log(tasbih.docs);
         var noOfTasbihs = tasbih.docs.map(data => {
           const _data = data.data();
           return {
@@ -48,15 +57,15 @@ const Body = props => {
             running: _data.running
           };
         });
-
         setNoOfTasbih(noOfTasbihs);
         setLoading(false);
+        dispatch(saveTasbihCache(noOfTasbihs, "TCACHE"));
       }, err => {
         unSubs();
       });
 
     dispatch(recoredUnSubCall(unSubs, 'BODY'));
-  }, [currentUser]);
+  }, [currentUser, tasbihCached]);
 
   return (
     <div className="outer-shell">
