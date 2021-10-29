@@ -3,7 +3,8 @@ import "./HomePage.css";
 import TasbihDotedCard from "./TasbihDotedCard.js";
 import TasbihCard from "./TasbihCard.js";
 import ModalShow from "../ExtraComps/AddBody.js";
-import db from "../Firebase/firebase.js";
+import db, { collection, v9DB } from "../Firebase/firebase.js";
+import { doc, addDoc, onSnapshot, orderBy, query } from "firebase/firestore"
 import { useSelector, useDispatch } from "react-redux";
 import { recoredUnSubCall, execCalls, saveTasbihCache } from "../../action/action";
 
@@ -21,8 +22,9 @@ const Body = props => {
   const appendNewBlock = async (tasbihName, tid) => {
     if (tasbihName) {
       setShow(false);
-      var user = await db.collection(userType).doc(currentUser.uid).get();
-      await user.ref.collection("Tasbihs").add({
+      var user = await doc(await collection(v9DB, userType), currentUser.uid)
+
+      await addDoc(await collection(user, "Tasbihs"), {
         Name: tasbihName,
         TasbihID: tid,
         count: 0,
@@ -42,27 +44,27 @@ const Body = props => {
     }
 
     dispatch(execCalls("RELEASE_BODY"));
-    let unSubs = db.collection(userType).doc(currentUser.uid).collection("Tasbihs")
-      .orderBy("running", "desc")
-      .onSnapshot(tasbih => {
-        console.log(tasbih.docs);
-        var noOfTasbihs = tasbih.docs.map(data => {
-          const _data = data.data();
-          return {
-            ID: data.id,
-            Name: _data.Name,
-            Count: _data.count,
-            path: data.ref.path,
-            tID: _data.TasbihID,
-            running: _data.running
-          };
-        });
-        setNoOfTasbih(noOfTasbihs);
-        setLoading(false);
-        dispatch(saveTasbihCache(noOfTasbihs, "TCACHE"));
-      }, err => {
-        unSubs();
+    let tasbihCollection = await collection(await doc(await collection(v9DB, userType), currentUser.uid), "Tasbihs")
+
+    var unSubs = onSnapshot(await query(tasbihCollection, orderBy("running", "desc")), tasbih => {
+      console.log(tasbih.docs);
+      var noOfTasbihs = tasbih.docs.map(data => {
+        const _data = data.data();
+        return {
+          ID: data.id,
+          Name: _data.Name,
+          Count: _data.count,
+          path: data.ref.path,
+          tID: _data.TasbihID,
+          running: _data.running
+        };
       });
+      setNoOfTasbih(noOfTasbihs);
+      setLoading(false);
+      dispatch(saveTasbihCache(noOfTasbihs, "TCACHE"));
+    }, err => {
+      unSubs();
+    });
 
     dispatch(recoredUnSubCall(unSubs, 'BODY'));
   }, [currentUser, tasbihCached]);

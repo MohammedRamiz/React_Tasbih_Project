@@ -1,13 +1,13 @@
 .history-container {
   display: flex;
-  padding: 8px;
   margin: 10px;
-  background: #36e865;
+  background: #caffd8;
   border-radius: 5px;
-  border: 1px solid;
   justify-content: space-between;
   align-content: center;
   align-items: center;
+  overflow: hidden;
+  box-shadow: 1px 1px 3px 0px #cecece, 0 0 2px 1px #dedede52;
 }
 
 .history-container svg {
@@ -16,6 +16,7 @@
 
 .history-block {
   flex: 0.5;
+  cursor: pointer;
 }
 
 span.history-counts {
@@ -36,6 +37,8 @@ span.history-counts {
   justify-content: flex-start;
   align-content: center;
   flex-direction: column;
+  padding: 8px;
+  padding-right: 0px;
 }
 
 .history-block.history-right span {
@@ -44,22 +47,18 @@ span.history-counts {
 
 .history-delete,
 .history-restore {
-  border-radius: 5px;
-  height: 40px;
+  height: 100%;
+  padding:0px 10px ;
+  background: #8dfbaa;
+  border-left: 1px solid #caffd8;
 }
 
 .history-delete {
-  background: #fffbfb;
-  margin-right: 10px;
-  color: #d40000;
-  border: 1px solid;
+  color: #f00;
 }
 
 .history-restore {
-  background: #f7fff7;
-  margin-right: 2px;
   color: #1f4a20;
-  border: 1px solid;
 }
 
 .history-tasbih-name {
@@ -78,6 +77,7 @@ span.history-counts {
 
 .history-container > p {
   margin: 0;
+  padding-right: 8px;
 }
 
 .history-counter {
@@ -105,4 +105,9 @@ span.history-counts {
   right: 0;
   justify-content: center;
   align-items: center;
+}
+
+
+.history-block.history-right svg {
+  display: flex;
 }

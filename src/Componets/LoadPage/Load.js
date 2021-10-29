@@ -141,7 +141,8 @@ const Load = () => {
         // else {
         //   await addDoc(userSettingDoc, settings.settings)
         // }
-      })
+      });
+
       dispatch(recoredUnSubCall(userDocUnsub, "LOAD"));
     }
     else {

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import './History.css'
-import db from '../Firebase/firebase';
+import db, { v9DB, collection } from '../Firebase/firebase';
+import { doc, updateDoc, getDoc, getDocs, query, orderBy, onSnapshot } from 'firebase/firestore';
 import HistoryTemplate from './HistoryBlockTemplate/Template'
 
 import { useSelector, useDispatch } from "react-redux"
@@ -15,7 +16,9 @@ const History = props => {
     const dispatch = useDispatch();
 
     const DeletePermenantData = async (path) => {
-        await db.doc(path).update({ deleterPermanently: true });
+        await updateDoc(await doc(v9DB, path), { deleterPermanently: true })
+
+        //await db.doc(path).update({ deleterPermanently: true });
         console.log("Tasbih deleted Permenantly")
     }
 
@@ -23,7 +26,7 @@ const History = props => {
         console.log("Tasbih Restored Successfully");
     }
 
-    useEffect(() => {
+    useEffect(async () => {
         props.pageName('History', "history");
 
         if (cachedHistory) {
@@ -32,43 +35,64 @@ const History = props => {
         }
 
         dispatch(execCalls("RELEASE_HISTORY"));
-        if (!currUser.isAnonymous) {
-            db.collection('Users').doc(currUser.uid).get().then(userData => {
-                let unSubs = userData.ref.collection("HistoryTasbihs").orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
-                    let counts = 0;
-                    const historyTasbihs = tasbihData.docs.map(doc => {
-                        counts += doc.data().counts;
-                        return { id: doc.id, path: doc.ref.path, ...doc.data() };
-                    });
-                    setTotalCounts(counts)
-                    props.countsHandler(counts);
-                    setTasbihHistory(historyTasbihs);
-                    dispatch(saveHistoryCache(historyTasbihs, "HCACHE"));
-                }, er => console.log(er));
 
-                dispatch(recoredUnSubCall(unSubs, "HISTORY"));
+        var userType = currUser.isAnonymous ? "GuestUsers" : "Users";
 
+        var currUserDoc = await doc(await collection(v9DB, userType), currUser.uid);
+
+        var colQuery = await query(await collection(currUserDoc, "HistoryTasbihs"), orderBy('deletedTime', 'desc'));
+
+        var unSubSnap = onSnapshot(colQuery, tasbihData => {
+            let counts = 0;
+            const historyTasbihs = tasbihData.docs.map(doc => {
+                counts += doc.data().counts;
+                return { id: doc.id, path: doc.ref.path, ...doc.data() };
             });
-        }
-        else {
-            db.collection('GuestUsers').doc(currUser.uid).get().then(userData => {
-                var unSubs = userData.ref.collection("HistoryTasbihs").orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
-                    let counts = 0;
-                    const historyTasbihs = tasbihData.docs.map(doc => {
-                        counts += doc.data().counts;
-                        return { id: doc.id, path: doc.ref.path, ...doc.data() };
-                    });
+            setTotalCounts(counts)
+            props.countsHandler(counts);
+            setTasbihHistory(historyTasbihs);
+            dispatch(saveHistoryCache(historyTasbihs, "HCACHE"));
+        });
 
-                    setTotalCounts(counts)
-                    props.countsHandler(counts);
-                    setTasbihHistory(historyTasbihs);
-                    dispatch(saveHistoryCache(historyTasbihs, "HCACHE"));
+        dispatch(recoredUnSubCall(unSubSnap, "HISTORY"));
 
-                }, er => console.log(er));
+        // if (!currUser.isAnonymous) {
+        //     db.collection('Users').doc(currUser.uid).get().then(userData => {
+        //         let unSubs = userData.ref.collection("HistoryTasbihs").orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
+        //             let counts = 0;
+        //             const historyTasbihs = tasbihData.docs.map(doc => {
+        //                 counts += doc.data().counts;
+        //                 return { id: doc.id, path: doc.ref.path, ...doc.data() };
+        //             });
+        //             setTotalCounts(counts)
+        //             props.countsHandler(counts);
+        //             setTasbihHistory(historyTasbihs);
+        //             dispatch(saveHistoryCache(historyTasbihs, "HCACHE"));
+        //         }, er => console.log(er));
 
-                dispatch(recoredUnSubCall(unSubs, "HISTORY"));
-            });
-        }
+        //         dispatch(recoredUnSubCall(unSubs, "HISTORY"));
+
+        //     });
+        // }
+        // else {
+        //     db.collection('GuestUsers').doc(currUser.uid).get().then(userData => {
+        //         var unSubs = userData.ref.collection("HistoryTasbihs").orderBy('deletedTime', 'desc').onSnapshot(tasbihData => {
+        //             let counts = 0;
+        //             const historyTasbihs = tasbihData.docs.map(doc => {
+        //                 counts += doc.data().counts;
+        //                 return { id: doc.id, path: doc.ref.path, ...doc.data() };
+        //             });
+
+        //             setTotalCounts(counts)
+        //             props.countsHandler(counts);
+        //             setTasbihHistory(historyTasbihs);
+        //             dispatch(saveHistoryCache(historyTasbihs, "HCACHE"));
+
+        //         }, er => console.log(er));
+
+        //         dispatch(recoredUnSubCall(unSubs, "HISTORY"));
+        //     });
+        // }
     }, [cachedHistory]);
 
 

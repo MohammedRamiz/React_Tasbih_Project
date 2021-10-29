@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
-import db from "../Firebase/firebase";
+import db, { collection, v9DB } from "../Firebase/firebase";
+import { doc, addDoc, deleteDoc, updateDoc, getDoc } from 'firebase/firestore'
 import { RiDeleteBin5Line, RiPlayFill, RiPauseFill, RiTimer2Line, RiHashtag } from "react-icons/ri";
 import { BiReset, BiHash } from "react-icons/bi";
 
@@ -21,15 +22,14 @@ const TasbihCard = props => {
   const RemoveTasbih = async () => {
     try {
       if (uid !== "null") {
-        var tasbihData = await db.doc(path).get();
+        var tasbihData = await doc(v9DB, path);
 
         if (counts > 0) {
-          var userDocPath = path.split("/")[0];
-          var userData = await db.collection(userDocPath).doc(uid).get();
-          await userData.ref.collection("HistoryTasbihs").add(historyDataTemplate(tasbihData.data(), "delete"));
+          var userData = await doc(await collection(v9DB, userType), uid);
+          await addDoc(await collection(userData, "HistoryTasbihs"), historyDataTemplate(tasbihData.data(), "delete"));
         }
 
-        await tasbihData.ref.delete();
+        await deleteDoc(tasbihData);
       }
 
       console.log("Tasbih Has Been Removed");
@@ -52,40 +52,40 @@ const TasbihCard = props => {
 
   const ResetTasbih = async () => {
     if (counts > 0) {
-      var userDocName = path.split("/")[0];
-      var tasbihData = await db.doc(path).get();
-      var user = await db.collection(userDocName).doc(uid).get();
+      debugger;
+      var tasbihData = await getDoc(await doc(v9DB, path));
+      var user = await doc(await collection(v9DB, userType), uid);
+      console.log(tasbihData.data());
       if (user) {
-        await user.ref.collection("HistoryTasbihs").add(historyDataTemplate(tasbihData.data(), "reset"));
-        tasbihData.ref.update({ count: 0 });
+        await addDoc(await collection(user, "HistoryTasbihs"), historyDataTemplate(tasbihData.data(), "reset"));
+        await updateDoc(tasbihData.ref, { count: 0 });
         setCounts(0);
       }
     }
   };
 
-  const increseCounter = () => {
+  const increseCounter = async () => {
     if (isTasbihRunnig && !displayContSection) {
-      var newCount = counts + 1;
       if (path !== "") {
-        db.doc(path).get().then(tasbihData => {
-          tasbihData.ref.update({ count: newCount });
-        });
+        var newCount = counts + 1;
+        setCounts(newCount);
+        await updateDoc(await doc(v9DB, path), { count: newCount });
       }
-      setCounts(newCount);
     }
   };
 
   const playPauseTasbih = async () => {
     var tasbihData;
     var currentRunning = chachedTasbihs.find(f => f.running === true);
+    var user = await doc(await collection(v9DB, userType), uid);
 
     if (currentRunning) {
-      tasbihData = await db.collection(userType).doc(uid).collection("Tasbihs").doc(currentRunning.ID).get();
-      await tasbihData.ref.update({ running: false });
+      var tasbihData = await doc(await collection(user, "Tasbihs"), currentRunning.ID);
+      await updateDoc(tasbihData, { running: false });
     }
 
-    tasbihData = await db.collection(userType).doc(uid).collection("Tasbihs").doc(props.tasbihDocID).get()
-    await tasbihData.ref.update({ running: !isTasbihRunnig });
+    tasbihData = await doc(await collection(user, "Tasbihs"), props.tasbihDocID);
+    await updateDoc(tasbihData, { running: !isTasbihRunnig });
   }
 
   const toggleMainBody = () => {

@@ -1,8 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Modal, Button, Dropdown, Form } from "react-bootstrap";
+import { Modal, Button, Dropdown } from "react-bootstrap";
 import 'bootstrap/dist/css/bootstrap.min.css';
-import db from "../Firebase/firebase.js";
 import "./modal.css";
+
+import db, { v9DB, collection } from "../Firebase/firebase.js";
+import { query, onSnapshot, where } from 'firebase/firestore'
 
 import { updateSettings, saveAvailableTasbihCache } from "../../action/action";
 import { useSelector, useDispatch } from "react-redux";
@@ -41,36 +43,57 @@ const AddBody = props => {
     setTID(val[0].ID);
   };
 
-  useEffect(() => {
+  useEffect(async () => {
     if (AvailableTasbihsCached) {
       dispach(updateSettings({ totalTasbihsCount: AvailableTasbihsCached.length }));
       setNoOfTasbih(AvailableTasbihsCached);
       return;
     }
 
-    let unSubs = db
-      .collection("Tasbihs")
-      .where("Visible", "==", true)
-      .onSnapshot(
-        snap => {
-          var noOfTasbihs = snap.docs.map(doc => {
-            return { ID: doc.id, Name: doc.data().Name };
-          });
 
-          dispach(
-            updateSettings({
-              totalTasbihsCount: noOfTasbihs.length
-            })
-          );
+    var tasbihCol = await query(await collection(v9DB, "Tasbihs"), where("Visible", "==", true));
+    var unSubTasvihCol = onSnapshot(tasbihCol, async tasbihs => {
+      var noOfTasbihs = tasbihs.docs.map(doc => {
+        return { ID: doc.id, Name: doc.data().Name };
+      });
 
-          setNoOfTasbih(noOfTasbihs);
-          dispach(saveAvailableTasbihCache(noOfTasbihs, "ATCACHE"));
-          if (userDeleted) {
-            unSubs();
-          }
-        },
-        er => console.log(er)
+      dispach(
+        updateSettings({
+          totalTasbihsCount: noOfTasbihs.length
+        })
       );
+
+      setNoOfTasbih(noOfTasbihs);
+      dispach(saveAvailableTasbihCache(noOfTasbihs, "ATCACHE"));
+
+      if (userDeleted) {
+        unSubTasvihCol();
+      }
+    })
+
+    // let unSubs = db
+    //   .collection("Tasbihs")
+    //   .where("Visible", "==", true)
+    //   .onSnapshot(
+    //     snap => {
+    //       var noOfTasbihs = snap.docs.map(doc => {
+    //         return { ID: doc.id, Name: doc.data().Name };
+    //       });
+
+    //       dispach(
+    //         updateSettings({
+    //           totalTasbihsCount: noOfTasbihs.length
+    //         })
+    //       );
+
+    //       setNoOfTasbih(noOfTasbihs);
+    //       dispach(saveAvailableTasbihCache(noOfTasbihs, "ATCACHE"));
+    //       if (userDeleted) {
+    //         unSubs();
+    //       }
+    //     },
+    //     er => console.log(er)
+    //   );
   }, []);
 
   return (

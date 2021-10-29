@@ -3,7 +3,8 @@ import "./Header.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars } from "@fortawesome/free-solid-svg-icons";
 import SideNav from "../NavigationMenu/SideNav/SideNav.js";
-import db, { } from "../Firebase/firebase";
+import { v9DB } from "../Firebase/firebase";
+import { updateDoc, doc } from "firebase/firestore"
 import { RiLayoutRowLine, RiLayoutColumnLine } from "react-icons/ri";
 import { BrowserView, MobileView, isMobile } from "react-device-detect";
 
@@ -17,10 +18,11 @@ const Header = props => {
     setsidebar(!sidebar);
   };
 
-  const ChangeLayout = () => {
+  const ChangeLayout = async () => {
     if (settings.path != "") {
       if (isMobile) {
-        db.doc(settings.path).update({ Layout: "colomn-layout" })
+        var setDoc = await doc(v9DB, settings.path)
+        await updateDoc(setDoc, { Layout: "colomn-layout" });
         return;
       }
       const layout =
@@ -28,8 +30,8 @@ const Header = props => {
           ? "row-layout"
           : "colomn-layout";
 
-
-      db.doc(settings.path).update({ Layout: layout });
+      var setDoc = await doc(v9DB, settings.path)
+      await updateDoc(setDoc, { Layout: layout });
     }
   };
 
